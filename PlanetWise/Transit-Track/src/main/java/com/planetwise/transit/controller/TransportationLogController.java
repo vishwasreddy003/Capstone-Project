@@ -38,15 +38,15 @@ public class TransportationLogController {
         return new ResponseEntity<>(logsByMode, HttpStatus.OK);
     }
 
-    @GetMapping("/mode/{userId}/{type}")
+    @GetMapping("/mode/{username}/{type}")
     public ResponseEntity<List<TransportationLog>> getAnalyticsOfTransportationByType(@PathVariable String username, @PathVariable FuelType type) {
         List<TransportationLog> logsByType = transportationLogService.getUserTransportationLogByFuelType(username, type);
         return new ResponseEntity<>(logsByType, HttpStatus.OK);
     }
 
     @GetMapping("/emissions/{username}")
-    public ResponseEntity<Map<Month, Float>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
-        Map<Month, Float> emissions = transportationLogService.getTrendsForTransportation(username);
+    public ResponseEntity<Map<Month, Double>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
+        Map<Month, Double> emissions = transportationLogService.getTrendsForTransportation(username);
         return ResponseEntity.ok(emissions);
     }
 

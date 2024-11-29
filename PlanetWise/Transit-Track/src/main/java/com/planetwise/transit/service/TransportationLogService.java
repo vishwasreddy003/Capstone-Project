@@ -17,5 +17,5 @@ public interface TransportationLogService {
 
     public List<TransportationLog> getUserTransportationLogByFuelType(String username, FuelType fuelType);
 
-    public Map<Month,Float> getTrendsForTransportation(String username);
+    public Map<Month,Double> getTrendsForTransportation(String username);
 }

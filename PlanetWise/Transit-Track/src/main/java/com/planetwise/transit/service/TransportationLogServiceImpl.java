@@ -53,14 +53,14 @@ public class TransportationLogServiceImpl implements TransportationLogService{
             throw new DataNotFoundException("No Data to show Trends");
         }
     }
-    public Map<Month, Float> getTrendsForTransportation(String username) {
+    public Map<Month, Double> getTrendsForTransportation(String username) {
 
         List<Object[]> results = transportRepo.findMonthlyCarbonEmissionsByUsername(username);
-        Map<Month, Float> monthlyEmissions = new HashMap<>();
+        Map<Month, Double> monthlyEmissions = new HashMap<>();
 
         for (Object[] result : results) {
             Month month = (Month) result[0];
-            Float emissions = (Float) result[1];
+            Double emissions = (Double) result[1];
             monthlyEmissions.put(month, emissions);
         }
 
