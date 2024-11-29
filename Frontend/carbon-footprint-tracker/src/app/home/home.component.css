@@ -1,0 +1,39 @@
+.container-fluid {
+  background-color: #e8f5e9; /* Light green background for eco-friendly feel */
+  padding: 20px;
+}
+
+img {
+  max-height: 80%;
+  border-radius: 15px; /* Adds rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a polished look */
+}
+
+blockquote {
+  font-style: italic;
+  border-left: 5px solid #2e7d32; /* Adds a green line for emphasis */
+  padding-left: 15px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+.large-image {
+  max-height: 90%; 
+  max-width: 100%;  
+  object-fit: cover; 
+  border-radius: 15px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column; 
+  }
+
+  .large-opaque-image {
+    max-height: 60%; 
+  }
+}
