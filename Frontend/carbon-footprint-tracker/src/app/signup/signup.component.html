@@ -1,1 +1,43 @@
-<p>signup works!</p>
+<div class="container-fluid d-flex align-items-center justify-content-center vh-100">
+    <div class="row w-100">
+      <div class="col-md-7 d-flex justify-content-center align-items-center">
+        <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
+      </div>
+  
+      <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
+        <div class="outer">
+          <div class="main">
+            <h1>Sign Up</h1>
+            <h3>Create a new account</h3>
+  
+            <form #userCreds="ngForm">
+              <label for="first">Username:</label>
+              <input ngModel type="text" id="first" name="username" 
+                     placeholder="Enter your Username" required>
+  
+              <label for="email">Email:</label>
+              <input ngModel type="email" id="email" name="email" 
+                     placeholder="Enter your Email" required>
+  
+              <label for="password">Password:</label>
+              <input ngModel type="password" id="password" name="password" 
+                     placeholder="Enter your Password" required>
+  
+              <label for="confirmPassword">Confirm Password:</label>
+              <input ngModel type="password" id="confirmPassword" name="confirmPassword" 
+                     placeholder="Confirm your Password" required>
+  
+              <div class="wrap">
+                <button type="submit">Sign Up</button>
+              </div>
+            </form>
+  
+            <p>Already have an account? 
+              <a href="#" style="text-decoration: none;">Login here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

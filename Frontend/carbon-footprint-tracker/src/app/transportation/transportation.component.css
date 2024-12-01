@@ -1,0 +1,58 @@
+.card {
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  h2 {
+    font-size: 28px;
+    color: #3c6e47; /*Eco-friendly green*/
+    margin-bottom: 10px;
+  }
+  
+  h3 {
+    font-size: 16px;
+    color: #4b8c4b;
+    margin-bottom: 2px;
+  }
+  
+  .form-label {
+    font-size: 14px;
+    color: #5d8a5e; /* Light green */
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #b0d0b0;
+    border-radius: 5px;
+  }
+  
+  .form-select {
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #b0d0b0;
+    border-radius: 5px;
+  }
+  
+  .btn-success {
+    background-color: #16423C;
+    color: white;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-success:hover {
+    background-color: #1E5E52 ;
+  }
+  
+  .text-center {
+    text-align:center;
+  }
+  

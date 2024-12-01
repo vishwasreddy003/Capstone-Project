@@ -1,0 +1,119 @@
+/* General styles for the container */
+.container-fluid {
+    background-color: #e8f5e9; /* Light green background for eco-friendly feel */
+    padding: 20px;
+  }
+  
+  img {
+    max-height: 80%;
+    border-radius: 15px; /* Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a polished look */
+  }
+
+  .large-image {
+    max-height: 90%; 
+    max-width: 100%;  
+    object-fit: cover; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column; 
+    }
+  
+    .large-opaque-image {
+      max-height: 60%; 
+    }
+  }  
+
+
+.container-fluid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f0f9f4; /* Soft light green background for an eco-friendly vibe */
+  }
+  
+  /* Styling for the main form section */
+  .outer {
+    background-color: #ffffff; /* White background for the form */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow to make the form stand out */
+    padding: 25px; /* Reduced padding to make the form shorter */
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px; /* Max width for the form container */
+    height: auto;
+  }
+  
+  /* Main heading styling */
+  h1 {
+    font-size: 28px; /* Slightly smaller heading */
+    text-align: center;
+    margin-bottom: 15px; /* Reduced margin */
+    color: #3c6e47; /* Dark green color for the heading */
+  }
+  
+  /* Sub-heading styling */
+  h3 {
+    font-size: 16px; /* Slightly smaller sub-heading */
+    text-align: center;
+    margin-bottom: 20px; /* Reduced margin */
+    color: #4b8c4b; /* Lighter green color for the sub-heading */
+  }
+  
+  /* Form element styling */
+  label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #5d8a5e; /* Calm green for labels */
+  }
+  
+  /* Input field styling */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Reduced margin to make the form more compact */
+    border: 1px solid #b0d0b0; /* Light green border */
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f4f8f4; /* Soft, light green background for input fields */
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #16423C; /* Fresh green button */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #1E5E52 ; /* Slightly darker green when hovering */
+  }
+  
+  /* Link styling for "Already have an account?" */
+  p {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 15px; /* Reduced margin */
+  }
+  
+  p a {
+    color: #4caf50; /* Green color for the link */
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  

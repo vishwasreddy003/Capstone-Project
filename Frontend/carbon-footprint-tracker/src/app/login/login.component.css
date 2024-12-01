@@ -1,64 +1,116 @@
-.outer {
+/* General styles for the container */
+.container-fluid {
+    background-color: #e8f5e9; /* Light green background for eco-friendly feel */
+    padding: 20px;
+  }
+  
+  img {
+    max-height: 80%;
+    border-radius: 15px; /* Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a polished look */
+  }
+
+  .large-image {
+    max-height: 90%; 
+    max-width: 100%;  
+    object-fit: cover; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column; 
+    }
+  
+    .large-opaque-image {
+      max-height: 60%; 
+    }
+  }
+  
+.container-fluid {
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-family: sans-serif;
-    line-height: 1.5;
-    min-height: 100vh;
-    background: #f3f3f3;
-    flex-direction: column;
-    margin: 0;
-}
-
-.main {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    padding: 10px 20px;
-    transition: transform 0.2s;
-    width: 500px;
-    text-align: center;
-}
-
-h1 {
-    color: #4CAF50;
-}
-
-label {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    text-align: left;
-    color: #555;
-    font-weight: bold;
-}
-
-input {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
-    padding: 15px;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f0f9f4; /* Soft light green background for an eco-friendly vibe */
+  }
+  
+  /* Styling for the main form section */
+  .outer {
+    background-color: #ffffff; /* White background for the form */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow to make the form stand out */
+    padding: 30px;
     border-radius: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    width: 100%;
+    max-width: 450px; /* Max width for the form container */
+  }
+  
+  /* Main heading styling */
+  h1 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3c6e47; /* Dark green color for the heading */
+  }
+  
+  /* Sub-heading styling */
+  h3 {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4b8c4b; /* Lighter green color for the sub-heading */
+  }
+  
+  /* Form element styling */
+  label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #5d8a5e; /* A calm, muted green */
+  }
+  
+  /* Input field styling */
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #b0d0b0; /* Light green border */
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f4f8f4; /* Soft, light green background for input fields */
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #16423C; /* Fresh green button */
     border: none;
+    border-radius: 5px;
+    font-size: 16px;
     color: white;
     cursor: pointer;
-    background-color: #4CAF50;
-    width: 100%;
-    font-size: 16px;
-}
-
-.wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #1E5E52 ; /* Slightly darker green when hovering */
+  }
+  
+  /* Link styling for "Not registered?" */
+  p {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  
+  p a {
+    color: #4caf50; /* Green color for the link */
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
