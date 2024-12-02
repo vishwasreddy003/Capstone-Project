@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule,FormBuilder,Validators, FormGroup } from '@angular/forms';
 import { LoginService } from '../login.service';
+import { loginForm } from '../model/loginForm';
 
 @Component({
   selector: 'app-login',
@@ -23,10 +24,8 @@ export class LoginComponent implements OnInit{
     })
   }
 
-  onSubmit(){if(this.loginForm.valid)
-    if(this.loginForm.valid){
-      
-    }
+  loginUser(credentials:loginForm){if(this.loginForm.valid)
+    this.loginService.validateUser(credentials);
   }
 
 

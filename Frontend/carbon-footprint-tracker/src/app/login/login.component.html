@@ -10,7 +10,7 @@
             <h1>Sign In</h1>
             <h3>Enter your login credentials</h3>
   
-            <form [formGroup]='loginForm' (onSubmit)=''>
+            <form [formGroup]='loginForm' (onSubmit)="loginUser(loginForm.value)">
               <div class="form-group">
                 <label for="first">Username:</label>
                 <input ngModel type="text" id="first" name="username" 
@@ -21,7 +21,7 @@
 
                 <label for="password">Password:</label>
                 <input ngModel type="password" id="password" name="password" 
-                placeholder="Enter your Password" formControlName="password required>
+                placeholder="Enter your Password" formControlName="password" required>
               </div>
   
         

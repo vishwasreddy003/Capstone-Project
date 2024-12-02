@@ -1,7 +1,6 @@
 package com.planetwise.user.service;
 
 import com.planetwise.user.dto.UserDto;
-import com.planetwise.user.dto.ValidationDto;
 import com.planetwise.user.exception.UserAlreadyExistsException;
 import com.planetwise.user.exception.UsernameNotFoundException;
 import com.planetwise.user.model.User;

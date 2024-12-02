@@ -1,7 +1,6 @@
 package com.planetwise.user.service;
 
 import com.planetwise.user.dto.UserDto;
-import com.planetwise.user.dto.ValidationDto;
 import com.planetwise.user.model.User;
 
 import java.util.List;
