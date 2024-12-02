@@ -1,65 +1,100 @@
 <div class="container-fluid d-flex align-items-center justify-content-center vh-100">
-    <div class="row w-100">
-      <div class="col-md-7 d-flex justify-content-center align-items-center">
-        <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
-      </div>
-  
-      <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
-        <div class="outer">
-          <div class="main">
-            <h1>Sign Up</h1>
-            <h3>Create a new account</h3>
-  
-            <form #userCreds="ngForm">
-              <label for="first">Username:</label>
-              <input ngModel type="text" id="first" name="username" 
-                     placeholder="Enter your Username" required>
-  
-              <label for="email">Email:</label>
-              <input ngModel type="email" id="email" name="email" 
-                     placeholder="Enter your Email" required>
-  
-              <div class="row">
-                <div class="col mb-3">
-              <label for="password">Password:</label>
-              <input ngModel type="password" id="password" name="password" 
-                     placeholder="Enter your Password" required>
-              </div>
-  
+  <div class="row w-100">
+    <div class="col-md-7 d-flex justify-content-center align-items-center">
+      <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
+    </div>
+
+    <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
+      <div class="outer">
+        <div class="main">
+          <h1>Sign Up</h1>
+          <h3>Create a new account</h3>
+
+          <form [formGroup]="signupForm" (ngSubmit)="signupUser()">
+            <label for="first">Username:</label>
+            <input formControlName="username" type="text" id="first" placeholder="Enter your Username" required>
+            <div *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid">
+              <small class="text-danger" *ngIf="signupForm.get('username')?.hasError('required')">
+                Username is required.
+              </small>
+            </div>
+
+            <label for="email">Email:</label>
+            <input formControlName="email" type="email" id="email" placeholder="Enter your Email" required>
+            <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">
+              <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('required')">
+                Email is required.
+              </small>
+              <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('email')">
+                Please enter a valid email.
+              </small>
+            </div>
+
+            <div class="row">
               <div class="col mb-3">
-              <label for="confirmPassword">Confirm Password:</label>
-              <input ngModel type="password" id="confirmPassword" name="confirmPassword" 
-                     placeholder="Confirm your Password" required>
-                    </div>
+                <label for="age">Age:
+                  <div *ngIf="signupForm.get('age')?.touched && signupForm.get('age')?.invalid">
+                    <small class="text-danger" *ngIf="signupForm.get('age')?.hasError('required')">
+                      Age is required.
+                    </small>
+                    <small class="text-danger" *ngIf="signupForm.get('age')?.hasError('min')">
+                      Age must be at least 18.
+                    </small>
+                  </div>
+                </label>
+                <input formControlName="age" type="number" id="age" placeholder="Enter your Age" required min="18">
+                
               </div>
 
-              <div class="row">
-                <div class="col md-3">
-              <label for="age">Age:</label>
-              <input ngModel type="number" id="age" name="age" placeholder="Enter your Age" required min="18">
+              <div class="col mb-3">
+                <label for="reminderFrequency">Reminder Frequency:</label>
+                <select formControlName="reminderFrequency" id="reminderFrequency" required>
+                  <option value="" disabled selected>Select a reminder frequency</option>
+                  <option *ngFor="let freq of frequencies" [value]="freq">{{ freq }}</option>
+                </select>
+                <div *ngIf="signupForm.get('reminderFrequency')?.touched && signupForm.get('reminderFrequency')?.invalid">
+                  <small class="text-danger" *ngIf="signupForm.get('reminderFrequency')?.hasError('required')">
+                    Reminder Frequency is required.
+                  </small>
                 </div>
-              <!-- New Reminder Frequency Field -->
-
-              <div class="col md-3">
-              <label for="reminderFrequency">Reminder Frequency:</label>
-                  <select ngModel id="reminderFrequency"  required>
-                    <option value="" disabled selected>Select a reminder frequency</option>
-                    <option *ngFor="let freq of frequencies" [value]="freq">{{ freq }}</option>
-                  </select>
-                </div>
-                </div>
-  
-              <div class="wrap">
-                <button type="submit">Sign Up</button>
               </div>
-            </form>
-  
-            <p>Already have an account? 
-              <a href="login" style="text-decoration: none;">Login here</a>
-            </p>
-          </div>
+            </div>
+
+            <div class="row">
+              <div class="col mb-3">
+                <label for="password">Password:</label>
+                <input formControlName="password" type="password" id="password" placeholder="Enter your Password" required>
+                <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid">
+                  <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('required')">
+                    Password is required.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col mb-3">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input formControlName="confirmPassword" type="password" id="confirmPassword" placeholder="Confirm your Password" required>
+                <div *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.invalid">
+                  <small class="text-danger" *ngIf="signupForm.get('confirmPassword')?.hasError('required')">
+                    Confirm Password is required.
+                  </small>
+                  <small class="text-danger" *ngIf="signupForm.get('confirmPassword')?.hasError('passwordMismatch')">
+                    Passwords must match.
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="wrap">
+              <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+            </div>
+          </form>
+
+          <p>Already have an account? 
+            <a routerLink="/login" style="text-decoration: none;">Login here</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

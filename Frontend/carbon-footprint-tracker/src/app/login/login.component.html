@@ -1,41 +1,46 @@
 <div class="container-fluid d-flex align-items-center justify-content-center vh-100">
-    <div class="row w-100">
-      <div class="col-md-7 d-flex justify-content-center align-items-center">
-        <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
-      </div>
-  
-      <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
-        <div class="outer">
-          <div class="main">
-            <h1>Sign In</h1>
-            <h3>Enter your login credentials</h3>
-  
-            <form [formGroup]='loginForm' (onSubmit)="loginUser(loginForm.value)">
-              <div class="form-group">
-                <label for="first">Username:</label>
-                <input ngModel type="text" id="first" name="username" 
-                placeholder="Enter your Username" formControlName="username" required>
-              </div>
-  
-              <div class="form-group">
+  <div class="row w-100">
+    <div class="col-md-7 d-flex justify-content-center align-items-center">
+      <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
+    </div>
 
-                <label for="password">Password:</label>
-                <input ngModel type="password" id="password" name="password" 
-                placeholder="Enter your Password" formControlName="password" required>
+    <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
+      <div class="outer">
+        <div class="main">
+          <h1>Sign In</h1>
+          <h3>Enter your login credentials</h3>
+
+          <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input formControlName="username" type="text" id="username" placeholder="Enter your Username" required>
+              <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                <small class="text-danger" *ngIf="loginForm.get('username')?.hasError('required')">
+                  Username is required.
+                </small>
               </div>
-  
-        
-              <div class="form-group wrap">
-                <button type="submit">Log In</button>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input formControlName="password" type="password" id="password" placeholder="Enter your Password" required>
+              <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                <small class="text-danger" *ngIf="loginForm.get('password')?.hasError('required')">
+                  Password is required.
+                </small>
               </div>
-            </form>
-  
-            <p>Not registered? 
-              <a href="signup" style="text-decoration: none;">Create an account</a>
-            </p>
-          </div>
+            </div>
+
+            <div class="form-group wrap">
+              <button type="submit" [disabled]="loginForm.invalid">Log In</button>
+            </div>
+          </form>
+
+          <p>Not registered? 
+            <a routerLink="/signup" style="text-decoration: none;">Create an account</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

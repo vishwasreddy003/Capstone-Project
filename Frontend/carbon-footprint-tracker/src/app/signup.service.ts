@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
+import { signupForm } from './model/signupForm';
 import { ErrorHandlerService } from './error-handler.service';
-import { loginForm } from './model/loginForm';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class SignupService {
   private readonly baseUrl = "http://localhost:8080/PlanetWise/user";
 
   constructor(
@@ -17,18 +17,18 @@ export class LoginService {
     private errorHandler: ErrorHandlerService
   ) {}
 
-  // Return the observable so the component can subscribe
-  validateUser(credentials: loginForm): Observable<string> {
-    return this.userClient.post<string>(`${this.baseUrl}/login`, credentials)
+  addUser(userDetails: signupForm): Observable<any> {
+    return this.userClient.post(`${this.baseUrl}/register`, userDetails)
       .pipe(
         catchError(err => {
           this.errorHandler.errorResponse = {
-            message: 'Unable to connect to the server',
+            message: 'Unable to register. Please try again later.',
             status: 503,
             timestamp: new Date()
           };
-          this.router.navigate(['/error']);
-          return throwError(() => err);
+
+          this.router.navigate(['/error']); 
+          return throwError(() => err); 
         })
       );
   }
