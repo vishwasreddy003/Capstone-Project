@@ -14,6 +14,7 @@ export class TransportationComponent {
   fuelTypes: string[] = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
   frequencies: string[] = ['Daily', 'Weekly', 'Monthly', 'Annual'];  // Frequency as an array
   months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
 
  
   transportationMode?: string;

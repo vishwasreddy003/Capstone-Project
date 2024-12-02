@@ -19,13 +19,35 @@
               <input ngModel type="email" id="email" name="email" 
                      placeholder="Enter your Email" required>
   
+              <div class="row">
+                <div class="col mb-3">
               <label for="password">Password:</label>
               <input ngModel type="password" id="password" name="password" 
                      placeholder="Enter your Password" required>
+              </div>
   
+              <div class="col mb-3">
               <label for="confirmPassword">Confirm Password:</label>
               <input ngModel type="password" id="confirmPassword" name="confirmPassword" 
                      placeholder="Confirm your Password" required>
+                    </div>
+              </div>
+
+              <div class="row">
+                <div class="col md-3">
+              <label for="age">Age:</label>
+              <input ngModel type="number" id="age" name="age" placeholder="Enter your Age" required min="18">
+                </div>
+              <!-- New Reminder Frequency Field -->
+
+              <div class="col md-3">
+              <label for="reminderFrequency">Reminder Frequency:</label>
+                  <select ngModel id="reminderFrequency"  required>
+                    <option value="" disabled selected>Select a reminder frequency</option>
+                    <option *ngFor="let freq of frequencies" [value]="freq">{{ freq }}</option>
+                  </select>
+                </div>
+                </div>
   
               <div class="wrap">
                 <button type="submit">Sign Up</button>
