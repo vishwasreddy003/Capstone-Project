@@ -10,7 +10,7 @@ public class EntityDtoUtil {
     public static UserDto convertToDto(User user){
 
         return new UserDto(
-                user.getUserName(), user.getEmail(), user.getAge(), user.getGreen_score(),user.getGreen_coins()
+                user.getUsername(), user.getEmail(), user.getAge(), user.getGreen_score(),user.getGreen_coins()
         );
     }
 

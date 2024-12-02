@@ -10,40 +10,36 @@ spring:
     gateway:
       routes:
         - id: energywise-track
-          uri:
-            lb://energywise-track
+          uri: lb://energywise-track
           predicates:
             - Path=/PlanetWise/energy/**
 
         - id: goals
-          uri:
-            lb://goals
+          uri: lb://goals
           predicates:
             - Path=/PlanetWise/goals/**
 
         - id: green-scores
-          uri:
-            lb://green-scores
+          uri: lb://green-scores
           predicates:
             - Path=/PlanetWise/greenScore/**
 
-
         - id: rewards
-          uri:
-            lb://rewards
+          uri: lb://rewards
           predicates:
             - Path=/rewards/**
 
-
         - id: transit-check
-          uri:
-            lb://transit-check
+          uri: lb://transit-check
           predicates:
             - Path=/PlanetWise/transportation/**
 
-
         - id: waste-track
-          uri:
-            lb://waste-track
+          uri: lb://waste-track
           predicates:
             - Path=/PlanetWise/WasteProduction/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/PlanetWise/user/**

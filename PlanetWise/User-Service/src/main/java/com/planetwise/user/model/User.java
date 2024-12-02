@@ -27,7 +27,7 @@ public class User {
     private UUID user_id;
 
     @NotEmpty(message = "User name cannot be empty")
-    private String userName;
+    private String username;
 
     @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Email should be valid")

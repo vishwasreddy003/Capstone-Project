@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnergyWasteComponent } from './energy-waste/energy-waste.component';
 import { HomeComponent } from './home/home.component';
@@ -16,3 +17,16 @@ export const routes: Routes = [
     {path:'transport',component:TransportationComponent},
     {path:'energy',component:EnergyWasteComponent}
 ];
+
+@NgModule({
+    imports: [
+        RouterModule.forRoot(routes, {
+            anchorScrolling: 'enabled',
+            scrollPositionRestoration: 'enabled'
+        }),
+    ],
+    exports:[RouterModule],
+
+})
+
+export class AppRoutingModule {}

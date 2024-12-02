@@ -1,7 +1,9 @@
 package com.planetwise.user.service;
 
 import com.planetwise.user.dto.UserDto;
+import com.planetwise.user.dto.ValidationDto;
 import com.planetwise.user.exception.UserAlreadyExistsException;
+import com.planetwise.user.exception.UsernameNotFoundException;
 import com.planetwise.user.model.User;
 import com.planetwise.user.repository.UserRepository;
 import com.planetwise.user.util.EntityDtoUtil;
@@ -40,4 +42,17 @@ public class UserServiceImpl implements UserService{
     public boolean isUsernameUnique(String username) {
         return !userRepo.existsByUsername(username);
     }
+
+    @Override
+    public ValidationDto getUserByUsername(String username) {
+        User user = null;
+        if(userRepo.findByUsername(username).isPresent()){
+            user = userRepo.findByUsername(username).get();
+        }else{
+            throw new UsernameNotFoundException("Username does not exist. New user? Please Sign up");
+        }
+        return new ValidationDto(user.getUsername(),user.getPassword());
+    }
+
+
 }
