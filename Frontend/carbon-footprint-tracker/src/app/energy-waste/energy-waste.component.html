@@ -1,38 +1,55 @@
 <div class="container vh-100 d-flex align-items-center justify-content-center">
-    <div class="row justify-content-center w-100">
-      <div class="col-12 col-md-8 col-lg-8">
-        <div class="card p-4 shadow-sm">
-          <h2 class="text-center">Energy & Gas Consumption Form</h2>
-          <form #energyForm="ngForm" (ngSubmit)="onSubmit()" >
-    
-            <!-- Month Input -->
-            <div class="mb-3">
-              <label for="month" class="form-label">Month</label>
-              <select class="form-select" id="month" name="month" [(ngModel)]="month" required>
-                <option value="" disabled selected>Select a Month</option>
-                <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-              </select>
-            </div>
-    
-            <!-- Electricity Units Input -->
-            <div class="mb-3">
-              <label for="electricityUnits" class="form-label">Electricity Units</label>
-              <input type="number" class="form-control" id="electricityUnits" name="electricityUnits" [(ngModel)]="electricityUnits" required placeholder="Enter electricity units" step="0.1" min="0">
-            </div>
-    
-            <!-- Number of Gas Cylinders Input -->
-            <div class="mb-3">
-              <label for="noOfGasCylinders" class="form-label">Number of Gas Cylinders</label>
-              <input type="number" class="form-control" id="noOfGasCylinders" name="noOfGasCylinders" [(ngModel)]="noOfGasCylinders" required placeholder="Enter number of gas cylinders" step="1" min="0">
-            </div>
-    
-            <!-- Submit Button -->
-            <div class="text-center">
-              <button type="submit" class="btn btn-success">Submit</button>
-            </div>
-          </form>
-        </div>
+  <div class="row justify-content-center w-100">
+    <div class="col-12 col-md-8 col-lg-8">
+      <div class="card p-4 shadow-sm">
+        <h2 class="text-center">Energy & Gas Consumption Form</h2>
+        <form [formGroup]="energyWasteForm" (ngSubmit)="onSubmit()">
+
+          <!-- Month Input -->
+          <div class="mb-3">
+            <label for="month" class="form-label">Month
+              <div *ngIf="energyWasteForm.get('month')?.touched  && energyWasteForm.get('month')?.invalid ">
+                <small class="text-danger" *ngIf="energyWasteForm.get('month')?.hasError('required')">
+                  required.
+                </small>
+              </div>
+            </label>
+            <select class="form-select" id="month" formControlName="month">
+              <option value="" disabled>Select a Month</option>
+              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+            </select>
+          </div>
+
+          <!-- Electricity Units Input -->
+          <div class="mb-3">
+            <label for="electricityUnits" class="form-label">Electricity Units
+              <div *ngIf="energyWasteForm.get('electricityUnits')?.touched && energyWasteForm.get('electricityUnits')?.invalid">
+                <small class="text-danger" *ngIf="energyWasteForm.get('electricityUnits')?.hasError('required')">
+                  required.
+                </small>
+              </div>
+            </label>
+            <input type="number" class="form-control" id="electricityUnits" formControlName="electricityUnits" placeholder="Enter electricity units" step="0.1" min="0" required>
+          </div>
+
+          <!-- Number of Gas Cylinders Input -->
+          <div class="mb-3">
+            <label for="noOfGasCylinders" class="form-label">Number of Gas Cylinders
+              <div *ngIf="energyWasteForm.get('noOfGasCylinders')?.touched && energyWasteForm.get('noOfGasCylinders')?.invalid">
+                <small class="text-danger" *ngIf="energyWasteForm.get('noOfGasCylinders')?.hasError('required')">
+                 required.
+                </small>
+              </div>
+            </label>
+            <input type="number" class="form-control" id="noOfGasCylinders" formControlName="noOfGasCylinders" placeholder="Enter number of gas cylinders" step="0.1" min="0" required>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
+            <button type="submit" class="btn btn-success" [disabled]="energyWasteForm.invalid">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>

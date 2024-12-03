@@ -1,41 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { EnergyData } from '../model/EnergyData';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TrackerApiService } from '../tracker-api.service';
 
 
 @Component({
   selector: 'app-energy-waste',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './energy-waste.component.html',
   styleUrl: './energy-waste.component.css'
 })
-export class EnergyWasteComponent {
+export class EnergyWasteComponent implements OnInit{
  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
- month = " ";
- electricityUnits = 0;
- noOfGasCylinders = 0;
+//  month = " ";
+//  electricityUnits = 0;
+//  noOfGasCylinders = 0;
 
- constructor(private apiService:TrackerApiService){}
+ constructor(private formBuiler : FormBuilder,private trackerApiService:TrackerApiService){}
 
-  onSubmit():void{
-    const energyData:EnergyData = {
-      month:this.month,
-      electricityUnits:this.electricityUnits,
-      noOfGasCylinders:this.noOfGasCylinders
-    };
+ energyWasteForm : FormGroup = new FormGroup({})
 
-    this.apiService.submitEnergyData(energyData).subscribe(
-      response => {
-        console.log("Data successfully submitted",response);
-      },
-      error => {
-        console.log("Error submitting form",error);
-      }
-    );
-  }
+ ngOnInit(): void {
+  this.energyWasteForm = this.formBuiler.group({
+    month : ['',Validators.required],
+    electricityUnits : ['',[Validators.required,Validators.min(0)]],
+    noOfGasCylinders : ['',[Validators.required,Validators.min(0)]]
+  });
+}
 
-
+ onSubmit() {
+   if(this.energyWasteForm.valid ){
+     const energyData = this.energyWasteForm.value;
+     this.trackerApiService.submitEnergyData(energyData).subscribe(
+       response=>{
+         console.log("Form submitted successfully",response);
+       },
+       error =>{
+         console.log("Error submitting Form",error);
+       }
+     );
+   } 
+ }
 }

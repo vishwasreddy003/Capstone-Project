@@ -3,20 +3,22 @@
     <div class="col-12 col-md-8 col-lg-8">
       <!-- Adjust column sizes for responsiveness -->
       <div class="card p-4 shadow-sm">
-        <h2 class="text-center">Transportation Form</h2>
-        <form #transportForm="ngForm">
+        <h2 class="text-center">Transportation Data Form</h2>
+        <form [formGroup]="transportForm">
           <!-- Transportation Mode Input -->
           <div class="mb-3">
-            <label for="transportationMode" class="form-label"
-              >Transportation Mode</label
-            >
+            <label for="transportationMode" class="form-label">Transportation Mode
+              <div *ngIf="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.invalid">
+                <small class="text-danger" *ngIf="transportForm.get('transportationMode')?.hasError('required')">
+                   required.
+                </small>
+              </div>
+            </label>
             <select
               class="form-select"
               id="transportationMode"
-              name="transportationMode"
-              [(ngModel)]="transportationMode"
-              required
-            >
+              formControlName="transportationMode"
+              required>
               <option value="" disabled selected>
                 Select Transportation Mode
               </option>
@@ -28,12 +30,17 @@
 
           <!-- Fuel Type Input -->
           <div class="mb-3">
-            <label for="fuelType" class="form-label">Fuel Type</label>
+            <label for="fuelType" class="form-label">Fuel Type
+              <div *ngIf="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.invalid">
+                <small class="text-danger" *ngIf="transportForm.get('fuelType')?.hasError('required')">
+                   required.
+                </small>
+              </div>
+            </label>
             <select
               class="form-select"
               id="fuelType"
-              name="fuelType"
-              [(ngModel)]="fuelType"
+              formControlName="fuelType"
               required
             >
               <option value="" disabled selected>Select Fuel Type</option>
@@ -46,33 +53,39 @@
           <!-- Distance (km) Input -->
           <div class="row">
             <div class="col mb-3">
-              <label for="distanceKm" class="form-label">Distance (km)</label>
+              <label for="distanceKm" class="form-label">Distance (km)
+                <div *ngIf="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.invalid">
+                  <small class="text-danger" *ngIf="transportForm.get('distanceKm')?.hasError('required')">
+                    required.
+                  </small>
+                </div>
+              </label>
               <input
                 type="number"
                 class="form-control"
                 id="distanceKm"
                 pattern="^[0-9]+(\.[0-9]+)?$"
-                #mileageInput="ngModel"
-                name="distanceKm"
-                [(ngModel)]="distanceKm"
+                formControlName="distanceKm"
                 required
                 placeholder="Enter distance in kilometers"
                 step="0.1"
                 min="0"
               />
-              <div *ngIf="mileageInput.invalid && mileageInput.touched" class="text-danger">
-                Please enter a valid mileage value.
-              </div>
             </div>
 
             <div class="col mb-3">
-                <label for="mileage" class="form-label">Mileage (km/l)</label>
+                <label for="mileage" class="form-label">Mileage (km/l)
+                  <div *ngIf="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.invalid">
+                    <small class="text-danger" *ngIf="transportForm.get('mileage')?.hasError('required')">
+                       required.
+                    </small>
+                  </div>
+                </label>
                 <input
                   type="number"
                   class="form-control"
                   id="mileage"
-                  name="mileage"
-                  [(ngModel)]="mileage"
+                  formControlName="mileage"
                   required
                   placeholder="Enter mileage in km/l"
                   step="0.1"
@@ -85,12 +98,17 @@
  
             <div class="row">
             <div class="col mb-3">
-              <label for="frequency" class="form-label">Frequency</label>
+              <label for="frequency" class="form-label">Frequency
+                <div *ngIf="transportForm.get('frequency')?.touched && transportForm.get('frequency')?.invalid">
+                  <small class="text-danger" *ngIf="transportForm.get('frequency')?.hasError('required')">
+                    required.
+                  </small>
+                </div>
+              </label>
               <select
                 class="form-select"
                 id="frequency"
-                name="frequency"
-                [(ngModel)]="frequency"
+                formControlName="frequency"
                 required
               >
                 <option value="" disabled selected>Select Frequency</option>
@@ -103,23 +121,28 @@
 
           <!-- Month Input -->
           <div class="col mb-3">
-            <label for="month" class="form-label">Month</label>
+            <label for="month" class="form-label">Month
+              <div *ngIf="transportForm.get('month')?.touched && transportForm.get('month')?.invalid">
+                <small class="text-danger" *ngIf="transportForm.get('month')?.hasError('required')">
+                  required.
+                </small>
+              </div>
+            </label>
             <select
               class="form-select"
               id="month"
-              name="month"
-              [(ngModel)]="month"
+              formControlName="month"
               required
             >
               <option value="" disabled selected>Select a Month</option>
-              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
             </select>
           </div>
           </div>
 
           <!-- Submit Button -->
           <div class="text-center">
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" [disabled]="transportForm.invalid"  class="btn btn-success">Submit</button>
           </div>
         </form>
       </div>

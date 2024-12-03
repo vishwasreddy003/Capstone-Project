@@ -1,49 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TransportData } from '../model/TransportData';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TrackerApiService } from '../tracker-api.service';
+
 
 @Component({
   selector: 'app-transportation',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './transportation.component.html',
   styleUrl: './transportation.component.css'
 })
-export class TransportationComponent {
+export class TransportationComponent implements OnInit{
+  
   transportationModes: string[] = ['Car', 'Bus', 'Train', 'Bicycle', 'Walking'];
   fuelTypes: string[] = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
   frequencies: string[] = ['Daily', 'Weekly', 'Monthly', 'Annual'];  // Frequency as an array
   months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  
-  transportationMode ='';
-  fuelType = '';
-  distanceKm = 0;
-  frequency = '';
-  month = '';
-  mileage= 0;
 
-  constructor(private apiService:TrackerApiService){}
 
-  onSubmit():void{
-    const transportData:TransportData ={
-      transportationMode:this.transportationMode,
-      fuelType:this.fuelType,
-      distanceKm:this.distanceKm,
-      frequency:this.frequency,
-      month:this.month,
-      mileage:this.mileage
-    }
+  transportForm : FormGroup = new FormGroup({})
 
-    this.apiService.submitTransportData(transportData).subscribe(
-      response=>{
-        console.log("Data submitted successfully",response);
-      },
-      error=>{
-        console.log("Error submitting form",error);
-      }
-    );
+  constructor(private formBuilder:FormBuilder,private trackerApiService:TrackerApiService){}
+
+  ngOnInit(): void {
+    this.transportForm = this.formBuilder.group({
+      transportationMode:['',Validators.required],
+      fuelType: ['',Validators.required],
+      distanceKm:['',Validators.required],
+      mileage: ['',Validators.required],
+      frequency:['',Validators.required],
+      month:['',Validators.required]
+    });
   }
 
+  onSubmit(){
+    if(this.transportForm.valid){
+      const transportData = this.transportForm.value;
+      this.trackerApiService.submitTransportData(transportData).subscribe(
+        response=>{
+          console.log("Form submitted successfully",response)
+        },
+        error=>{
+          console.log("Error submitting Form",error)
+        }
+      );
+    }
+    }
 }
