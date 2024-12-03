@@ -3,12 +3,12 @@
     <div class="col-12 col-md-8 col-lg-8"> <!-- Adjust column sizes for responsiveness -->
       <div class="card p-4 shadow-sm">
         <h2 class="text-center">Waste Production Form</h2>
-        <form #wasteForm="ngForm">
+        <form #wasteForm="ngForm" (ngSubmit)="onSubmit()">
 
           <!-- Month Input -->
           <div class="mb-3">
             <label for="month" class="form-label">Month</label>
-            <select class="form-select" id="month" name="month" [(ngModel)]="selectedMonth" required>
+            <select class="form-select" id="month" name="month" [(ngModel)]="month" required>
               <option value="" disabled selected>Select a month</option>
               <option *ngFor="let month of months" [value]="month">{{ month }}</option>
             </select>
@@ -17,7 +17,7 @@
           <!-- Waste Type Input -->
           <div class="mb-3">
             <label for="waste_type" class="form-label">Waste Type</label>
-            <select class="form-select" id="waste_type" name="waste_type" required>
+            <select class="form-select" id="waste_type" name="waste_type" [(ngModel)]="wasteType" required>
               <option value="" disabled selected>Select Waste Type</option>
               <option *ngFor="let wasteType of wasteTypes" [value]="wasteType">{{ wasteType }}</option>
             </select>

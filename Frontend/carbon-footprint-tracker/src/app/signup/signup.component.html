@@ -11,24 +11,28 @@
           <h3>Create a new account</h3>
 
           <form [formGroup]="signupForm" (ngSubmit)="signupUser()">
-            <label for="first">Username:</label>
+            <label for="first">Username:
+              <div *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid">
+                <small class="text-danger" *ngIf="signupForm.get('username')?.hasError('required')">
+                  Username is required.
+                </small>
+              </div>
+            </label>
             <input formControlName="username" type="text" id="first" placeholder="Enter your Username" required>
-            <div *ngIf="signupForm.get('username')?.touched && signupForm.get('username')?.invalid">
-              <small class="text-danger" *ngIf="signupForm.get('username')?.hasError('required')">
-                Username is required.
-              </small>
-            </div>
+            
 
-            <label for="email">Email:</label>
+            <label for="email">Email:
+              <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">
+                <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('required')">
+                  Email is required.
+                </small>
+                <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('email')">
+                  Please enter a valid email.
+                </small>
+              </div>
+            </label>
             <input formControlName="email" type="email" id="email" placeholder="Enter your Email" required>
-            <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid">
-              <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('required')">
-                Email is required.
-              </small>
-              <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('email')">
-                Please enter a valid email.
-              </small>
-            </div>
+            
 
             <div class="row">
               <div class="col mb-3">
