@@ -18,6 +18,7 @@ export class SignupService {
   ) {}
 
   addUser(userDetails: signupForm): Observable<any> {
+    console.log('Sending user details:', userDetails);
     return this.userClient.post(`${this.baseUrl}/register`, userDetails)
       .pipe(
         catchError(err => {

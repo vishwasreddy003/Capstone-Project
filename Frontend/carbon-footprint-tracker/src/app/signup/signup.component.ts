@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
+import { Router } from '@angular/router';
+import { response } from 'express';
 import { SignupService } from '../signup.service';
 
 @Component({
@@ -12,11 +15,13 @@ import { SignupService } from '../signup.service';
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup = new FormGroup({});
-  frequencies: string[] = ['Daily', 'Weekly', 'Monthly'];  // Array for reminder frequencies
+  frequencies: string[] = ['DAILY', 'WEEKLY', 'MONTHLY'];  // Array for reminder frequencies
 
   constructor(
     private signupService: SignupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router:Router,
+    private userClient:HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -27,14 +32,14 @@ export class SignupComponent implements OnInit {
       age: ['', [Validators.required, Validators.min(18)]],  // age validation
       reminderFrequency: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]], // password validation
-      confirmPassword: ['', Validators.required]
     });
   }
 
-  signupUser(): void {
+  async signupUser() {
     if (this.signupForm.valid) {
       const userDetails = this.signupForm.value;
       this.signupService.addUser(userDetails);
+      
     } else {
       alert('Please fill out all fields correctly.');
     }

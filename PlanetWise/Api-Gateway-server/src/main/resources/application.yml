@@ -5,9 +5,19 @@ eureka:
   instance:
     prefer-ip-address: true
 
+
+
+
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200/"
+            allowedMethods: '*'
+            allowedHeaders: '*'
+
       routes:
         - id: energywise-track
           uri: lb://energywise-track
@@ -55,3 +65,4 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/PlanetWise/user/**
+

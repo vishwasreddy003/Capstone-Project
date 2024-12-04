@@ -29,6 +29,7 @@ public class UserController {
 
     @PostMapping("/register")
     public UserDto registerUser(@RequestBody User user){
+        System.out.println("Received user registration request: " + user);
         return userService.saveUser(user);
     }
 
