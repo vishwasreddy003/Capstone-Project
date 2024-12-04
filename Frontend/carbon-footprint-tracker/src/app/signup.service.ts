@@ -15,11 +15,11 @@ export class SignupService {
     private userClient: HttpClient,
     private router: Router,
     private errorHandler: ErrorHandlerService
-  ) {}
+  ) { }
 
-  addUser(userDetails: signupForm): Observable<any> {
+  addUser(userDetails: signupForm) {
     console.log('Sending user details:', userDetails);
-    return this.userClient.post(`${this.baseUrl}/register`, userDetails)
+    this.userClient.post(`${this.baseUrl}/register`, userDetails)
       .pipe(
         catchError(err => {
           this.errorHandler.errorResponse = {
@@ -27,10 +27,19 @@ export class SignupService {
             status: 503,
             timestamp: new Date()
           };
-
-          this.router.navigate(['/error']); 
-          return throwError(() => err); 
+          this.router.navigate(['/error']);
+          return throwError(() => err); // Propagate the error
         })
-      );
+      )
+      .subscribe({
+        next: response => {
+          console.log(response);
+          // this.router.navigate(['/dashboard']);
+        },
+        error: error => {
+          console.log(error);
+        }
+      });
+
   }
 }
