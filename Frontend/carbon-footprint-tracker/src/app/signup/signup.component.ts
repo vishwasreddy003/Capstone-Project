@@ -39,7 +39,7 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       const userDetails = this.signupForm.value;
       this.signupService.addUser(userDetails);
-      
+      this.router.navigate(['/login']);
     } else {
       alert('Please fill out all fields correctly.');
     }
