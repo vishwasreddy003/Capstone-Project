@@ -1,7 +1,10 @@
 package com.planetwise.user.controller;
 
+import com.planetwise.user.dto.JwtToken;
 import com.planetwise.user.dto.UserDto;
+import com.planetwise.user.dto.loginDto;
 import com.planetwise.user.model.User;
+import com.planetwise.user.service.AuthenticationService;
 import com.planetwise.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthenticationService authService;
+
 
     @GetMapping("/all")
     public List<UserDto> getAllUsers(){
@@ -26,12 +32,14 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-
-
-    @GetMapping("/{username}")
-    public ValidationDto getUser(@PathVariable  String username){
-        return userService.getUserByUsername(username);
+    @PostMapping("/login")
+    public JwtToken validateUser(@RequestBody loginDto credentials){
+        return authService.authenticate(credentials);
     }
 
+    @PostMapping("/validate")
+    public void  validateToken(@RequestParam String token){
+        authService.validateToken(token);
+    }
 
 }

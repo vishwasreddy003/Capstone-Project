@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "PlanetWiseUser", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"userName"}),
+        @UniqueConstraint(columnNames = {"username"}),
         @UniqueConstraint(columnNames = {"email"})
 })
 public class User {

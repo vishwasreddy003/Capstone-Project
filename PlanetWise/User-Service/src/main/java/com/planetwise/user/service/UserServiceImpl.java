@@ -3,10 +3,12 @@ package com.planetwise.user.service;
 import com.planetwise.user.dto.UserDto;
 import com.planetwise.user.exception.UserAlreadyExistsException;
 import com.planetwise.user.exception.UsernameNotFoundException;
+import com.planetwise.user.model.Roles;
 import com.planetwise.user.model.User;
 import com.planetwise.user.repository.UserRepository;
 import com.planetwise.user.util.EntityDtoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -31,6 +36,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto saveUser(User newuser) {
         if(!searchByEmail(newuser.getEmail())){
+            String encodedPassword = passwordEncoder.encode(newuser.getPassword());
+            newuser.setPassword(encodedPassword);
+            newuser.setRole(Roles.USER);
             return EntityDtoUtil.convertToDto(userRepo.save(newuser));
         }else{
             throw new UserAlreadyExistsException("User with " + newuser.getEmail() + " already exists");
@@ -42,16 +50,7 @@ public class UserServiceImpl implements UserService{
         return !userRepo.existsByUsername(username);
     }
 
-    @Override
-    public ValidationDto getUserByUsername(String username) {
-        User user = null;
-        if(userRepo.findByUsername(username).isPresent()){
-            user = userRepo.findByUsername(username).get();
-        }else{
-            throw new UsernameNotFoundException("Username does not exist. New user? Please Sign up");
-        }
-        return new ValidationDto(user.getUsername(),user.getPassword());
-    }
+
 
 
 }

@@ -13,31 +13,43 @@ spring:
           uri: lb://energywise-track
           predicates:
             - Path=/PlanetWise/energy/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: goals
           uri: lb://goals
           predicates:
             - Path=/PlanetWise/goals/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: green-scores
           uri: lb://green-scores
           predicates:
             - Path=/PlanetWise/greenScore/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: rewards
           uri: lb://rewards
           predicates:
             - Path=/rewards/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: transit-check
           uri: lb://transit-check
           predicates:
             - Path=/PlanetWise/transportation/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: waste-track
           uri: lb://waste-track
           predicates:
             - Path=/PlanetWise/WasteProduction/**
+          filters:
+            - name: AuthenticationFilter
 
         - id: user-service
           uri: lb://user-service

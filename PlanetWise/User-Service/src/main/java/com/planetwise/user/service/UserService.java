@@ -15,5 +15,5 @@ public interface UserService {
 
     boolean isUsernameUnique(String username);
 
-    ValidationDto getUserByUsername(String username);
+
 }

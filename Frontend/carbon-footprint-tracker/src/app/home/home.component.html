@@ -1,18 +1,27 @@
-<div class="container-fluid d-flex align-items-center justify-content-center vh-100">
-    <div class="row w-100">
-      <div class="col-md-7 d-flex justify-content-center align-items-center">
-        <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
-      </div>
 
-      <div class="col-md-5 d-flex flex-column justify-content-center align-items-start">
-        <h2 class="mb-4" style="color: #16423C;">Building a Sustainable Future</h2>
-        <blockquote class="blockquote" style="font-size: 1.5rem; color: #16423C;">
-          "The Earth is what we all have in common."
-        </blockquote>
-        <blockquote class="blockquote" style="font-size: 1.5rem; color: #16423C;">
-          "Sustainability is not a goal to be reached but a way of thinking and being."
-        </blockquote>
+<div class="slider">
+  <div class="list">
+    <div class="item" *ngFor="let item of items; let i = index" [class.active]="i === itemActive">
+      <img [src]="item.img" alt="slider-img" />
+      <div class="content">
+        <p>{{ item.category }}</p>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description }}</p>
       </div>
     </div>
   </div>
+
+  <div class="arrows">
+    <button id="prev" (click)="prevSlide()"><</button>
+    <button id="next" (click)="nextSlide()">></button>
+  </div>
+
+  <div class="thumbnail">
+    <div class="slide" *ngFor="let item of items; let i = index" [class.active]="i === itemActive" (click)="goToSlide(i)">
+      <img [src]="item.img" alt="thumbnail" />
+      <div class="content">{{ item.title }}</div>
+    </div>
+  </div>
+</div>
+
   

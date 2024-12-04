@@ -16,7 +16,7 @@ public class WasteController {
     @Autowired
     private WasteProductionService wasteProductionService;
 
-    @PostMapping("/{username}/addWasteData")
+    @PostMapping("/addWasteData")
     public ResponseEntity<WasteProduction> saveWasteData(@PathVariable String username, @RequestBody WasteProduction wasteProduction) {
         WasteProduction savedWaste = wasteProductionService.saveWasteProduction(username,wasteProduction);
         return new ResponseEntity<>(savedWaste, HttpStatus.CREATED);

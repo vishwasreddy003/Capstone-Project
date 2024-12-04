@@ -1,95 +1,86 @@
-/* General styles for the container */
+/* General container styles */
 .container-fluid {
-  background-color: #e8f5e9; /* Light green background for eco-friendly feel */
+  background-color: #e8f5e9; /* Light eco-friendly background */
   padding: 20px;
+  min-height: 100vh; /* Ensure full viewport height */
 }
 
+.min-vh-100 {
+  min-height: 100vh; /* Keeps content within view */
+}
+
+/* Optimized image styling */
 img {
   max-height: 80%;
-  border-radius: 15px; /* Adds rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a polished look */
+  max-width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .large-image {
-  max-height: 90%; 
-  max-width: 100%;  
-  object-fit: cover; 
-  border-radius: 15px; 
+  object-fit: cover;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .row {
-      flex-direction: column; 
+    flex-direction: column;
   }
 
-  .large-opaque-image {
-      max-height: 60%; 
+  .large-image {
+    max-height: 60%;
   }
 }
 
-.container-fluid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full viewport height */
-  background-color: #f0f9f4; /* Soft light green background for an eco-friendly vibe */
-}
-
-/* Styling for the main form section */
+/* Form container styling */
 .outer {
-  background-color: #ffffff; /* White background for the form */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow to make the form stand out */
-  padding: 25px; /* Reduced padding to make the form shorter */
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
   border-radius: 10px;
+  max-width: 450px;
   width: 100%;
-  max-width: 450px; /* Max width for the form container */
   height: auto;
 }
 
-/* Main heading styling */
 h1 {
-  font-size: 28px; /* Slightly smaller heading */
+  font-size: 28px;
   text-align: center;
-  margin-bottom: 15px; /* Reduced margin */
-  color: #3c6e47; /* Dark green color for the heading */
+  margin-bottom: 15px;
+  color: #3c6e47;
 }
 
-/* Sub-heading styling */
 h3 {
-  font-size: 16px; /* Slightly smaller sub-heading */
+  font-size: 16px;
   text-align: center;
-  margin-bottom: 20px; /* Reduced margin */
-  color: #4b8c4b; /* Lighter green color for the sub-heading */
+  margin-bottom: 20px;
+  color: #4b8c4b;
 }
 
-/* Form element styling */
+/* Form inputs */
 label {
   font-size: 14px;
   margin-bottom: 5px;
-  color: #5d8a5e; /* Calm green for labels */
+  color: #5d8a5e;
 }
 
-/* Input field styling */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
+input,
 select {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px; /* Reduced margin to make the form more compact */
-  border: 1px solid #b0d0b0; /* Light green border */
+  margin-bottom: 15px;
+  border: 1px solid #b0d0b0;
   border-radius: 5px;
   font-size: 14px;
-  background-color: #f4f8f4; /* Soft, light green background for input fields */
+  background-color: #f4f8f4;
 }
 
-/* Button styling */
 button {
   width: 100%;
   padding: 12px;
-  background-color: #16423C; /* Fresh green button */
+  background-color: #16423C;
   border: none;
   border-radius: 5px;
   font-size: 16px;
@@ -99,18 +90,17 @@ button {
 }
 
 button:hover {
-  background-color: #1E5E52 ; /* Slightly darker green when hovering */
+  background-color: #1E5E52;
 }
 
-/* Link styling for "Already have an account?" */
 p {
   text-align: center;
   font-size: 14px;
-  margin-top: 15px; /* Reduced margin */
+  margin-top: 15px;
 }
 
 p a {
-  color: #4caf50; /* Green color for the link */
+  color: #4caf50;
   text-decoration: none;
 }
 
@@ -118,51 +108,27 @@ p a:hover {
   text-decoration: underline;
 }
 
-/* Age and Frequency specific styling */
-input[type="number"]#age {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #b0d0b0;
-  border-radius: 5px;
-  font-size: 14px;
-  background-color: #f4f8f4;
-}
-
-select#frequency {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #b0d0b0;
-  border-radius: 5px;
-  font-size: 14px;
-  background-color: #f4f8f4;
-}
-
-/* Responsive adjustments */
+/* Compact form view for smaller screens */
 @media (max-width: 768px) {
   .outer {
-      width: 100%;
-      padding: 20px;
+    width: 90%;
+    padding: 20px;
   }
 
   h1 {
-      font-size: 26px;
+    font-size: 24px;
   }
 
   h3 {
-      font-size: 14px;
+    font-size: 14px;
+  }
+
+  input,
+  select {
+    font-size: 12px;
   }
 
   button {
-      padding: 10px;
-  }
-
-  input[type="number"],
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  select {
-      font-size: 12px;
+    padding: 10px;
   }
 }

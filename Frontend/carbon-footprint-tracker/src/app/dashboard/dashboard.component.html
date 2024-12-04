@@ -1,0 +1,103 @@
+<div class="dashboard-container bg-light p-4">
+    <div class="row mb-4">
+      <!-- Left Card - Carbon Emissions -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Carbon Emissions</h5>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <button 
+                class="btn"
+                [class.btn-success]="selectedCategory === 'overall'"
+                [class.btn-outline-success]="selectedCategory !== 'overall'"
+                (click)="selectCategory('overall')">
+                Overall
+                <span class="badge bg-light text-dark ms-2">{{carbonData['overall']}} kg</span>
+              </button>
+              <button 
+                class="btn"
+                [class.btn-success]="selectedCategory === 'household'"
+                [class.btn-outline-success]="selectedCategory !== 'household'"
+                (click)="selectCategory('household')">
+                Household
+                <span class="badge bg-light text-dark ms-2">{{carbonData['household']}} kg</span>
+              </button>
+              <button 
+                class="btn"
+                [class.btn-success]="selectedCategory === 'transportation'"
+                [class.btn-outline-success]="selectedCategory !== 'transportation'"
+                (click)="selectCategory('transportation')">
+                Transportation
+                <span class="badge bg-light text-dark ms-2">{{carbonData['transportation']}} kg</span>
+              </button>
+              <button 
+                class="btn"
+                [class.btn-success]="selectedCategory === 'waste'"
+                [class.btn-outline-success]="selectedCategory !== 'waste'"
+                (click)="selectCategory('waste')">
+                Waste
+                <span class="badge bg-light text-dark ms-2">{{carbonData['waste']}} kg</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Right Card - AI Recommendations -->
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">AI Recommendations</h5>
+            <p class="card-text">{{getAIRecommendation()}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Bottom Card - Tasks/Goals -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-4">Carbon Reduction Goals</h5>
+        
+        <!-- Task View Buttons -->
+        <div class="btn-group mb-4">
+          <button 
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'current'"
+            [class.btn-outline-success]="selectedTaskView !== 'current'"
+            (click)="selectTaskView('current')">
+            Current Tasks
+          </button>
+          <button 
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'completed'"
+            [class.btn-outline-success]="selectedTaskView !== 'completed'"
+            (click)="selectTaskView('completed')">
+            Completed Tasks
+          </button>
+          <button 
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'available'"
+            [class.btn-outline-success]="selectedTaskView !== 'available'"
+            (click)="selectTaskView('available')">
+            Available Tasks
+          </button>
+        </div>
+  
+        <!-- Task List -->
+        <div class="row">
+          <div class="col-md-4" *ngFor="let task of getDisplayedTasks()">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted text-capitalize">{{task.category}}</h6>
+                <p class="card-text">{{task.task}}</p>
+                <span class="badge" [class.bg-success]="task.impact < 0" [class.bg-danger]="task.impact >= 0">
+                  {{task.impact}} kg CO₂/month
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
