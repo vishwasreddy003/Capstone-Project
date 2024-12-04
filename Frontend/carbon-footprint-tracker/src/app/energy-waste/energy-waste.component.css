@@ -58,4 +58,13 @@
   .text-center {
     text-align:center;
   }
+
+  .is-invalid {
+    border-color: red !important;
+  }
+  
+  .is-valid {
+    border-color: green !important;
+  }
+  
   

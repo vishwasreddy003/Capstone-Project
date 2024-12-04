@@ -9,12 +9,13 @@
           <div class="mb-3">
             <label for="month" class="form-label">Month
               <div *ngIf="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.invalid">
-                <small class="text-danger" *ngIf="wasteProdForm.get('month')?.hasError('required')">
-                  required.
-                </small>
+                <small class="text-danger" *ngIf="wasteProdForm.get('month')?.hasError('required')"></small>
               </div>
             </label>
-            <select class="form-select" id="month" formControlName="month" required>
+            <select class="form-select" id="month" formControlName="month" required
+              [class.is-invalid]="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.invalid"
+              [class.is-valid]="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.valid"
+            >
               <option value="" disabled selected>Select a month</option>
               <option *ngFor="let month of months" [value]="month">{{ month }}</option>
             </select>
@@ -24,12 +25,12 @@
           <div class="mb-3">
             <label for="waste_type" class="form-label">Waste Type
               <div *ngIf="wasteProdForm.get('waste_type')?.touched && wasteProdForm.get('waste_type')?.invalid">
-                <small class="text-danger" *ngIf="wasteProdForm.get('waste_type')?.hasError('required')">
-                 required.
-                </small>
+                <small class="text-danger" *ngIf="wasteProdForm.get('waste_type')?.hasError('required')"></small>
               </div>
             </label>
-            <select class="form-select" id="waste_type" formControlName="waste_type">
+            <select class="form-select" id="waste_type" formControlName="waste_type"
+            [class.is-invalid]="wasteProdForm.get('waste_type')?.touched && wasteProdForm.get('waste_type')?.invalid"
+              [class.is-valid]="wasteProdForm.get('waste_type')?.touched && wasteProdForm.get('waste_type')?.valid">
               <option value="" disabled selected>Select Waste Type</option>
               <option *ngFor="let waste_type of wasteTypes" [value]="waste_type">{{ waste_type }}</option>
             </select>
@@ -39,12 +40,12 @@
           <div class="mb-3">
             <label for="quantity_kgs" class="form-label">Quantity (kgs)
               <div *ngIf="wasteProdForm.get('quantity_kgs')?.touched && wasteProdForm.get('quantity_kgs')?.invalid">
-                <small class="text-danger" *ngIf="wasteProdForm.get('quantity_kgs')?.hasError('required')">
-                  required.
-                </small>
+                <small class="text-danger" *ngIf="wasteProdForm.get('quantity_kgs')?.hasError('required')"></small>
               </div>
             </label>
-            <input type="number" class="form-control" id="quantity_kgs" formControlName="quantity_kgs" required placeholder="Enter waste quantity in kgs" step="0.1" min="0" required>
+            <input type="number" class="form-control" id="quantity_kgs" formControlName="quantity_kgs" required placeholder="Enter waste quantity in kgs" step="0.1" min="0" required
+              [class.is-invalid]="wasteProdForm.get('quantity_kgs')?.touched && wasteProdForm.get('quantity_kgs')?.invalid"
+              [class.is-valid]="wasteProdForm.get('quantity_kgs')?.touched && wasteProdForm.get('quantity_kgs')?.valid">
           </div>
 
           <!-- Submit Button -->

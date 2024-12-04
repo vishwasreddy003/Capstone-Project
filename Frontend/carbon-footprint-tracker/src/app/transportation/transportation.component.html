@@ -9,16 +9,16 @@
           <div class="mb-3">
             <label for="transportationMode" class="form-label">Transportation Mode
               <div *ngIf="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.invalid">
-                <small class="text-danger" *ngIf="transportForm.get('transportationMode')?.hasError('required')">
-                   required.
-                </small>
+                <small class="text-danger" *ngIf="transportForm.get('transportationMode')?.hasError('required')"></small>
               </div>
             </label>
             <select
               class="form-select"
               id="transportationMode"
               formControlName="transportationMode"
-              required>
+              required 
+              [class.is-invalid]="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.invalid"
+              [class.is-valid]="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.valid">
               <option value="" disabled selected>
                 Select Transportation Mode
               </option>
@@ -32,9 +32,7 @@
           <div class="mb-3">
             <label for="fuelType" class="form-label">Fuel Type
               <div *ngIf="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.invalid">
-                <small class="text-danger" *ngIf="transportForm.get('fuelType')?.hasError('required')">
-                   required.
-                </small>
+                <small class="text-danger" *ngIf="transportForm.get('fuelType')?.hasError('required')"></small>
               </div>
             </label>
             <select
@@ -42,6 +40,8 @@
               id="fuelType"
               formControlName="fuelType"
               required
+              [class.is-invalid]="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.invalid"
+              [class.is-valid]="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.valid"
             >
               <option value="" disabled selected>Select Fuel Type</option>
               <option *ngFor="let fuel of fuelTypes" [value]="fuel">
@@ -55,9 +55,7 @@
             <div class="col mb-3">
               <label for="distanceKm" class="form-label">Distance (km)
                 <div *ngIf="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.invalid">
-                  <small class="text-danger" *ngIf="transportForm.get('distanceKm')?.hasError('required')">
-                    required.
-                  </small>
+                  <small class="text-danger" *ngIf="transportForm.get('distanceKm')?.hasError('required')"></small>
                 </div>
               </label>
               <input
@@ -70,15 +68,15 @@
                 placeholder="Enter distance in kilometers"
                 step="0.1"
                 min="0"
+                [class.is-invalid]="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.invalid"
+                [class.is-valid]="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.valid"
               />
             </div>
 
             <div class="col mb-3">
                 <label for="mileage" class="form-label">Mileage (km/l)
                   <div *ngIf="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.invalid">
-                    <small class="text-danger" *ngIf="transportForm.get('mileage')?.hasError('required')">
-                       required.
-                    </small>
+                    <small class="text-danger" *ngIf="transportForm.get('mileage')?.hasError('required')"></small>
                   </div>
                 </label>
                 <input
@@ -90,6 +88,8 @@
                   placeholder="Enter mileage in km/l"
                   step="0.1"
                   min="0"
+                  [class.is-invalid]="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.invalid"
+                  [class.is-valid]="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.valid"
                 />
               </div>
             </div>
@@ -100,15 +100,15 @@
             <div class="col mb-3">
               <label for="frequency" class="form-label">Frequency
                 <div *ngIf="transportForm.get('frequency')?.touched && transportForm.get('frequency')?.invalid">
-                  <small class="text-danger" *ngIf="transportForm.get('frequency')?.hasError('required')">
-                    required.
-                  </small>
+                  <small class="text-danger" *ngIf="transportForm.get('frequency')?.hasError('required')"></small>
                 </div>
               </label>
               <select
                 class="form-select"
                 id="frequency"
                 formControlName="frequency"
+                [class.is-invalid]="transportForm.get('frequency')?.touched && transportForm.get('frequency')?.invalid"
+                [class.is-valid]="transportForm.get('frequency')?.touched && transportForm.get('frequency')?.valid"
                 required
               >
                 <option value="" disabled selected>Select Frequency</option>
@@ -123,15 +123,15 @@
           <div class="col mb-3">
             <label for="month" class="form-label">Month
               <div *ngIf="transportForm.get('month')?.touched && transportForm.get('month')?.invalid">
-                <small class="text-danger" *ngIf="transportForm.get('month')?.hasError('required')">
-                  required.
-                </small>
+                <small class="text-danger" *ngIf="transportForm.get('month')?.hasError('required')"></small>
               </div>
             </label>
             <select
               class="form-select"
               id="month"
               formControlName="month"
+              [class.is-invalid]="transportForm.get('month')?.touched && transportForm.get('month')?.invalid"
+              [class.is-valid]="transportForm.get('month')?.touched && transportForm.get('month')?.valid"
               required
             >
               <option value="" disabled selected>Select a Month</option>
