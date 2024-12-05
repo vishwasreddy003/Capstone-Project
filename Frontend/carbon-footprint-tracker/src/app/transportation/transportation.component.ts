@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TrackerApiService } from '../tracker-api.service';
 
 
@@ -13,22 +14,22 @@ import { TrackerApiService } from '../tracker-api.service';
 })
 export class TransportationComponent implements OnInit{
   
-  transportationModes: string[] = ['Car', 'Bus', 'Train', 'Bicycle', 'Walking'];
-  fuelTypes: string[] = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
-  frequencies: string[] = ['Daily', 'Weekly', 'Monthly', 'Annual'];  // Frequency as an array
-  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  transportationModes: string[] = ['BIKE','CAR','BUS','TRAIN','FLIGHT','AUTO'];
+  fuelTypes: string[] = ['DIESEL','EV','PETROL','JET_FUEL'];
+  frequencies: string[] = ['DAILY','WEEKLY','MONTHLY'];  // Frequency as an array
+  months: string[] = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+  'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
 
   transportForm : FormGroup = new FormGroup({})
 
-  constructor(private formBuilder:FormBuilder,private trackerApiService:TrackerApiService){}
+  constructor(private formBuilder:FormBuilder,private trackerApiService:TrackerApiService,private router:Router){}
 
   ngOnInit(): void {
     this.transportForm = this.formBuilder.group({
-      transportationMode:['',Validators.required],
-      fuelType: ['',Validators.required],
-      distanceKm:['',Validators.required],
-      mileage: ['',Validators.required],
+      transportation_mode:['',Validators.required],
+      fuel_type: ['',Validators.required],
+      distance_km:['',Validators.required],
       frequency:['',Validators.required],
       month:['',Validators.required]
     });
@@ -39,7 +40,8 @@ export class TransportationComponent implements OnInit{
       const transportData = this.transportForm.value;
       this.trackerApiService.submitTransportData(transportData).subscribe(
         response=>{
-          console.log("Form submitted successfully",response)
+          alert("Form submitted successfully")
+          this.router.navigate(['/energy']);
         },
         error=>{
           console.log("Error submitting Form",error)

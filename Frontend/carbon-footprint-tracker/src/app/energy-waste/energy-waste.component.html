@@ -23,28 +23,28 @@
 
           <!-- Electricity Units Input -->
           <div class="mb-3">
-            <label for="electricityUnits" class="form-label">Electricity Units
-              <div *ngIf="energyWasteForm.get('electricityUnits')?.touched && energyWasteForm.get('electricityUnits')?.invalid">
-                <small class="text-danger" *ngIf="energyWasteForm.get('electricityUnits')?.hasError('required')">
+            <label for="electricity_units" class="form-label">Electricity Units
+              <div *ngIf="energyWasteForm.get('electricity_units')?.touched && energyWasteForm.get('electricity_units')?.invalid">
+                <small class="text-danger" *ngIf="energyWasteForm.get('electricity_units')?.hasError('required')">
                 </small>
               </div>
             </label>
-            <input type="number" class="form-control" id="electricityUnits" formControlName="electricityUnits" placeholder="Enter electricity units" step="0.1" min="0" required
-              [class.is-invalid]="energyWasteForm.get('electricityUnits')?.touched && energyWasteForm.get('electricityUnits')?.invalid"
-              [class.is-valid]="energyWasteForm.get('electricityUnits')?.touched && energyWasteForm.get('electricityUnits')?.valid">
+            <input type="number" class="form-control" id="electricity_units" formControlName="electricity_units" placeholder="Enter electricity units" step="0.1" min="0" required
+              [class.is-invalid]="energyWasteForm.get('electricity_units')?.touched && energyWasteForm.get('electricity_units')?.invalid"
+              [class.is-valid]="energyWasteForm.get('electricity_units')?.touched && energyWasteForm.get('electricity_units')?.valid">
           </div>
 
           <!-- Number of Gas Cylinders Input -->
           <div class="mb-3">
-            <label for="noOfGasCylinders" class="form-label">Number of Gas Cylinders
-              <div *ngIf="energyWasteForm.get('noOfGasCylinders')?.touched && energyWasteForm.get('noOfGasCylinders')?.invalid">
-                <small class="text-danger" *ngIf="energyWasteForm.get('noOfGasCylinders')?.hasError('required')">
+            <label for="no_of_gas_cylinders" class="form-label">Number of Gas Cylinders
+              <div *ngIf="energyWasteForm.get('no_of_gas_cylinders')?.touched && energyWasteForm.get('no_of_gas_cylinders')?.invalid">
+                <small class="text-danger" *ngIf="energyWasteForm.get('no_of_gas_cylinders')?.hasError('required')">
                 </small>
               </div>
             </label>
-            <input type="number" class="form-control" id="noOfGasCylinders" formControlName="noOfGasCylinders" placeholder="Enter number of gas cylinders" step="0.1" min="0" required
-            [class.is-invalid]="energyWasteForm.get('noOfGasCylinders')?.touched && energyWasteForm.get('noOfGasCylinders')?.invalid"
-              [class.is-valid]="energyWasteForm.get('noOfGasCylinders')?.touched && energyWasteForm.get('noOfGasCylinders')?.valid">
+            <input type="number" class="form-control" id="no_of_gas_cylinders" formControlName="no_of_gas_cylinders" placeholder="Enter number of gas cylinders" step="0.1" min="0" required
+            [class.is-invalid]="energyWasteForm.get('no_of_gas_cylinders')?.touched && energyWasteForm.get('no_of_gas_cylinders')?.invalid"
+              [class.is-valid]="energyWasteForm.get('no_of_gas_cylinders')?.touched && energyWasteForm.get('no_of_gas_cylinders')?.valid">
           </div>
 
           <!-- Submit Button -->

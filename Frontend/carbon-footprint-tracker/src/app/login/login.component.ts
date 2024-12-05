@@ -33,10 +33,10 @@ export class LoginComponent implements OnInit {
       this.loginService.validateUser(credentials).subscribe({
         next: (response) => {
           console.log('Response from backend:', response); // Debugging log
-          const { jwtToken, username } = response;
+          const { jwt, username } = response;
 
-          if (jwtToken && username) {
-            sessionStorage.setItem('tokenId', jwtToken);
+          if (jwt && username) {
+            sessionStorage.setItem('tokenId', jwt);
             sessionStorage.setItem('username', username);
             console.log('Token and username stored successfully');
             this.router.navigate(['/dashboard']);

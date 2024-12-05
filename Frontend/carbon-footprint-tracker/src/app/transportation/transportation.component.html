@@ -4,25 +4,25 @@
       <!-- Adjust column sizes for responsiveness -->
       <div class="card p-4 shadow-sm">
         <h2 class="text-center">Transportation Data Form</h2>
-        <form [formGroup]="transportForm">
+        <form [formGroup]="transportForm" (ngSubmit)="onSubmit()">
           <!-- Transportation Mode Input -->
           <div class="mb-3">
-            <label for="transportationMode" class="form-label">Transportation Mode
-              <div *ngIf="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.invalid">
-                <small class="text-danger" *ngIf="transportForm.get('transportationMode')?.hasError('required')"></small>
+            <label for="transportation_mode" class="form-label">Transportation Mode
+              <div *ngIf="transportForm.get('transportation_mode')?.touched && transportForm.get('transportation_mode')?.invalid">
+                <small class="text-danger" *ngIf="transportForm.get('transportation_mode')?.hasError('required')"></small>
               </div>
             </label>
             <select
               class="form-select"
-              id="transportationMode"
-              formControlName="transportationMode"
+              id="transportation_mode"
+              formControlName="transportation_mode"
               required 
-              [class.is-invalid]="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.invalid"
-              [class.is-valid]="transportForm.get('transportationMode')?.touched && transportForm.get('transportationMode')?.valid">
+              [class.is-invalid]="transportForm.get('transportation_mode')?.touched && transportForm.get('transportation_mode')?.invalid"
+              [class.is-valid]="transportForm.get('transportation_mode')?.touched && transportForm.get('transportation_mode')?.valid">
               <option value="" disabled selected>
                 Select Transportation Mode
               </option>
-              <option *ngFor="let mode of transportationModes" [value]="mode">
+              <option *ngFor="let mode of  transportationModes" [value]="mode">
                 {{ mode }}
               </option>
             </select>
@@ -30,18 +30,18 @@
 
           <!-- Fuel Type Input -->
           <div class="mb-3">
-            <label for="fuelType" class="form-label">Fuel Type
-              <div *ngIf="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.invalid">
-                <small class="text-danger" *ngIf="transportForm.get('fuelType')?.hasError('required')"></small>
+            <label for="fuel_type" class="form-label">Fuel Type
+              <div *ngIf="transportForm.get('fuel_type')?.touched && transportForm.get('fuel_type')?.invalid">
+                <small class="text-danger" *ngIf="transportForm.get('fuel_type')?.hasError('required')"></small>
               </div>
             </label>
             <select
               class="form-select"
-              id="fuelType"
-              formControlName="fuelType"
+              id="fuel_type"
+              formControlName="fuel_type"
               required
-              [class.is-invalid]="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.invalid"
-              [class.is-valid]="transportForm.get('fuelType')?.touched && transportForm.get('fuelType')?.valid"
+              [class.is-invalid]="transportForm.get('fuel_type')?.touched && transportForm.get('fuel_type')?.invalid"
+              [class.is-valid]="transportForm.get('fuel_type')?.touched && transportForm.get('fuel_type')?.valid"
             >
               <option value="" disabled selected>Select Fuel Type</option>
               <option *ngFor="let fuel of fuelTypes" [value]="fuel">
@@ -53,27 +53,27 @@
           <!-- Distance (km) Input -->
           <div class="row">
             <div class="col mb-3">
-              <label for="distanceKm" class="form-label">Distance (km)
-                <div *ngIf="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.invalid">
-                  <small class="text-danger" *ngIf="transportForm.get('distanceKm')?.hasError('required')"></small>
+              <label for="distance_km" class="form-label">Distance (km)
+                <div *ngIf="transportForm.get('distance_km')?.touched && transportForm.get('distance_km')?.invalid">
+                  <small class="text-danger" *ngIf="transportForm.get('distance_km')?.hasError('required')"></small>
                 </div>
               </label>
               <input
                 type="number"
                 class="form-control"
-                id="distanceKm"
+                id="distance_km"
                 pattern="^[0-9]+(\.[0-9]+)?$"
-                formControlName="distanceKm"
+                formControlName="distance_km"
                 required
                 placeholder="Enter distance in kilometers"
                 step="0.1"
                 min="0"
-                [class.is-invalid]="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.invalid"
-                [class.is-valid]="transportForm.get('distanceKm')?.touched && transportForm.get('distanceKm')?.valid"
+                [class.is-invalid]="transportForm.get('distance_km')?.touched && transportForm.get('distance_km')?.invalid"
+                [class.is-valid]="transportForm.get('distance_km')?.touched && transportForm.get('distance_km')?.valid"
               />
             </div>
 
-            <div class="col mb-3">
+             <!-- <div class="col mb-3">
                 <label for="mileage" class="form-label">Mileage (km/l)
                   <div *ngIf="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.invalid">
                     <small class="text-danger" *ngIf="transportForm.get('mileage')?.hasError('required')"></small>
@@ -91,8 +91,8 @@
                   [class.is-invalid]="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.invalid"
                   [class.is-valid]="transportForm.get('mileage')?.touched && transportForm.get('mileage')?.valid"
                 />
-              </div>
-            </div>
+              </div> -->
+            </div> 
 
             <!-- Frequency Input -->
  

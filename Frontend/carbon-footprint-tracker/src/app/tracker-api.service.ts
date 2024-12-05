@@ -11,20 +11,23 @@ import { WasteProdData } from './model/WasteProdData';
 })
 export class TrackerApiService {
 
-  baseUrl = 'http://localhost:8080/planetwise'
+  baseUrl = 'http://localhost:8080/PlanetWise'
 
   constructor(private http:HttpClient) { }
 
-  submitEnergyData(energyData:EnergyData) : Observable<any>{
-    return this.http.post(this.baseUrl+'/energy',energyData);
+  submitEnergyData(energyData:EnergyData){
+    let username = sessionStorage.getItem('username')
+    return this.http.post(this.baseUrl+`/energy/${username}/addData`,energyData);
   }
 
-  submitTransportData(transportData:TransportData) : Observable<any>{
-    return this.http.post(this.baseUrl+'/transportation',transportData);
+  submitTransportData(transportData:TransportData){
+    let username = sessionStorage.getItem('username')
+    return this.http.post(this.baseUrl+`/transportation/${username}/addData`,transportData);
   }
 
-  submitWasteProdData(wasteProdData:WasteProdData) :Observable<any>{
-    return this.http.post(this.baseUrl+'/WasteProduction',wasteProdData);
+  submitWasteProdData(wasteProdData:WasteProdData){
+    let username = sessionStorage.getItem('username')
+    return this.http.post(this.baseUrl+`/WasteProduction/${username}/addData`,wasteProdData);
   }
 
 
