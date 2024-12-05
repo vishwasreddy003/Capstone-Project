@@ -34,7 +34,8 @@ export class SignupService {
       .subscribe({
         next: response => {
           console.log(response);
-          // this.router.navigate(['/dashboard']);
+          alert("Signup Successful. Please Login");
+          this.router.navigate(['/login']);
         },
         error: error => {
           console.log(error);

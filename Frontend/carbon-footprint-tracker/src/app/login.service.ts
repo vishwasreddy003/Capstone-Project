@@ -18,8 +18,8 @@ export class LoginService {
   ) {}
 
   // Return the observable so the component can subscribe
-  validateUser(credentials: loginForm): Observable<string> {
-    return this.userClient.post<string>(`${this.baseUrl}/login`, credentials)
+  validateUser(credentials: loginForm): Observable<{ jwtToken: string; username: string }> {
+    return this.userClient.post<{ jwtToken: string; username: string }>(`${this.baseUrl}/login`, credentials)
       .pipe(
         catchError(err => {
           this.errorHandler.errorResponse = {
@@ -32,4 +32,5 @@ export class LoginService {
         })
       );
   }
+  
 }
