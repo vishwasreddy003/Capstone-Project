@@ -10,21 +10,26 @@ import java.time.Month;
 import java.util.List;
 
 @Service
-public class GreenScoreServiceImpl implements GreenScoreService{
+public class GreenScoreServiceImpl implements GreenScoreService {
 
     @Autowired
     private GreenScoresRepository greenScoresRepo;
 
-
     @Override
     public GreenScores saveGreenScores(GreenScores greenScores) {
-
         return greenScoresRepo.save(greenScores);
     }
 
     @Override
     public List<GreenScores> getTrendsForGreenScores(String username) {
-        Month startDate = LocalDate.now().minusMonths(10).getMonth();
-        return greenScoresRepo.findGreenScoresFromLastTenMonths(username,startDate);
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(10);
+
+
+        Month startMonth = startDate.getMonth();
+        int startYear = startDate.getYear();
+
+
+        return greenScoresRepo.findGreenScoresFromLastTenMonths(username, startYear, startMonth);
     }
 }

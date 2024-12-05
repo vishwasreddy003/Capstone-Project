@@ -10,9 +10,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WasteProductionRepository extends JpaRepository<WasteProduction, UUID> {
-  @Query("SELECT w FROM WasteProduction w WHERE w.username = :username AND w.month >= :startMonth")
-  List<WasteProduction> findWasteProductionFromLastTenMonths(String username,Month startMonth);
 
-  @Query("Select count(*) > 0 from WasteProduction w where w.username = :username and (w.waste_type = :wasteType and w.month = :month)")
-  Boolean existsByUsernameWastetypeAndMonth(String username, WasteType wasteType,Month month);
+  @Query("SELECT w FROM WasteProduction w WHERE w.username = :username " +
+          "AND (w.year > :startYear OR (w.year = :startYear AND w.month >= :startMonth))")
+  List<WasteProduction> findWasteProductionFromLastTenMonths(String username, int startYear, Month startMonth);
+
+
+  @Query("SELECT count(*) > 0 FROM WasteProduction w WHERE w.username = :username " +
+          "AND w.waste_type = :wasteType AND w.month = :month AND w.year = :year")
+  Boolean existsByUsernameWastetypeAndMonth(String username, WasteType wasteType, Month month, int year);
 }

@@ -8,57 +8,64 @@ import com.planetwise.transit.repository.TransportationLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
-public class TransportationLogServiceImpl implements TransportationLogService{
+public class TransportationLogServiceImpl implements TransportationLogService {
 
     @Autowired
     private TransportationLogRepository transportRepo;
 
     @Override
-    public TransportationLog addTransportationUsage(String username,TransportationLog transportationLog) {
-        // Need to change this function. this function should also get username variable
+    public TransportationLog addTransportationUsage(String username, TransportationLog transportationLog) {
         transportationLog.setUsername(username);
         return transportRepo.save(transportationLog);
     }
 
     @Override
     public List<TransportationLog> getUserTransportationLog(String username) {
-        if(transportRepo.findByUsername(username) != null || !transportRepo.findByUsername(username).isEmpty()){
+        if (transportRepo.findByUsername(username) != null || !transportRepo.findByUsername(username).isEmpty()) {
             return transportRepo.findByUsername(username);
-        }else {
+        } else {
             throw new DataNotFoundException("No Data to show Trends");
         }
     }
 
     @Override
     public List<TransportationLog> getUserTransportationLogByTransportMode(String username, TransportationMode transportationMode) {
-        if(transportRepo.findByUsernameAndTransportMode(username,transportationMode) != null || !transportRepo.findByUsernameAndTransportMode(username,transportationMode).isEmpty()){
-            return transportRepo.findByUsernameAndTransportMode(username,transportationMode);
-        }else {
+        if (transportRepo.findByUsernameAndTransportMode(username, transportationMode) != null || !transportRepo.findByUsernameAndTransportMode(username, transportationMode).isEmpty()) {
+            return transportRepo.findByUsernameAndTransportMode(username, transportationMode);
+        } else {
             throw new DataNotFoundException("No Data to show Trends");
         }
     }
 
     @Override
     public List<TransportationLog> getUserTransportationLogByFuelType(String username, FuelType fuelType) {
-
-        if(transportRepo.findByUsernameAndFuelType(username,fuelType) != null || !transportRepo.findByUsernameAndFuelType(username,fuelType).isEmpty()){
-            return transportRepo.findByUsernameAndFuelType(username,fuelType);
-        }else {
+        if (transportRepo.findByUsernameAndFuelType(username, fuelType) != null || !transportRepo.findByUsernameAndFuelType(username, fuelType).isEmpty()) {
+            return transportRepo.findByUsernameAndFuelType(username, fuelType);
+        } else {
             throw new DataNotFoundException("No Data to show Trends");
         }
     }
+
+    @Override
     public Map<Month, Double> getTrendsForTransportation(String username) {
+        // Calculate the start date (10 months ago) for year and month
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(10);
 
-        List<Object[]> results = transportRepo.findMonthlyCarbonEmissionsByUsername(username);
+
+        Month startMonth = startDate.getMonth();
+        int startYear = startDate.getYear();
+
+        List<Object[]> results = transportRepo.findMonthlyCarbonEmissionsByUsernameAndDateRange(username, startYear, startMonth);
+
         Map<Month, Double> monthlyEmissions = new HashMap<>();
-
         for (Object[] result : results) {
             Month month = (Month) result[0];
             Double emissions = (Double) result[1];
@@ -67,6 +74,4 @@ public class TransportationLogServiceImpl implements TransportationLogService{
 
         return monthlyEmissions;
     }
-
-
 }

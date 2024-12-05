@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EnergyConsumptionRepository extends JpaRepository<EnergyConsumption, UUID> {
-    @Query("SELECT COUNT(e) > 0 FROM EnergyConsumption e WHERE e.username = :username AND e.month = :month")
-    boolean existsByUsernameAndMonth(String username, Month month);
 
-    @Query("SELECT e FROM EnergyConsumption e WHERE e.username =:username AND e.month >= :startMonth")
-    List<EnergyConsumption> findEnergyConsumptionOfLast10Months(String username,Month startMonth);
+    @Query("SELECT e FROM EnergyConsumption e WHERE e.username = :username " +
+            "AND (e.year > :startYear OR (e.year = :startYear AND e.month >= :startMonth))")
+    List<EnergyConsumption> findEnergyConsumptionOfLast10Months(String username, int startYear, Month startMonth);
 
+    @Query("SELECT count(*) > 0 FROM EnergyConsumption e WHERE e.username = :username AND e.month = :month")
+    Boolean existsByUsernameAndMonth(String username, Month month);
 }

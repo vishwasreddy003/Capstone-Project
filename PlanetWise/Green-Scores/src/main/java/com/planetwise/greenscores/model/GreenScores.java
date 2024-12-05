@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.UUID;
 
 @Data
@@ -22,7 +23,8 @@ public class GreenScores {
     private UUID score_id;
     private String username;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Month score_month;
+    private Month month;
+    private Year year;
     private Double score_value;
     private String feedback;
 

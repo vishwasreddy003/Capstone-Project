@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.UUID;
 
 @Data
@@ -20,6 +21,7 @@ public class WasteProduction {
     private String username;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Month month;
+    private Year year;
     @Enumerated(EnumType.STRING)
     private WasteType waste_type;
     private Double quantity_kgs;

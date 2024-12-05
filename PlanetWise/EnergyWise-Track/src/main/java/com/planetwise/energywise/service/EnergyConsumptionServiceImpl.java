@@ -10,29 +10,34 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-
 @Service
-public class EnergyConsumptionServiceImpl implements EnergyConsumptionService{
+public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
     @Autowired
     private EnergyConsumptionRepository energyRepo;
 
-
     @Override
-    public EnergyConsumption saveEnergyConsumption(String username,EnergyConsumption energyConsumption) {
-
-
-        if(!energyRepo.existsByUsernameAndMonth(username,energyConsumption.getMonth())){
+    public EnergyConsumption saveEnergyConsumption(String username, EnergyConsumption energyConsumption) {
+        // Check if data already exists for the given month and username
+        if (!energyRepo.existsByUsernameAndMonth(username, energyConsumption.getMonth())) {
             energyConsumption.setUsername(username);
             return energyRepo.save(energyConsumption);
-        }else {
+        } else {
             throw new DataAlreadyExistsException("This Month Data already Exists");
         }
     }
 
     @Override
     public List<EnergyConsumption> getUserTrendsForEnergyConsumption(String username) {
-        Month startMonth = LocalDate.now().minusMonths(10).getMonth();
-        return energyRepo.findEnergyConsumptionOfLast10Months(username,startMonth);
+
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(10);
+
+
+        Month startMonth = startDate.getMonth();
+        int startYear = startDate.getYear();
+
+
+        return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth);
     }
 }

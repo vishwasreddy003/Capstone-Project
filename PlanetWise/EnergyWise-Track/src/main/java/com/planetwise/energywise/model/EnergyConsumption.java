@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.Month;
+import java.time.Year;
 import java.util.UUID;
 
 @Data
@@ -24,6 +25,7 @@ public class EnergyConsumption {
     private String username;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Month month;
+    private Year year;
     private Double electricity_units;
     private Double no_of_gas_cylinders;
     private Double carbon_emissions;

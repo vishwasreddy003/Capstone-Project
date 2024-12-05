@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.UUID;
 
 @Data
@@ -25,5 +26,6 @@ public class TransportationLog {
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
     private Month month;
+    private Year year;
     private Double carbon_emissions;
 }

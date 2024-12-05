@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -20,7 +22,7 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     @Override
     public WasteProduction saveWasteProduction(String username,WasteProduction wasteProduction) {
 
-        if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth())){
+        if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth(),LocalDate.now().getYear())){
             return wasteProductionRepo.save(wasteProduction);
         }
         else{
@@ -30,7 +32,16 @@ public class WasteProductionServiceImpl implements WasteProductionService{
 
     @Override
     public List<WasteProduction> getTrendsForWasteProduction(String username) {
-        Month startDate = LocalDate.now().minusMonths(10).getMonth();
-        return wasteProductionRepo.findWasteProductionFromLastTenMonths(username,startDate);
+        // Calculate the date 10 months ago
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(10);
+
+        // Extract the start month and year
+        Month startMonth = startDate.getMonth();
+        int startYear = startDate.getYear();  // This gives the year for the start date
+
+        // Call the repository method with both startYear and startMonth
+        return wasteProductionRepo.findWasteProductionFromLastTenMonths(username, startYear, startMonth);
     }
+
 }
