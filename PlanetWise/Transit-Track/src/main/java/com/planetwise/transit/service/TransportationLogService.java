@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface TransportationLogService {
-    public TransportationLog addTransportationUsage(TransportationLog transportationLog);
+    public TransportationLog addTransportationUsage(String username,TransportationLog transportationLog);
 
     public List<TransportationLog> getUserTransportationLog(String username);
 

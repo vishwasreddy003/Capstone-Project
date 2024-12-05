@@ -20,9 +20,9 @@ public class TransportationLogController {
     @Autowired
     private TransportationLogService transportationLogService;
 
-    @PostMapping
-    public ResponseEntity<TransportationLog> saveTransportationLog(@RequestBody TransportationLog transportationLog) {
-        TransportationLog savedLog = transportationLogService.addTransportationUsage(transportationLog);
+    @PostMapping("/{username}/addData")
+    public ResponseEntity<TransportationLog> saveTransportationLog(@PathVariable String username,@RequestBody TransportationLog transportationLog) {
+        TransportationLog savedLog = transportationLogService.addTransportationUsage(username,transportationLog);
         return new ResponseEntity<>(savedLog, HttpStatus.CREATED);
     }
 
@@ -44,7 +44,7 @@ public class TransportationLogController {
         return new ResponseEntity<>(logsByType, HttpStatus.OK);
     }
 
-    @GetMapping("/emissions/{username}")
+    @GetMapping("/{username}/emissions")
     public ResponseEntity<Map<Month, Double>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
         Map<Month, Double> emissions = transportationLogService.getTrendsForTransportation(username);
         return ResponseEntity.ok(emissions);

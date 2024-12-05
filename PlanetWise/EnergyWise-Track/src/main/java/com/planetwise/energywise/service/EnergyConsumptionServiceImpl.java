@@ -19,10 +19,11 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService{
 
 
     @Override
-    public EnergyConsumption saveEnergyConsumption(EnergyConsumption energyConsumption) {
-        String username = energyConsumption.getUsername();
+    public EnergyConsumption saveEnergyConsumption(String username,EnergyConsumption energyConsumption) {
+
 
         if(!energyRepo.existsByUsernameAndMonth(username,energyConsumption.getMonth())){
+            energyConsumption.setUsername(username);
             return energyRepo.save(energyConsumption);
         }else {
             throw new DataAlreadyExistsException("This Month Data already Exists");

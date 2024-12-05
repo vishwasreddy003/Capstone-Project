@@ -16,13 +16,13 @@ public class WasteController {
     @Autowired
     private WasteProductionService wasteProductionService;
 
-    @PostMapping("/addWasteData")
+    @PostMapping("/{username}/addWasteData")
     public ResponseEntity<WasteProduction> saveWasteData(@PathVariable String username, @RequestBody WasteProduction wasteProduction) {
         WasteProduction savedWaste = wasteProductionService.saveWasteProduction(username,wasteProduction);
         return new ResponseEntity<>(savedWaste, HttpStatus.CREATED);
     }
 
-    @GetMapping("/analytics/{username}")
+    @GetMapping("/{username}/analytics")
     public ResponseEntity<List<WasteProduction>> getAnalyticsForWasteProduction(@PathVariable String username) {
         List<WasteProduction> wasteTrends = wasteProductionService.getTrendsForWasteProduction(username);
         return new ResponseEntity<>(wasteTrends, HttpStatus.OK);

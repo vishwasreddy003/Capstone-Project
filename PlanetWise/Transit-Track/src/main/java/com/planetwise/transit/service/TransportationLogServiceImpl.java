@@ -21,8 +21,9 @@ public class TransportationLogServiceImpl implements TransportationLogService{
     private TransportationLogRepository transportRepo;
 
     @Override
-    public TransportationLog addTransportationUsage(TransportationLog transportationLog) {
+    public TransportationLog addTransportationUsage(String username,TransportationLog transportationLog) {
         // Need to change this function. this function should also get username variable
+        transportationLog.setUsername(username);
         return transportRepo.save(transportationLog);
     }
 

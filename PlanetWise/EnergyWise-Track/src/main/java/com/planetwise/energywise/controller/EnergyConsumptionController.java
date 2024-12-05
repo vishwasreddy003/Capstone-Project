@@ -16,13 +16,13 @@ public class EnergyConsumptionController {
     @Autowired
     private EnergyConsumptionService energyService;
 
-    @PostMapping("/addData")
-    public ResponseEntity<EnergyConsumption> addEnergyConsumption(@RequestBody EnergyConsumption energyConsumption) {
-        EnergyConsumption savedData = energyService.saveEnergyConsumption(energyConsumption);
+    @PostMapping("/{username}/addData")
+    public ResponseEntity<EnergyConsumption> addEnergyConsumption(@PathVariable String username,@RequestBody EnergyConsumption energyConsumption) {
+        EnergyConsumption savedData = energyService.saveEnergyConsumption(username,energyConsumption);
         return new ResponseEntity<>(savedData, HttpStatus.CREATED);
     }
 
-    @GetMapping("/analytics/{username}")
+    @GetMapping("/{username}/analytics")
     public ResponseEntity<List<EnergyConsumption>> getAnalytics(@PathVariable String username) {
         List<EnergyConsumption> analytics = energyService.getUserTrendsForEnergyConsumption(username);
         return new ResponseEntity<>(analytics, HttpStatus.OK);

@@ -43,7 +43,7 @@ public class AuthenticationService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userCredentials.username(), userCredentials.password()));
             String username = authentication.getName();
-            return new JwtToken(jwtUtil.generateToken(username));
+            return new JwtToken(jwtUtil.generateToken(username),userCredentials.username());
 
 
         } catch (AuthenticationException e) {

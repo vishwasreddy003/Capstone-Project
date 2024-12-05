@@ -16,13 +16,13 @@ public class GreenScoreController {
     @Autowired
     private GreenScoreService greenScoreService;
 
-    @PostMapping("/addScore")
-    public ResponseEntity<GreenScores> saveOrUpdateGreenScore(@RequestBody GreenScores greenScores) {
+    @PostMapping("/{username}")
+    public ResponseEntity<GreenScores> saveOrUpdateGreenScore(@PathVariable String username,@RequestBody GreenScores greenScores) {
         GreenScores savedScore = greenScoreService.saveGreenScores(greenScores);
         return new ResponseEntity<>(savedScore, HttpStatus.CREATED);
     }
 
-    @GetMapping("/analytics/{username}")
+    @GetMapping("/{username}/analytics")
     public ResponseEntity<List<GreenScores>> getAnalyticsForGreenScores(@PathVariable String username) {
         List<GreenScores> scoreTrends = greenScoreService.getTrendsForGreenScores(username);
         return new ResponseEntity<>(scoreTrends, HttpStatus.OK);

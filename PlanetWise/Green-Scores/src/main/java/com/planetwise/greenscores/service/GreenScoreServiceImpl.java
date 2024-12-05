@@ -18,6 +18,7 @@ public class GreenScoreServiceImpl implements GreenScoreService{
 
     @Override
     public GreenScores saveGreenScores(GreenScores greenScores) {
+
         return greenScoresRepo.save(greenScores);
     }
 
