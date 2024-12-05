@@ -32,6 +32,34 @@ export class DashboardComponent implements OnInit {
     waste: 500
   };
 
+  calculateScore(): number {
+    // Calculate score based on carbon emissions
+    // Lower emissions = higher score
+    const maxScore = 850; // Similar to credit score range
+    const baseScore = 300;
+    const totalEmissions = this.carbonData['overall'];
+    const maxEmissions = 5000; // Example threshold
+
+    // Calculate score inversely proportional to emissions
+    const score = Math.round(
+      baseScore + (maxScore - baseScore) * (1 - (totalEmissions / maxEmissions))
+    );
+
+    // Ensure score stays within bounds
+    return Math.max(baseScore, Math.min(score, maxScore));
+  }
+
+  getScoreColor(): string {
+    const score = this.calculateScore();
+    if (score >= 700) {
+      return 'linear-gradient(135deg, #28a745, #20c997)';
+    } else if (score >= 500) {
+      return 'linear-gradient(135deg, #ffc107, #fd7e14)';
+    } else {
+      return 'linear-gradient(135deg, #dc3545, #c82333)';
+    }
+  }
+
   tasks: { [key: string]: Task[] } = {
     current: [
       { id: 1, category: 'daily', task: 'Use reusable bags for shopping', impact: -2 },

@@ -10,36 +10,64 @@
   border-radius: 10px;
 }
 
-.btn {
-  border-radius: 20px;
-  padding: 8px 16px;
+/* Score Circle Styles */
+.score-container {
+  padding: 20px 0;
+}
+
+.score-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
+.score-circle .score-inner {
+  width: 180px;
+  height: 180px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-circle .score-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.score-circle .score-label {
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.category-buttons .btn {
+  padding: 12px 20px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.category-buttons .btn:hover {
+  transform: translateX(5px);
+}
+
+.category-buttons .badge {
+  font-size: 0.9rem;
+  padding: 8px 12px;
+}
+
+.btn-group {
+  width: 100%;
 }
 
 .btn-group .btn {
-  border-radius: 0;
-}
-
-.btn-group .btn:first-child {
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-
-.btn-group .btn:last-child {
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.badge {
-  font-size: 0.8rem;
-  padding: 5px 10px;
-  border-radius: 12px;
-}
-
-.gap-2 {
-  gap: 0.5rem;
+  flex: 1;
 }

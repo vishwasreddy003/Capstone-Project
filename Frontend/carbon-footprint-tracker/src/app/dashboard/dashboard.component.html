@@ -4,39 +4,54 @@
       <div class="col-md-6">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title mb-4">Carbon Emissions</h5>
-            <div class="d-flex flex-wrap gap-2 mb-4">
+            <h5 class="card-title mb-4">Carbon Footprint Score</h5>
+            
+            <!-- Score Circle -->
+            <div class="score-container text-center mb-4">
+              <div class="score-circle" [style.background]="getScoreColor()">
+                <div class="score-inner">
+                  <h2 class="score-value mb-0">{{ calculateScore() }}</h2>
+                  <small class="score-label">Your Score</small>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Category Buttons -->
+            <div class="category-buttons d-grid gap-2">
               <button 
-                class="btn"
+                class="btn d-flex justify-content-between align-items-center"
                 [class.btn-success]="selectedCategory === 'overall'"
                 [class.btn-outline-success]="selectedCategory !== 'overall'"
                 (click)="selectCategory('overall')">
-                Overall
-                <span class="badge bg-light text-dark ms-2">{{carbonData['overall']}} kg</span>
+                <span>Overall Emissions</span>
+                <span class="badge bg-light text-dark">{{carbonData['overall']}} kg</span>
               </button>
+              
               <button 
-                class="btn"
+                class="btn d-flex justify-content-between align-items-center"
                 [class.btn-success]="selectedCategory === 'household'"
                 [class.btn-outline-success]="selectedCategory !== 'household'"
                 (click)="selectCategory('household')">
-                Household
-                <span class="badge bg-light text-dark ms-2">{{carbonData['household']}} kg</span>
+                <span>Household</span>
+                <span class="badge bg-light text-dark">{{carbonData['household']}} kg</span>
               </button>
+              
               <button 
-                class="btn"
+                class="btn d-flex justify-content-between align-items-center"
                 [class.btn-success]="selectedCategory === 'transportation'"
                 [class.btn-outline-success]="selectedCategory !== 'transportation'"
                 (click)="selectCategory('transportation')">
-                Transportation
-                <span class="badge bg-light text-dark ms-2">{{carbonData['transportation']}} kg</span>
+                <span>Transportation</span>
+                <span class="badge bg-light text-dark">{{carbonData['transportation']}} kg</span>
               </button>
+              
               <button 
-                class="btn"
+                class="btn d-flex justify-content-between align-items-center"
                 [class.btn-success]="selectedCategory === 'waste'"
                 [class.btn-outline-success]="selectedCategory !== 'waste'"
                 (click)="selectCategory('waste')">
-                Waste
-                <span class="badge bg-light text-dark ms-2">{{carbonData['waste']}} kg</span>
+                <span>Waste</span>
+                <span class="badge bg-light text-dark">{{carbonData['waste']}} kg</span>
               </button>
             </div>
           </div>
