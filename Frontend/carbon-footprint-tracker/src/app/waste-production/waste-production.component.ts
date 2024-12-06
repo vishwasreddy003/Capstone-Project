@@ -42,7 +42,7 @@ export class WasteProductionComponent implements OnInit{
      this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
        response=>{
          alert("Form submitted successfully");
-         this.router.navigate(['/transport']);
+         this.resetForm();
        },
        error=>{
          console.log("Error submitting Form",error);
@@ -50,6 +50,28 @@ export class WasteProductionComponent implements OnInit{
      );
     }
   }
+
+  resetForm(): void {
+    this.wasteProdForm.reset();
+  }
+  goToTransportPage(): void {
+    if (this.wasteProdForm.valid) {
+      const wasteProdData = this.wasteProdForm.value;
+      this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
+        (response) => {
+          alert('Form submitted successfully');
+          this.resetForm(); 
+          this.router.navigate(['/transport']);
+        },
+        (error) => {
+          console.log('Error submitting form', error);
+        }
+      );
+    }
+  }
+}
+
+
 
 
 
@@ -75,4 +97,4 @@ export class WasteProductionComponent implements OnInit{
   //     }
   //   );
   // }
-}
+
