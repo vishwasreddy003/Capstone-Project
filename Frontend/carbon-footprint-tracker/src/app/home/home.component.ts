@@ -1,49 +1,61 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  standalone:true,
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   items = [
     {
-      img: 'assets/img1.jpg',
+      img: 'assets/environment.jpg',
       category: 'cars',
       title: 'Racing',
-      description: 'Racing is the ultimate test of speed and skill...'
+      description: 'Racing is the ultimate test of speed and skill...',
     },
     {
       img: 'assets/img2.jpg',
       category: 'cars',
-      title: 'Porche',
-      description: 'Porsche is the epitome of luxury and performance...'
+      title: 'Porsche',
+      description: 'Porsche is the epitome of luxury and performance...',
     },
     {
       img: 'assets/img3.jpg',
       category: 'cars',
       title: 'Team',
-      description: 'Cars are more than transportation...'
+      description: 'Cars are more than transportation...',
     },
     {
       img: 'assets/img4.jpg',
       category: 'cars',
       title: 'Action',
-      description: 'Car action is adrenaline-fueled excitement...'
+      description: 'Car action is adrenaline-fueled excitement...',
     },
     {
       img: 'assets/img5.jpg',
       category: 'cars',
       title: '3 2 1 Go',
-      description: '"3, 2, 1, Go!" signals the start...'
+      description: '"3, 2, 1, Go!" signals the start...',
     },
   ];
 
   itemActive = 0;
+  private interval: any;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.startAutoScroll();
+    }
+  }
+
+  ngOnDestroy() {
+    this.stopAutoScroll();
+  }
 
   nextSlide() {
     this.itemActive = (this.itemActive + 1) % this.items.length;
@@ -55,5 +67,15 @@ export class HomeComponent {
 
   goToSlide(index: number) {
     this.itemActive = index;
+  }
+
+  startAutoScroll() {
+    this.interval = setInterval(() => {
+      this.nextSlide();
+    }, 6000); // Auto-scroll every 6 seconds
+  }
+
+  stopAutoScroll() {
+    clearInterval(this.interval);
   }
 }

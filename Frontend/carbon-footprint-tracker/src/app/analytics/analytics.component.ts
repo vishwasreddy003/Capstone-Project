@@ -37,12 +37,12 @@ export class AnalyticsComponent implements AfterViewInit {
 
   initializeChart(type: string): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-
+  
     // Destroy the existing chart instance
     if (this.chart) {
       this.chart.destroy();
     }
-
+  
     let data;
     if (type === 'transportation') {
       // Transportation requires the selected transportation type
@@ -51,10 +51,10 @@ export class AnalyticsComponent implements AfterViewInit {
       // Other types directly map to the chartData
       data = this.chartData[type];
     }
-
+  
     // Log the data for debugging
     console.log(`Initializing chart: ${type}`, data);
-
+  
     // Create the new chart instance
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -64,8 +64,34 @@ export class AnalyticsComponent implements AfterViewInit {
           {
             label: `${type.charAt(0).toUpperCase() + type.slice(1)} Data`,
             data: data,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(201, 203, 207, 0.2)',
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(201, 203, 207, 1)',
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
             borderWidth: 1
           }
         ]
@@ -73,14 +99,73 @@ export class AnalyticsComponent implements AfterViewInit {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: `Carbon Emissions - ${type.charAt(0).toUpperCase() + type.slice(1)}`,
+            font: {
+              size: 18,
+              weight: 'bold'
+            },
+            color: '#333'
+          },
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#333',
+              font: {
+                size: 12
+              }
+            }
+          }
+        },
         scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Months',
+              font: {
+                size: 14,
+                weight: 'bold'
+              },
+              color: '#666'
+            },
+            ticks: {
+              color: '#333',
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              color: 'rgba(200, 200, 200, 0.2)'
+            }
+          },
           y: {
-            beginAtZero: true
+            title: {
+              display: true,
+              text: 'Carbon Emissions (kg)',
+              font: {
+                size: 14,
+                weight: 'bold'
+              },
+              color: '#666'
+            },
+            ticks: {
+              color: '#333',
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              color: 'rgba(200, 200, 200, 0.2)'
+            }
           }
         }
       }
     });
   }
+  
 
   updateChart(type: string): void {
     // Set state variables
