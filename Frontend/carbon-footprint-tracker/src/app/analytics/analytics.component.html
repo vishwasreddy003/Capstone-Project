@@ -1,19 +1,39 @@
-<div class="chart-controls">
-    <button (click)="updateChart('household')">Household</button>
-    <button (click)="updateChart('transportation')">Transportation</button>
-    <button (click)="updateChart('wastage')">Wastage</button>
-    <button (click)="updateChart('overall')">Overall</button>
-  </div>
+<div class="container mt-4">
+    <!-- Chart Controls -->
+    <div class="row mb-3">
+      <div class="col text-center">
+        <button class="btn btn-primary me-2" (click)="updateChart('household')">Household</button>
+        <button class="btn btn-primary me-2" (click)="updateChart('transportation')">Transportation</button>
+        <button class="btn btn-primary me-2" (click)="updateChart('wastage')">Wastage</button>
+        <button class="btn btn-primary" (click)="updateChart('overall')">Overall</button>
+      </div>
+    </div>
   
-  <div class="dropdown-container" *ngIf="showDropdown">
-    <label for="transportType">Transportation Type:</label>
-    <select id="transportType" (change)="updateTransportationType($event)">
-      <option value="public">Public</option>
-      <option value="private">Private</option>
-    </select>
-  </div>
+    <!-- Dropdown for Transportation -->
+    <div class="row mb-3" *ngIf="showDropdown">
+      <div class="col text-center">
+        <label for="transportType" class="form-label">Transportation Type:</label>
+        <select
+          id="transportType"
+          class="form-select w-auto d-inline-block"
+          (change)="updateTransportationType($event)"
+        >
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+    </div>
   
-  <div class="chart-container" style="position: relative; height:60vh; width:100%">
-    <canvas id="myChart"></canvas>
+    <!-- Chart Container -->
+    <div class="row">
+      <div class="col">
+        <div
+          class="chart-container border rounded shadow-sm p-3 bg-white"
+          style="position: relative; height:60vh; width:100%"
+        >
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
   
