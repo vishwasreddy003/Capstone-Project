@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -27,5 +28,8 @@ public class Goals {
     @Enumerated(EnumType.STRING)
     public Difficulty goal_difficulty;
 
+    public LocalDate startDate;
+    public LocalDate endDate;
+    public boolean status=false;
     public int green_coins;
 }

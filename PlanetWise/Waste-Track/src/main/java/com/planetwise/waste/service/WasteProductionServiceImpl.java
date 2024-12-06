@@ -1,5 +1,6 @@
 package com.planetwise.waste.service;
 
+import com.planetwise.waste.calculation.CarbonEmissionCalculation;
 import com.planetwise.waste.exception.DataAlreadyExistsException;
 import com.planetwise.waste.model.WasteProduction;
 import com.planetwise.waste.repository.WasteProductionRepository;
@@ -18,11 +19,16 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     @Autowired
     private WasteProductionRepository wasteProductionRepo;
 
+    @Autowired
+    private CarbonEmissionCalculation logic;
+
 
     @Override
     public WasteProduction saveWasteProduction(String username,WasteProduction wasteProduction) {
 
         if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth(),LocalDate.now().getYear())){
+            double emissions = logic.calculateCarbonEmissions(wasteProduction.getQuantity_kgs(), wasteProduction.getWaste_type());
+            wasteProduction.setCarbon_emissions(emissions);
             return wasteProductionRepo.save(wasteProduction);
         }
         else{
@@ -32,15 +38,14 @@ public class WasteProductionServiceImpl implements WasteProductionService{
 
     @Override
     public List<WasteProduction> getTrendsForWasteProduction(String username) {
-        // Calculate the date 10 months ago
         LocalDate now = LocalDate.now();
-        LocalDate startDate = now.minusMonths(10);
+        LocalDate startDate = now.minusMonths(12);
 
-        // Extract the start month and year
+
         Month startMonth = startDate.getMonth();
-        int startYear = startDate.getYear();  // This gives the year for the start date
+        int startYear = startDate.getYear();
 
-        // Call the repository method with both startYear and startMonth
+
         return wasteProductionRepo.findWasteProductionFromLastTenMonths(username, startYear, startMonth);
     }
 

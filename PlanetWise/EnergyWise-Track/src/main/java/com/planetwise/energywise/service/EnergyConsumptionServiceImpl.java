@@ -1,5 +1,6 @@
 package com.planetwise.energywise.service;
 
+import com.planetwise.energywise.calculation.CarbonEmissionCalculation;
 import com.planetwise.energywise.exception.DataAlreadyExistsException;
 import com.planetwise.energywise.model.EnergyConsumption;
 import com.planetwise.energywise.repository.EnergyConsumptionRepository;
@@ -16,16 +17,25 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
     @Autowired
     private EnergyConsumptionRepository energyRepo;
 
+    @Autowired
+    private CarbonEmissionCalculation logic;
+
     @Override
     public EnergyConsumption saveEnergyConsumption(String username, EnergyConsumption energyConsumption) {
-        // Check if data already exists for the given month and username
-        if (!energyRepo.existsByUsernameAndMonth(username, energyConsumption.getMonth())) {
+
+
+        if (!energyRepo.existsByUsernameAndMonthAndYear(username, energyConsumption.getMonth(), energyConsumption.getYear())) {
+
+            double emissions = logic.Calculate(energyConsumption.getElectricity_units(), energyConsumption.getNo_of_gas_cylinders());
+            energyConsumption.setCarbon_emissions(emissions);
             energyConsumption.setUsername(username);
+
             return energyRepo.save(energyConsumption);
         } else {
-            throw new DataAlreadyExistsException("This Month Data already Exists");
+            throw new DataAlreadyExistsException("This Month and Year Data already exists for the user.");
         }
     }
+
 
     @Override
     public List<EnergyConsumption> getUserTrendsForEnergyConsumption(String username) {
@@ -36,8 +46,6 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
-
-
         return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth);
     }
 }

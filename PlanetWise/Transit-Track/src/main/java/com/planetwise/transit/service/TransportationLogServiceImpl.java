@@ -1,5 +1,6 @@
 package com.planetwise.transit.service;
 
+import com.planetwise.transit.Caluculation.CarbonEmissionCalculation;
 import com.planetwise.transit.exception.DataNotFoundException;
 import com.planetwise.transit.model.FuelType;
 import com.planetwise.transit.model.TransportationLog;
@@ -19,9 +20,13 @@ public class TransportationLogServiceImpl implements TransportationLogService {
 
     @Autowired
     private TransportationLogRepository transportRepo;
+    @Autowired
+    private CarbonEmissionCalculation logic;
 
     @Override
     public TransportationLog addTransportationUsage(String username, TransportationLog transportationLog) {
+        double emissions = logic.calculateEmissions(transportationLog);
+        transportationLog.setCarbon_emissions(emissions);
         transportationLog.setUsername(username);
         return transportRepo.save(transportationLog);
     }
