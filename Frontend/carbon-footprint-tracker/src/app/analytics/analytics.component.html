@@ -1,0 +1,19 @@
+<div class="chart-controls">
+    <button (click)="updateChart('household')">Household</button>
+    <button (click)="updateChart('transportation')">Transportation</button>
+    <button (click)="updateChart('wastage')">Wastage</button>
+    <button (click)="updateChart('overall')">Overall</button>
+  </div>
+  
+  <div class="dropdown-container" *ngIf="showDropdown">
+    <label for="transportType">Transportation Type:</label>
+    <select id="transportType" (change)="updateTransportationType($event)">
+      <option value="public">Public</option>
+      <option value="private">Private</option>
+    </select>
+  </div>
+  
+  <div class="chart-container" style="position: relative; height:60vh; width:100%">
+    <canvas id="myChart"></canvas>
+  </div>
+  

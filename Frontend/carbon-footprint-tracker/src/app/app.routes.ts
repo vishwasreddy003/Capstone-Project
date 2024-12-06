@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AnalyticsComponent } from './analytics/analytics.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnergyWasteComponent } from './energy-waste/energy-waste.component';
 import { HomeComponent } from './home/home.component';
@@ -15,7 +16,8 @@ export const routes: Routes = [
     {path:'dashboard', component:DashboardComponent},
     {path:'waste',component:WasteProductionComponent},
     {path:'transport',component:TransportationComponent},
-    {path:'energy',component:EnergyWasteComponent}
+    {path:'energy',component:EnergyWasteComponent},
+    {path:'analytics', component:AnalyticsComponent}
 ];
 
 @NgModule({
