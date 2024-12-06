@@ -1,65 +1,123 @@
-.card {
-    background-color: #ffffff;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-  }
-  
-  h2 {
-    font-size: 28px;
-    color: #3c6e47; /*Eco-friendly green*/
-    margin-bottom: 10px;
-  }
-  
-  h3 {
-    font-size: 16px;
-    color: #4b8c4b;
-    margin-bottom: 2px;
-  }
-  
-  .form-label {
-    font-size: 14px;
-    color: #5d8a5e; /* Light green */
-  }
+/* Container setup to ensure full height and proper alignment */
+.container {
+  margin-top: 70px; /* Adjust margin-top according to your navbar height */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 50px; /* Extra space at the bottom */
+}
 
-  .form-control {
-    font-size: 14px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #b0d0b0;
-    border-radius: 5px;
-  }
-  
-  .form-select {
-    font-size: 14px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #b0d0b0;
-    border-radius: 5px;
-  }
-  
-  .btn-success {
-    background-color: #16423C;
-    color: white;
-    font-size: 16px;
-    padding: 12px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .btn-success:hover {
-    background-color: #1E5E52 ;
-  }
-  
-  .text-center {
-    text-align:center;
-  }
-  
-  .is-invalid {
-    border-color: red !important;
-  }
-  
-  .is-valid {
-    border-color: green !important;
-  }
+/* Card Styling */
+.card {
+  background-color: #ffffff;
+  padding: 20px; /* Reduced padding for less space */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 30px; /* Space below card */
+}
+
+/* Heading Styling */
+h2 {
+  font-size: 28px;
+  color: #3c6e47; /* Eco-friendly green */
+  margin-bottom: 20px; /* Reduced bottom margin */
+}
+
+h3 {
+  font-size: 16px;
+  color: #4b8c4b; /* Light green */
+  margin-bottom: 10px;
+}
+
+/* Form Label Styling */
+.form-label {
+  font-size: 14px;
+  color: #5d8a5e; /* Light green for labels */
+  margin-bottom: 5px; /* Reduced space between label and input */
+}
+
+/* Form Input and Select Styling */
+.form-control {
+  font-size: 14px;
+  padding: 8px 10px; /* Adjusted padding to reduce height */
+  margin-bottom: 10px; /* Reduced margin to minimize space */
+  border: 1px solid #b0d0b0;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.form-select {
+  font-size: 14px;
+  padding: 8px 10px; /* Adjusted padding */
+  margin-bottom: 10px; /* Consistent margin */
+  border: 1px solid #b0d0b0;
+  border-radius: 5px;
+  width: 100%;
+}
+
+/* Green Button Styling */
+.btn-success, .btn-info, .btn-primary {
+  background-color: #16423C; /* Green button color */
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 100%; /* Full width buttons */
+}
+
+/* Hover effect for buttons */
+.btn-success:hover, .btn-info:hover, .btn-primary:hover {
+  background-color: #1E5E52; /* Darker green on hover */
+}
+
+/* Centering text */
+.text-center {
+  text-align: center;
+}
+
+/* Validation styles for input */
+.is-invalid {
+  border-color: red !important;
+}
+
+.is-valid {
+  border-color: green !important;
+}
+
+/* Spacing for rows */
+.row {
+  margin-bottom: 10px; /* Reduced space between rows */
+}
+
+/* Margin for the columns */
+.col-md-6 {
+  margin-bottom: 10px; /* Consistent margin for column */
+}
+
+/* Optional: Prevent form elements from stretching too wide */
+.form-group {
+  max-width: 100%;
+}
+
+/* Styling for the form submit button */
+.btn-info {
+  background-color: #16423C; /* Green button */
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #1E5E52;
+}
+
+/* Next Button */
+.btn-primary {
+  background-color:#16423C;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1E5E52;
+}

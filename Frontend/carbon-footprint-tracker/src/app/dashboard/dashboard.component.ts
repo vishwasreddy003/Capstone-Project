@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
+
 interface CarbonData {
   category: string;
   value: number;
@@ -14,51 +16,30 @@ interface Task {
   completed?: boolean;
 }
 
+interface Recommendation {
+  icon: string;
+  title: string;
+  text: string;
+  impact: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.css'],
   standalone: true,
   imports: [CommonModule]
 })
 export class DashboardComponent implements OnInit {
-  selectedCategory: string = 'overall';
+  selectedCategory: CategoryKey = 'overall';
   selectedTaskView: string = 'current';
 
-  carbonData: { [key: string]: number } = {
+  carbonData: Record<CategoryKey, number> = {
     overall: 2500,
     household: 1200,
     transportation: 800,
     waste: 500
   };
-
-  calculateScore(): number {
-    // Calculate score based on carbon emissions
-    // Lower emissions = higher score
-    const maxScore = 850; // Similar to credit score range
-    const baseScore = 300;
-    const totalEmissions = this.carbonData['overall'];
-    const maxEmissions = 5000; // Example threshold
-
-    // Calculate score inversely proportional to emissions
-    const score = Math.round(
-      baseScore + (maxScore - baseScore) * (1 - (totalEmissions / maxEmissions))
-    );
-
-    // Ensure score stays within bounds
-    return Math.max(baseScore, Math.min(score, maxScore));
-  }
-
-  getScoreColor(): string {
-    const score = this.calculateScore();
-    if (score >= 700) {
-      return 'linear-gradient(135deg, #28a745, #20c997)';
-    } else if (score >= 500) {
-      return 'linear-gradient(135deg, #ffc107, #fd7e14)';
-    } else {
-      return 'linear-gradient(135deg, #dc3545, #c82333)';
-    }
-  }
 
   tasks: { [key: string]: Task[] } = {
     current: [
@@ -76,18 +57,68 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  getAIRecommendation(): string {
-    const recommendations: { [key: string]: string } = {
-      overall: 'Your overall carbon footprint is moderate. Focus on reducing transportation emissions for the biggest impact.',
-      household: 'Consider switching to energy-efficient appliances and LED lighting to reduce household emissions.',
-      transportation: 'Try carpooling or using public transport more frequently to reduce your transportation footprint.',
-      waste: 'Implement composting and increase recycling to minimize your waste emissions.'
-    };
-    return recommendations[this.selectedCategory];
+  currentScore: number = 0;
+  
+  recommendations: Recommendation[] = [];
+
+  aiRecommendations: string[] = [];
+
+  ngOnInit(): void {
+    this.updateScore('overall');
+    this.recommendations = this.getRecommendations();
   }
 
-  selectCategory(category: string): void {
+  getRecommendations(): Recommendation[] {
+    const recommendations: Recommendation[] = [];
+    
+    if (this.carbonData['household'] > 1000) {
+      recommendations.push({
+        icon: 'home',
+        title: 'Household Efficiency',
+        text: 'Your household emissions are high. Consider installing a smart thermostat and energy-efficient appliances to reduce consumption.',
+        impact: '-200kg CO₂/month'
+      });
+    }
+
+    if (this.carbonData['transportation'] > 700) {
+      recommendations.push({
+        icon: 'car',
+        title: 'Transportation',
+        text: 'Try carpooling or using public transport twice a week. This small change can significantly reduce your carbon footprint.',
+        impact: '-160kg CO₂/month'
+      });
+    }
+
+    if (this.carbonData['waste'] > 400) {
+      recommendations.push({
+        icon: 'package',
+        title: 'Waste Management',
+        text: 'Start composting organic waste and ensure proper recycling. This can reduce your waste emissions substantially.',
+        impact: '-100kg CO₂/month'
+      });
+    }
+
+    recommendations.push({
+      icon: 'lightbulb',
+      title: 'Energy Savings',
+      text: 'Replace all traditional bulbs with LED alternatives and unplug devices when not in use.',
+      impact: '-50kg CO₂/month'
+    });
+
+    recommendations.push({
+      icon: 'leaf',
+      title: 'Green Initiative',
+      text: 'Consider starting a small garden or participating in local tree planting initiatives.',
+      impact: '-30kg CO₂/month'
+    });
+
+    return recommendations;
+  }
+
+  selectCategory(category: CategoryKey): void {
     this.selectedCategory = category;
+    this.updateScore(category);
+    this.currentScore = this.calculateScore(category);
   }
 
   selectTaskView(view: string): void {
@@ -98,6 +129,72 @@ export class DashboardComponent implements OnInit {
     return this.tasks[this.selectedTaskView] || [];
   }
 
-  ngOnInit(): void {
+  private updateScore(category: CategoryKey): void {
+    const maxScore = 100;
+    const baselineEmissions: Record<CategoryKey, number> = {
+      overall: 3500,
+      household: 1800,
+      transportation: 1200,
+      waste: 800
+    };
+
+    const categoryEmissions = this.carbonData[category];
+    const baselineEmission = baselineEmissions[category];
+    
+    this.currentScore = Math.min(100, Math.max(0,
+      Math.round(100 - (categoryEmissions / baselineEmission * 100))
+    ));
+  }
+
+  private calculateScore(category: CategoryKey): number {
+    const maxScore = 100;
+    const baselineEmissions: Record<CategoryKey, number> = {
+      overall: 3500,
+      household: 1800,
+      transportation: 1200,
+      waste: 800
+    };
+
+    const categoryEmissions = this.carbonData[category];
+    const baselineEmission = baselineEmissions[category];
+    
+    return Math.min(100, Math.max(0,
+      Math.round(100 - (categoryEmissions / baselineEmission * 100))
+    ));
+  }
+
+  generateAIRecommendations(): void {
+    const recommendations: { [key: string]: string[] } = {
+      overall: [
+        'Focus on reducing transportation emissions for the biggest impact.',
+        'Consider switching to energy-efficient appliances.',
+        'Try carpooling or using public transport more frequently.',
+        'Implement composting and increase recycling.',
+        'Explore renewable energy options like solar panels.'
+      ],
+      household: [
+        'Switch to energy-efficient appliances.',
+        'Install LED lighting.',
+        'Reduce water heating costs by using solar water heaters.',
+        'Improve home insulation to save energy.',
+        'Use smart thermostats to optimize heating and cooling.'
+      ],
+      transportation: [
+        'Carpool or use public transport more frequently.',
+        'Consider electric or hybrid vehicles.',
+        'Plan trips to minimize travel distance.',
+        'Use bicycles for short distances.',
+        'Regularly maintain your vehicle for optimal efficiency.'
+      ],
+      waste: [
+        'Implement composting.',
+        'Increase recycling efforts.',
+        'Reduce single-use plastics.',
+        'Donate or repurpose items instead of discarding.',
+        'Buy in bulk to reduce packaging waste.'
+      ]
+    };
+
+    this.aiRecommendations = recommendations[this.selectedCategory];
   }
 }

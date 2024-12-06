@@ -21,12 +21,16 @@ export class WasteProductionComponent implements OnInit{
   wasteTypes: string[] = ['FOODWASTE','NONFOODWASTE'];
 
   wasteProdForm : FormGroup = new FormGroup({})
+  yearsList: number[] = [];
 
   constructor(private formBuilder:FormBuilder,private trackerApiService:TrackerApiService,private router:Router){}
 
   ngOnInit(): void {
+    const currentYear = new Date().getFullYear();
+    this.yearsList = Array.from({length: 11}, (_, i) => currentYear - 5 + i);
     this.wasteProdForm = this.formBuilder.group({
       month : ['',Validators.required],
+      year : ['',Validators.required],
       waste_type : ['',Validators.required],
       quantity_kgs : ['',Validators.required]
     });

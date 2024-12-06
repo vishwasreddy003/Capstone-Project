@@ -14,17 +14,20 @@ import { TrackerApiService } from '../tracker-api.service';
 export class EnergyWasteComponent implements OnInit{
  months: string[] = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
  'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-//  month = " ";
-//  electricityUnits = 0;
-//  noOfGasCylinders = 0;
+ 
+
 
  constructor(private formBuiler : FormBuilder,private trackerApiService:TrackerApiService){}
 
  energyWasteForm : FormGroup = new FormGroup({})
+ yearsList: number[] = [];
 
  ngOnInit(): void {
+  const currentYear = new Date().getFullYear();
+  this.yearsList = Array.from({length: 11}, (_, i) => currentYear - 5 + i);
   this.energyWasteForm = this.formBuiler.group({
     month : ['',Validators.required],
+    year : ['',Validators.required],
     electricity_units : ['',[Validators.required,Validators.min(0)]],
     no_of_gas_cylinders : ['',[Validators.required,Validators.min(0)]]
   });
@@ -36,7 +39,6 @@ export class EnergyWasteComponent implements OnInit{
      this.trackerApiService.submitEnergyData(energyData).subscribe(
        response=>{
          alert("Form submitted successfully");
-         
        },
        error =>{
          console.log("Error submitting Form",error);

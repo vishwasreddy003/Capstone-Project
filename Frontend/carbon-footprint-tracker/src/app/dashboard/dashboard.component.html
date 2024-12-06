@@ -1,74 +1,84 @@
 <div class="dashboard-container bg-light p-4">
-    <div class="row mb-4">
-      <!-- Left Card - Carbon Emissions -->
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title mb-4">Carbon Footprint Score</h5>
-            
-            <!-- Score Circle -->
-            <div class="score-container text-center mb-4">
-              <div class="score-circle" [style.background]="getScoreColor()">
-                <div class="score-inner">
-                  <h2 class="score-value mb-0">{{ calculateScore() }}</h2>
-                  <small class="score-label">Your Score</small>
-                </div>
+  <div class="row mb-4">
+    <!-- Left Card - Carbon Emissions -->
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Carbon Footprint Score</h5>
+          
+          <!-- Score Circle -->
+          <div class="score-container text-center mb-4">
+            <div class="score-circle">
+              <div class="score-inner">
+                <h2 class="score-value">{{ currentScore }}</h2>
+                <small class="score-label">Carbon Score</small>
               </div>
             </div>
-  
-            <!-- Category Buttons -->
-            <div class="category-buttons d-grid gap-2">
-              <button 
-                class="btn d-flex justify-content-between align-items-center"
-                [class.btn-success]="selectedCategory === 'overall'"
-                [class.btn-outline-success]="selectedCategory !== 'overall'"
-                (click)="selectCategory('overall')">
-                <span>Overall Emissions</span>
-                <span class="badge bg-light text-dark">{{carbonData['overall']}} kg</span>
-              </button>
-              
-              <button 
-                class="btn d-flex justify-content-between align-items-center"
-                [class.btn-success]="selectedCategory === 'household'"
-                [class.btn-outline-success]="selectedCategory !== 'household'"
-                (click)="selectCategory('household')">
-                <span>Household</span>
-                <span class="badge bg-light text-dark">{{carbonData['household']}} kg</span>
-              </button>
-              
-              <button 
-                class="btn d-flex justify-content-between align-items-center"
-                [class.btn-success]="selectedCategory === 'transportation'"
-                [class.btn-outline-success]="selectedCategory !== 'transportation'"
-                (click)="selectCategory('transportation')">
-                <span>Transportation</span>
-                <span class="badge bg-light text-dark">{{carbonData['transportation']}} kg</span>
-              </button>
-              
-              <button 
-                class="btn d-flex justify-content-between align-items-center"
-                [class.btn-success]="selectedCategory === 'waste'"
-                [class.btn-outline-success]="selectedCategory !== 'waste'"
-                (click)="selectCategory('waste')">
-                <span>Waste</span>
-                <span class="badge bg-light text-dark">{{carbonData['waste']}} kg</span>
-              </button>
-            </div>
           </div>
-        </div>
-      </div>
-  
-      <!-- Right Card - AI Recommendations -->
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title">AI Recommendations</h5>
-            <p class="card-text">{{getAIRecommendation()}}</p>
+
+          <!-- Category Buttons -->
+          <div class="category-buttons d-grid gap-2">
+            <button 
+              class="btn d-flex justify-content-between align-items-center"
+              [class.btn-success]="selectedCategory === 'overall'"
+              [class.btn-outline-success]="selectedCategory !== 'overall'"
+              (click)="selectCategory('overall')">
+              <span>Overall Emissions</span>
+              <span class="badge bg-light text-dark">{{carbonData['overall']}} kg</span>
+            </button>
+            
+            <button 
+              class="btn d-flex justify-content-between align-items-center"
+              [class.btn-success]="selectedCategory === 'household'"
+              [class.btn-outline-success]="selectedCategory !== 'household'"
+              (click)="selectCategory('household')">
+              <span>Household</span>
+              <span class="badge bg-light text-dark">{{carbonData['household']}} kg</span>
+            </button>
+            
+            <button 
+              class="btn d-flex justify-content-between align-items-center"
+              [class.btn-success]="selectedCategory === 'transportation'"
+              [class.btn-outline-success]="selectedCategory !== 'transportation'"
+              (click)="selectCategory('transportation')">
+              <span>Transportation</span>
+              <span class="badge bg-light text-dark">{{carbonData['transportation']}} kg</span>
+            </button>
+            
+            <button 
+              class="btn d-flex justify-content-between align-items-center"
+              [class.btn-success]="selectedCategory === 'waste'"
+              [class.btn-outline-success]="selectedCategory !== 'waste'"
+              (click)="selectCategory('waste')">
+              <span>Waste</span>
+              <span class="badge bg-light text-dark">{{carbonData['waste']}} kg</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
-  
+
+    <!-- Right Card - AI Recommendations -->
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Recommendations</h5>
+          <div class="recommendation-cards">
+            <div class="card recommendation-card mb-3" *ngFor="let rec of recommendations">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-{{rec.icon}} recommendation-icon"></i>
+                  <h6 class="card-subtitle mb-0 ms-2">{{rec.title}}</h6>
+                </div>
+                <p class="card-text">{{rec.text}}</p>
+                <span class="impact-badge">{{rec.impact}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bottom Card - Tasks/Goals -->
     <div class="card">
       <div class="card-body">
@@ -98,7 +108,7 @@
             Available Tasks
           </button>
         </div>
-  
+
         <!-- Task List -->
         <div class="row">
           <div class="col-md-4" *ngFor="let task of getDisplayedTasks()">
@@ -116,3 +126,8 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+

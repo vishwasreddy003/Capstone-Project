@@ -1,73 +1,191 @@
+
 .dashboard-container {
-  background-color: #d9fdd3;
+  background-color: #f8faf7;
   min-height: 100vh;
+  padding: 2rem;
 }
 
 .card {
   border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 16px;
+  transition: transform 0.2s ease;
 }
 
-/* Score Circle Styles */
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-title {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+/* Score Circle Styling */
 .score-container {
-  padding: 20px 0;
+  padding: 1.5rem 0;
 }
 
 .score-circle {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.2);
 }
 
-.score-circle .score-inner {
-  width: 180px;
-  height: 180px;
+.score-inner {
   background: white;
   border-radius: 50%;
+  width: 150px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.score-circle .score-value {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #2c3e50;
+.score-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #059669;
+  margin-bottom: 0.25rem;
 }
 
-.score-circle .score-label {
-  color: #7f8c8d;
-  font-size: 1rem;
+.score-label {
+  color: #64748b;
+  font-size: 0.875rem;
 }
 
+/* Category Buttons */
 .category-buttons .btn {
-  padding: 12px 20px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  border: 2px solid transparent;
 }
 
-.category-buttons .btn:hover {
-  transform: translateX(5px);
+.btn-success {
+  background-color: #059669;
+  border-color: #059669;
 }
 
-.category-buttons .badge {
-  font-size: 0.9rem;
-  padding: 8px 12px;
+.btn-outline-success {
+  color: #059669;
+  border-color: #e2e8f0;
 }
 
+.btn-outline-success:hover {
+  background-color: #f0fdf4;
+  border-color: #059669;
+  color: #059669;
+}
+
+/* Task Cards */
+.task-card {
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.bg-success {
+  background-color: #059669 !important;
+}
+
+/* Task View Buttons */
 .btn-group {
-  width: 100%;
+  background-color: #f1f5f9;
+  padding: 0.25rem;
+  border-radius: 12px;
 }
 
 .btn-group .btn {
-  flex: 1;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .score-circle {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .score-inner {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .score-value {
+    font-size: 2rem;
+  }
+}
+
+.recommendation-cards .card {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+.recommendation-cards .card:hover {
+  transform: translateY(-2px);
+}
+
+.recommendation-cards .card-text {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.recommendation-card {
+  background-color: #ffffff;
+  border-left: 4px solid #059669;
+}
+
+.recommendation-icon {
+  font-size: 1.5rem;
+  color: #059669;
+}
+
+.impact-badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  background-color: #059669;
+}
+
+.recommendation-card .card-subtitle {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.recommendation-card .card-text {
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+

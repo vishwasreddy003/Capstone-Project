@@ -6,21 +6,72 @@
         <form [formGroup]="wasteProdForm" (ngSubmit)="onSubmit()">
 
           <!-- Month Input -->
-          <div class="mb-3">
-            <label for="month" class="form-label">Month
-              <div *ngIf="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.invalid">
-                <small class="text-danger" *ngIf="wasteProdForm.get('month')?.hasError('required')"></small>
-              </div>
-            </label>
-            <select class="form-select" id="month" formControlName="month" required
-              [class.is-invalid]="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.invalid"
-              [class.is-valid]="wasteProdForm.get('month')?.touched && wasteProdForm.get('month')?.valid"
-            >
-              <option value="" disabled selected>Select a month</option>
-              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-            </select>
+          <div class="row g-3 align-items-end">
+            <div class="col-md-6 mb-3">
+              <label for="month" class="form-label">
+                Month
+                <span 
+                  *ngIf="
+                    wasteProdForm.get('month')?.touched &&
+                    wasteProdForm.get('month')?.invalid
+                  " 
+                  class="text-danger"
+                >
+                </span>
+              </label>
+              <select
+                class="form-select"
+                id="month"
+                formControlName="month"
+                [class.is-invalid]="
+                  wasteProdForm.get('month')?.touched &&
+                  wasteProdForm.get('month')?.invalid
+                "
+                [class.is-valid]="
+                  wasteProdForm.get('month')?.touched &&
+                  wasteProdForm.get('month')?.valid
+                "
+              >
+                <option value="" disabled>Select a Month</option>
+                <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="year" class="form-label">
+                Year
+                <span 
+                  *ngIf="
+                    wasteProdForm.get('year')?.touched &&
+                    wasteProdForm.get('year')?.invalid
+                  " 
+                  class="text-danger"
+                >
+                </span>
+              </label>
+              <select
+                class="form-select"
+                id="year"
+                formControlName="year"
+                [class.is-invalid]="
+                  wasteProdForm.get('year')?.touched &&
+                  wasteProdForm.get('year')?.invalid
+                "
+                [class.is-valid]="
+                  wasteProdForm.get('year')?.touched &&
+                  wasteProdForm.get('year')?.valid
+                "
+              >
+                <option value="" disabled>Select Year</option>
+                <option *ngFor="let year of yearsList" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
           </div>
 
+
+          
           <!-- Waste Type Input -->
           <div class="mb-3">
             <label for="waste_type" class="form-label">Waste Type
