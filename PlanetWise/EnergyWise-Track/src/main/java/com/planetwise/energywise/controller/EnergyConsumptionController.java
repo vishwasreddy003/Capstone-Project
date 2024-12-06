@@ -27,4 +27,10 @@ public class EnergyConsumptionController {
         List<EnergyConsumption> analytics = energyService.getUserTrendsForEnergyConsumption(username);
         return new ResponseEntity<>(analytics, HttpStatus.OK);
     }
+
+    @GetMapping("/{username}/getCarbonEmission")
+    public ResponseEntity<Double> getCarbonEmissions(@PathVariable String username){
+        Double emissions = energyService.getCarbonEmissions(username);
+        return new ResponseEntity<>(emissions,HttpStatus.OK);
+    }
 }

@@ -26,7 +26,7 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     @Override
     public WasteProduction saveWasteProduction(String username,WasteProduction wasteProduction) {
 
-        if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth(),LocalDate.now().getYear())){
+        if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth(),wasteProduction.getYear())){
             double emissions = logic.calculateCarbonEmissions(wasteProduction.getQuantity_kgs(), wasteProduction.getWaste_type());
             wasteProduction.setCarbon_emissions(emissions);
             return wasteProductionRepo.save(wasteProduction);
@@ -47,6 +47,11 @@ public class WasteProductionServiceImpl implements WasteProductionService{
 
 
         return wasteProductionRepo.findWasteProductionFromLastTenMonths(username, startYear, startMonth);
+    }
+
+    @Override
+    public Double getCarbonEmissions(String username) {
+        return wasteProductionRepo.existsByUsername(username);
     }
 
 }

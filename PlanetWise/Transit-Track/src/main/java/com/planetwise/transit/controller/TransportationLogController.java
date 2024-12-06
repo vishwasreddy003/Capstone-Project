@@ -50,4 +50,10 @@ public class TransportationLogController {
         return ResponseEntity.ok(emissions);
     }
 
+    @GetMapping("/{username}/getCarbonEmissions")
+    public ResponseEntity<Double> getCarbonEmissions(@PathVariable String username){
+        Double emissions = transportationLogService.getCarbonEmissions(username);
+        return ResponseEntity.ok(emissions);
+    }
+
 }

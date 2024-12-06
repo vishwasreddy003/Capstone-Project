@@ -14,7 +14,7 @@
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-1px);
 }
 
 .card-title {

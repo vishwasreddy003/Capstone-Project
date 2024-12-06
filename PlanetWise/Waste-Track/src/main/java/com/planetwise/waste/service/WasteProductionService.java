@@ -10,4 +10,5 @@ public interface WasteProductionService {
 
      List<WasteProduction> getTrendsForWasteProduction(String username);
 
+     Double getCarbonEmissions(String username);
 }

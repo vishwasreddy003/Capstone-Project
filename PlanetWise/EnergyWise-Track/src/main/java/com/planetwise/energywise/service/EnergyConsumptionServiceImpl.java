@@ -48,4 +48,9 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
         int startYear = startDate.getYear();
         return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth);
     }
+
+    @Override
+    public Double getCarbonEmissions(String username) {
+        return energyRepo.getByUsername(username).getCarbon_emissions();
+    }
 }

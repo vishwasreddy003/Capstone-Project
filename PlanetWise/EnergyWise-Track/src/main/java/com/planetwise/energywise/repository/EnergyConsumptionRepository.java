@@ -18,4 +18,8 @@ public interface EnergyConsumptionRepository extends JpaRepository<EnergyConsump
     @Query("SELECT count(*) > 0 FROM EnergyConsumption e WHERE e.username = :username AND e.month = :month AND e.year = :year")
     Boolean existsByUsernameAndMonthAndYear(String username, Month month, Year year);
 
+
+    EnergyConsumption getByUsername(String username);
+
+    Double existsByUsername();
 }

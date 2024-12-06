@@ -16,7 +16,7 @@ public class WasteController {
     @Autowired
     private WasteProductionService wasteProductionService;
 
-    @PostMapping("/{username}/addWasteData")
+    @PostMapping("/{username}/addData")
     public ResponseEntity<WasteProduction> saveWasteData(@PathVariable String username, @RequestBody WasteProduction wasteProduction) {
         WasteProduction savedWaste = wasteProductionService.saveWasteProduction(username,wasteProduction);
         return new ResponseEntity<>(savedWaste, HttpStatus.CREATED);
@@ -26,5 +26,11 @@ public class WasteController {
     public ResponseEntity<List<WasteProduction>> getAnalyticsForWasteProduction(@PathVariable String username) {
         List<WasteProduction> wasteTrends = wasteProductionService.getTrendsForWasteProduction(username);
         return new ResponseEntity<>(wasteTrends, HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}/getCarbonEmissions")
+    public ResponseEntity<Double> getCarbonEmissions(@PathVariable String username){
+        Double emissions = wasteProductionService.getCarbonEmissions(username);
+
     }
 }

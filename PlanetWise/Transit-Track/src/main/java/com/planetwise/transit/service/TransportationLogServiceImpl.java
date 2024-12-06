@@ -79,4 +79,9 @@ public class TransportationLogServiceImpl implements TransportationLogService {
 
         return monthlyEmissions;
     }
+
+    @Override
+    public Double getCarbonEmissions(String username) {
+        return transportRepo.findByUsername(username).getFirst().getCarbon_emissions();
+    }
 }

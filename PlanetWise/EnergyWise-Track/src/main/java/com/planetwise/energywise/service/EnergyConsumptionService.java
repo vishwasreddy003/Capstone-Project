@@ -9,4 +9,5 @@ public interface EnergyConsumptionService {
 
     List<EnergyConsumption> getUserTrendsForEnergyConsumption(String username);
 
+    Double getCarbonEmissions(String username);
 }

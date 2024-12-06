@@ -47,8 +47,8 @@ spring:
           filters:
             - name: AuthenticationFilter
 
-        - id: transit-check
-          uri: lb://transit-check
+        - id: transit-track
+          uri: lb://transit-track
           predicates:
             - Path=/PlanetWise/transportation/**
           filters:

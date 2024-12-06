@@ -105,12 +105,6 @@ export class DashboardComponent implements OnInit {
       impact: '-50kg CO₂/month'
     });
 
-    recommendations.push({
-      icon: 'leaf',
-      title: 'Green Initiative',
-      text: 'Consider starting a small garden or participating in local tree planting initiatives.',
-      impact: '-30kg CO₂/month'
-    });
 
     return recommendations;
   }
