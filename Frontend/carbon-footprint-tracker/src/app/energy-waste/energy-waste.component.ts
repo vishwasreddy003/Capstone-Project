@@ -37,10 +37,16 @@ export class EnergyWasteComponent implements OnInit{
  onSubmit() {
    if(this.energyWasteForm.valid ){
      const energyData = this.energyWasteForm.value;
+     const greenScore = {
+       year:this.energyWasteForm.get('year'),
+       month:this.energyWasteForm.get('month')
+     }
+
      this.trackerApiService.submitEnergyData(energyData).subscribe(
        response=>{
          alert("Form submitted successfully");
          this.router.navigate(['/dashboard'])
+         this.trackerApiService.getGreenScores(greenScore)
        },
        error =>{
          console.log("Error submitting Form",error);
