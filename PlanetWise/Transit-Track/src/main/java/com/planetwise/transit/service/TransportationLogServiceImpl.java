@@ -2,6 +2,7 @@ package com.planetwise.transit.service;
 
 import com.planetwise.transit.Caluculation.CarbonEmissionCalculation;
 import com.planetwise.transit.exception.DataNotFoundException;
+import com.planetwise.transit.exception.UsernameNotFoundException;
 import com.planetwise.transit.model.FuelType;
 import com.planetwise.transit.model.TransportationLog;
 import com.planetwise.transit.model.TransportationMode;
@@ -82,6 +83,10 @@ public class TransportationLogServiceImpl implements TransportationLogService {
 
     @Override
     public Double getCarbonEmissions(String username) {
-        return transportRepo.findByUsername(username).getFirst().getCarbon_emissions();
+        if(transportRepo.existsByUsername(username)){
+            return transportRepo.findByUsername(username).getFirst().getCarbon_emissions();
+        }else {
+            throw new UsernameNotFoundException(("User with username " + username +" not found"));
+        }
     }
 }

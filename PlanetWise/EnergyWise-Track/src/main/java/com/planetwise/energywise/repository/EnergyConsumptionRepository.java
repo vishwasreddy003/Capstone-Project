@@ -19,7 +19,7 @@ public interface EnergyConsumptionRepository extends JpaRepository<EnergyConsump
     Boolean existsByUsernameAndMonthAndYear(String username, Month month, Year year);
 
 
-    EnergyConsumption getByUsername(String username);
+    EnergyConsumption findByUsername(String username);
 
-    Double existsByUsername();
+    boolean existsByUsername(String username);
 }

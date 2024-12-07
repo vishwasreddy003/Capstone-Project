@@ -29,8 +29,7 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/{username}/getCarbonEmission")
-    public ResponseEntity<Double> getCarbonEmissions(@PathVariable String username){
-        Double emissions = energyService.getCarbonEmissions(username);
-        return new ResponseEntity<>(emissions,HttpStatus.OK);
+    public Double getCarbonEmissions(@PathVariable String username){
+        return energyService.getCarbonEmissions(username);
     }
 }

@@ -2,6 +2,7 @@ package com.planetwise.energywise.service;
 
 import com.planetwise.energywise.calculation.CarbonEmissionCalculation;
 import com.planetwise.energywise.exception.DataAlreadyExistsException;
+import com.planetwise.energywise.exception.UsernameNotFoundException;
 import com.planetwise.energywise.model.EnergyConsumption;
 import com.planetwise.energywise.repository.EnergyConsumptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,10 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
     @Override
     public Double getCarbonEmissions(String username) {
-        return energyRepo.getByUsername(username).getCarbon_emissions();
+        if(energyRepo.existsByUsername(username)){
+            return energyRepo.findByUsername(username).getCarbon_emissions();
+        }else {
+            throw new UsernameNotFoundException(("User with username " + username +" not found"));
+        }
     }
 }

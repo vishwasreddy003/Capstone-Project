@@ -2,6 +2,7 @@ package com.planetwise.waste.service;
 
 import com.planetwise.waste.calculation.CarbonEmissionCalculation;
 import com.planetwise.waste.exception.DataAlreadyExistsException;
+import com.planetwise.waste.exception.UsernameNotFoundException;
 import com.planetwise.waste.model.WasteProduction;
 import com.planetwise.waste.repository.WasteProductionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,11 @@ public class WasteProductionServiceImpl implements WasteProductionService{
 
     @Override
     public Double getCarbonEmissions(String username) {
-        return wasteProductionRepo.existsByUsername(username);
+        if(wasteProductionRepo.existsByUsername(username)){
+            return wasteProductionRepo.findByUsername(username).getCarbon_emissions();
+        }else{
+            throw new UsernameNotFoundException("User with username " + username +" not found");
+        }
     }
 
 }

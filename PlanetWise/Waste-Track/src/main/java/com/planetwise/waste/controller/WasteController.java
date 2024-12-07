@@ -29,8 +29,7 @@ public class WasteController {
     }
 
     @GetMapping("/{username}/getCarbonEmissions")
-    public ResponseEntity<Double> getCarbonEmissions(@PathVariable String username){
-        Double emissions = wasteProductionService.getCarbonEmissions(username);
-
+    public Double getCarbonEmissions(@PathVariable String username){
+        return wasteProductionService.getCarbonEmissions(username);
     }
 }

@@ -21,5 +21,7 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
           "AND w.waste_type = :wasteType AND w.month = :month AND w.year = :year")
   Boolean existsByUsernameWastetypeAndMonth(String username, WasteType wasteType, Month month, Year year);
 
-  Double existsByUsername(String username);
+  boolean existsByUsername(String username);
+
+  WasteProduction findByUsername(String username);
 }

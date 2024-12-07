@@ -26,4 +26,7 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
             "AND (t.year > :startYear OR (t.year = :startYear AND t.month >= :startMonth)) " +
             "GROUP BY t.month")
     List<Object[]> findMonthlyCarbonEmissionsByUsernameAndDateRange(String username, int startYear, Month startMonth);
+
+    boolean existsByUsername(String username);
 }
+
