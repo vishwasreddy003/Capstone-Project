@@ -31,8 +31,8 @@ public class WasteController {
         return new ResponseEntity<>(wasteTrends, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/getCarbonEmissions")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month ){
-        return wasteProductionService.getCarbonEmissions(username, token, year, month);
+    @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
+    public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
+        return wasteProductionService.getCarbonEmissions(username, year, month);
     }
 }

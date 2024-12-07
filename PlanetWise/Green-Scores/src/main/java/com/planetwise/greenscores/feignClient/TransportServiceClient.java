@@ -10,6 +10,6 @@ import java.time.Year;
 
 @FeignClient(name = "TRANSIT-TRACK")
 public interface TransportServiceClient {
-    @GetMapping("/{username}/getCarbonEmissions")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month);
+    @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
+    public Double getCarbonEmissions(@RequestHeader("Authorization") String token,@PathVariable String username, @PathVariable Year year, @PathVariable Month month);
 }

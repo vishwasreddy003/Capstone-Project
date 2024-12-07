@@ -83,7 +83,7 @@ public class TransportationLogServiceImpl implements TransportationLogService {
     }
 
     @Override
-    public Double getCarbonEmissions(String username, String token, Year year, Month month) {
+    public Double getCarbonEmissions(String username, Year year, Month month) {
         if(transportRepo.existsByUsername(username)){
             return transportRepo.findByUsernameAndMonthAndYear(username,year,month).getFirst().getCarbon_emissions();
         }else {

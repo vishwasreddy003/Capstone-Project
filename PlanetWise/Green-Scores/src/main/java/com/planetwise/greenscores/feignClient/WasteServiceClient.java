@@ -10,7 +10,10 @@ import java.time.Year;
 
 @FeignClient(name="WASTE-TRACK")
 public interface WasteServiceClient {
-    @GetMapping("/{username}/getCarbonEmissions")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String authToken, @PathVariable Year year, @PathVariable Month month);
-
+    @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
+    public Double getCarbonEmissions(@RequestHeader("Authorization") String token,
+                                     @PathVariable String username,
+                                     @PathVariable Year year,
+                                     @PathVariable Month month);
 }
+

@@ -52,7 +52,7 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
     }
 
     @Override
-    public Double getCarbonEmissions(String username, String token, Year year, Month month) {
+    public Double getCarbonEmissions(String username, Year year, Month month) {
         if(energyRepo.existsByUsername(username)){
             return energyRepo.findByUsernameAndMonthAndYear(username,year,month).getFirst().getCarbon_emissions();
         }else {

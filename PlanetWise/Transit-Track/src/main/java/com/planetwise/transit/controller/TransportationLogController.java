@@ -52,9 +52,9 @@ public class TransportationLogController {
         return ResponseEntity.ok(emissions);
     }
 
-    @GetMapping("/{username}/getCarbonEmissions")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month ){
-        return transportationLogService.getCarbonEmissions(username,token,year,month);
+    @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
+    public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
+        return transportationLogService.getCarbonEmissions(username,year,month);
     }
 
 }

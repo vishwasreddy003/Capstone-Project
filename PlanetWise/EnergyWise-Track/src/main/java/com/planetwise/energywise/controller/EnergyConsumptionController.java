@@ -31,8 +31,8 @@ public class EnergyConsumptionController {
         return new ResponseEntity<>(analytics, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/getCarbonEmission")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month ){
-        return energyService.getCarbonEmissions(username,token,year,month);
+    @GetMapping("/{username}/getCarbonEmission/{year}/{month}")
+    public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
+        return energyService.getCarbonEmissions(username,year,month);
     }
 }

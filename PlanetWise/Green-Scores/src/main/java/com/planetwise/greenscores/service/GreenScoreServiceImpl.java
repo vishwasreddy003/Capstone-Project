@@ -7,6 +7,8 @@ import com.planetwise.greenscores.feignClient.WasteServiceClient;
 import com.planetwise.greenscores.model.GreenScores;
 import com.planetwise.greenscores.repository.GreenScoresRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.List;
 @Service
 public class GreenScoreServiceImpl implements GreenScoreService {
 
+    private static final Logger log = LoggerFactory.getLogger(GreenScoreServiceImpl.class);
     @Autowired
     private GreenScoresRepository greenScoresRepo;
 
@@ -53,12 +56,23 @@ public class GreenScoreServiceImpl implements GreenScoreService {
     }
 
     @Override
-    public Double calculateGreenScore(HttpServletRequest req, String username, Year year, Month month) {
+    public Double calculateGreenScore(HttpServletRequest req, String username, Year yearStr, Month monthStr) {
         String token = String.valueOf(req.getHeaders("Authorization"));
         String authToken = token.substring(7);
-        double e_emissions = energyServiceClient.getCarbonEmissions(username,authToken, year, month);
-        double t_emissions = transportServiceClient.getCarbonEmissions(username,authToken,year,month);
-        double w_emissions = wasteServiceClient.getCarbonEmissions(username,authToken,year,month);
-        return logic.calculate();
+
+        System.out.println(username + " " + yearStr + " " + monthStr);
+
+        double e_emissions = energyServiceClient.getCarbonEmissions(authToken,username, yearStr, monthStr);
+        double t_emissions = transportServiceClient.getCarbonEmissions(authToken,username,yearStr,monthStr);
+        double w_emissions = wasteServiceClient.getCarbonEmissions(authToken,username,yearStr,monthStr);
+        double score = logic.calculate();
+        GreenScores newscore = new GreenScores();
+        newscore.setUsername(username);
+        newscore.setYear(yearStr);
+        newscore.setMonth(monthStr);
+        newscore.setScore_value(score);
+        greenScoresRepo.save(newscore);
+        return score;
+
     }
 }

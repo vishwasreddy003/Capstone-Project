@@ -12,6 +12,6 @@ import java.time.Year;
 @FeignClient(name = "ENERGYWISE-TRACK")
 public interface EnergyServiceClient {
 
-    @GetMapping("/{username}/getCarbonEmission")
-    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month);
+    @GetMapping("/{username}/getCarbonEmission/{year}/{month}")
+    public Double getCarbonEmissions(@RequestHeader("Authorization") String token,@PathVariable String username, @PathVariable Year year, @PathVariable Month month);
 }
