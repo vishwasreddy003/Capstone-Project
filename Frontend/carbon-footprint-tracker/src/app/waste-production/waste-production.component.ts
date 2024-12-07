@@ -82,19 +82,3 @@ export class WasteProductionComponent implements OnInit{
 
 
 
-  // onSubmit(){
-  //   const wasteProdData:WasteProdData = {
-  //     month:this.month,
-  //     wasteType:this.wasteType
-  //   }
-
-  //   this.apiService.submitWasteProdData(wasteProdData).subscribe(
-  //     response=>{
-  //       console.log("Data submitted succesfully",response);
-  //     },
-  //     error=>{
-  //       console.log("Error submitting form",error);
-  //     }
-  //   );
-  // }
-

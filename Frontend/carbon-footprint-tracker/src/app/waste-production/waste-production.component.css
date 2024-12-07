@@ -66,3 +66,38 @@
   .is-valid {
     border-color: green !important;
   }
+
+  .btn-info {
+    background-color: #16423C; /* Green button */
+    color: white;
+  }
+  
+  .btn-info:hover {
+    background-color: #1E5E52;
+  }
+  
+  /* Next Button */
+  .btn-primary {
+    background-color:#16423C;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #1E5E52;
+  }
+
+  .btn-success, .btn-info, .btn-primary {
+    background-color: #16423C; /* Green button color */
+    color: white;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Full width buttons */
+  }
+  
+  /* Hover effect for buttons */
+  .btn-success:hover, .btn-info:hover, .btn-primary:hover {
+    background-color: #1E5E52; /* Darker green on hover */
+  }
