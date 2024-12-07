@@ -1,0 +1,44 @@
+<div class="container mt-4">
+    <div class="row">
+      <!-- Display item cards -->
+      <div class="col-md-4 mb-4" *ngFor="let item of items">
+        <div class="card shadow-sm">
+          <img [src]="item.image" class="card-img-top" alt="{{ item.brand }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.brand }}</h5>
+            <p class="card-text">
+                {{ item.description }}<br />
+              <strong>GreenCoins Required:</strong> {{ item.greenCoins }}<br />
+            </p>
+            <button class="btn btn-success w-100" (click)="selectItem(item)">
+              Redeem
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Custom Pop-up for Redeem Details -->
+    <div class="redeem-popup" *ngIf="selectedItem">
+      <div class="popup-content">
+        <button class="close-btn" (click)="closePopup()">×</button>
+        <img
+          [src]="selectedItem.image"
+          class="img-fluid mb-3"
+          alt="{{ selectedItem.brand }}"
+        />
+        <h5>{{ selectedItem.brand }}</h5>
+        <p><strong>GreenCoins Required:</strong> {{ selectedItem.greenCoins }}</p>
+        <button class="btn btn-success" (click)="redeemItem()" [disabled]="redeemCode !== null">
+          Claim
+        </button>
+        <div *ngIf="redeemCode" class="mt-3">
+          <p><strong>Redeem Code:</strong> {{ redeemCode }}</p>
+          <button class="btn btn-outline-secondary" (click)="copyCode()">
+            Copy Code
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

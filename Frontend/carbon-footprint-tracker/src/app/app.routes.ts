@@ -6,6 +6,7 @@ import { EnergyWasteComponent } from './energy-waste/energy-waste.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { StoreComponent } from './store/store.component';
 import { TransportationComponent } from './transportation/transportation.component';
 import { WasteProductionComponent } from './waste-production/waste-production.component';
 
@@ -17,7 +18,8 @@ export const routes: Routes = [
     {path:'waste',component:WasteProductionComponent},
     {path:'transport',component:TransportationComponent},
     {path:'energy',component:EnergyWasteComponent},
-    {path:'analytics', component:AnalyticsComponent}
+    {path:'analytics', component:AnalyticsComponent},
+    {path:'store',component:StoreComponent}
 ];
 
 @NgModule({
