@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.time.Month;
 import java.time.Year;
 
-@FeignClient(name="WASTE-TRACK")
+@FeignClient(name="WASTE-TRACK", path="/PlanetWise/WasteProduction")
 public interface WasteServiceClient {
     @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
     public Double getCarbonEmissions(@RequestHeader("Authorization") String token,

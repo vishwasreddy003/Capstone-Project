@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.time.Month;
 import java.time.Year;
 
-@FeignClient(name = "ENERGYWISE-TRACK")
+@FeignClient(name = "ENERGYWISE-TRACK",path="/PlanetWise/energy")
 public interface EnergyServiceClient {
 
-    @GetMapping("/{username}/getCarbonEmission/{year}/{month}")
+    @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
     public Double getCarbonEmissions(@RequestHeader("Authorization") String token,@PathVariable String username, @PathVariable Year year, @PathVariable Month month);
 }

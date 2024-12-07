@@ -54,7 +54,7 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
     @Override
     public Double getCarbonEmissions(String username, Year year, Month month) {
         if(energyRepo.existsByUsername(username)){
-            return energyRepo.findByUsernameAndMonthAndYear(username,year,month).getFirst().getCarbon_emissions();
+            return energyRepo.findByUsernameAndMonthAndYear(username,year,month).stream().mapToDouble(i->i.getCarbon_emissions()).average().getAsDouble();
         }else {
             throw new UsernameNotFoundException(("User with username " + username +" not found"));
         }
