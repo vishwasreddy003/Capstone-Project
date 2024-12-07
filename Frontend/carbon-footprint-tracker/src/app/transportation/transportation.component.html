@@ -154,7 +154,7 @@
           <!-- Add New Form Button and Next Button -->
           <div class="row">
             <div class="col-6 mb-3">
-              <button type="button" class="btn btn-info" (click)="onSubmit()">
+              <button type="button" class="btn btn-info" [disabled]="transportForm.invalid" (click)="onSubmit()">
                 Add New Form
               </button>
             </div>
@@ -162,6 +162,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
+                [disabled]="transportForm.invalid"
                 (click)="goToEnergyPage()"
               >
                 Next
