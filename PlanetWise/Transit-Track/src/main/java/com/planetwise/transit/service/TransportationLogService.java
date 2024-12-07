@@ -5,6 +5,7 @@ import com.planetwise.transit.model.TransportationLog;
 import com.planetwise.transit.model.TransportationMode;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +20,5 @@ public interface TransportationLogService {
 
     public Map<Month,Double> getTrendsForTransportation(String username);
 
-    Double getCarbonEmissions(String username);
+    Double getCarbonEmissions(String username, String token, Year year, Month month);
 }

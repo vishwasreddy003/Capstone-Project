@@ -1,5 +1,6 @@
 package com.planetwise.transit.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,8 @@ public class TransportationLog {
     private float distance_km;
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
+    @Enumerated(EnumType.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Month month;
     private Year year;
     private Double carbon_emissions;

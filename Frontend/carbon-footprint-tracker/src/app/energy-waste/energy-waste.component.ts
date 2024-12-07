@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TrackerApiService } from '../tracker-api.service';
 
 
@@ -17,7 +18,7 @@ export class EnergyWasteComponent implements OnInit{
  
 
 
- constructor(private formBuiler : FormBuilder,private trackerApiService:TrackerApiService){}
+ constructor(private formBuiler : FormBuilder,private trackerApiService:TrackerApiService,private router:Router){}
 
  energyWasteForm : FormGroup = new FormGroup({})
  yearsList: number[] = [];
@@ -39,6 +40,7 @@ export class EnergyWasteComponent implements OnInit{
      this.trackerApiService.submitEnergyData(energyData).subscribe(
        response=>{
          alert("Form submitted successfully");
+         this.router.navigate(['/dashboard'])
        },
        error =>{
          console.log("Error submitting Form",error);

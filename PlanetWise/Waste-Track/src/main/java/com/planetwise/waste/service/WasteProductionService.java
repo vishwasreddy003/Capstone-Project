@@ -2,13 +2,15 @@ package com.planetwise.waste.service;
 
 import com.planetwise.waste.model.WasteProduction;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 public interface WasteProductionService {
 
-     WasteProduction saveWasteProduction(String username,WasteProduction wasteProduction);
+    WasteProduction saveWasteProduction(String username, WasteProduction wasteProduction);
 
-     List<WasteProduction> getTrendsForWasteProduction(String username);
+    List<WasteProduction> getTrendsForWasteProduction(String username);
 
-     Double getCarbonEmissions(String username);
+    Double getCarbonEmissions(String username, String token, Year year, Month month);
 }

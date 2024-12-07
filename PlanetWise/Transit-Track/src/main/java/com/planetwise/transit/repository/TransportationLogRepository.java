@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.List;
+import java.util.SequencedCollection;
 import java.util.UUID;
 
 public interface TransportationLogRepository extends JpaRepository<TransportationLog, UUID> {
@@ -28,5 +30,8 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
     List<Object[]> findMonthlyCarbonEmissionsByUsernameAndDateRange(String username, int startYear, Month startMonth);
 
     boolean existsByUsername(String username);
+
+    @Query("SELECT t FROM TransportationLog t WHERE t.username = :username AND t.month = :month AND t.year = :year")
+    List<TransportationLog> findByUsernameAndMonthAndYear(String username, Year year, Month month);
 }
 

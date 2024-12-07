@@ -1,10 +1,7 @@
 package com.planetwise.greenscores.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,7 @@ public class GreenScores {
     private UUID score_id;
     private String username;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Enumerated(EnumType.STRING)
     private Month month;
     private Year year;
     private Double score_value;

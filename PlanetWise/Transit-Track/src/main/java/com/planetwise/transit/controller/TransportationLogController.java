@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class TransportationLogController {
 
     @PostMapping("/{username}/addData")
     public ResponseEntity<TransportationLog> saveTransportationLog(@PathVariable String username,@RequestBody TransportationLog transportationLog) {
+        transportationLog.setUsername(username);
         TransportationLog savedLog = transportationLogService.addTransportationUsage(username,transportationLog);
         return new ResponseEntity<>(savedLog, HttpStatus.CREATED);
     }
@@ -51,8 +53,8 @@ public class TransportationLogController {
     }
 
     @GetMapping("/{username}/getCarbonEmissions")
-    public Double getCarbonEmissions(@PathVariable String username){
-        return transportationLogService.getCarbonEmissions(username);
+    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month ){
+        return transportationLogService.getCarbonEmissions(username,token,year,month);
     }
 
 }

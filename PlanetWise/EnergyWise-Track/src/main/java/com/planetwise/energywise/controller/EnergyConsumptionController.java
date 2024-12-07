@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,7 @@ public class EnergyConsumptionController {
 
     @PostMapping("/{username}/addData")
     public ResponseEntity<EnergyConsumption> addEnergyConsumption(@PathVariable String username,@RequestBody EnergyConsumption energyConsumption) {
+        energyConsumption.setUsername(username);
         EnergyConsumption savedData = energyService.saveEnergyConsumption(username,energyConsumption);
         return new ResponseEntity<>(savedData, HttpStatus.CREATED);
     }
@@ -29,7 +32,7 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/{username}/getCarbonEmission")
-    public Double getCarbonEmissions(@PathVariable String username){
-        return energyService.getCarbonEmissions(username);
+    public Double getCarbonEmissions(@PathVariable String username, @RequestHeader("Authorization") String token, @PathVariable Year year, @PathVariable Month month ){
+        return energyService.getCarbonEmissions(username,token,year,month);
     }
 }

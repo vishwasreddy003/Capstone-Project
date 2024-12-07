@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @Service
@@ -51,9 +52,9 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
     }
 
     @Override
-    public Double getCarbonEmissions(String username) {
+    public Double getCarbonEmissions(String username, String token, Year year, Month month) {
         if(energyRepo.existsByUsername(username)){
-            return energyRepo.findByUsername(username).getCarbon_emissions();
+            return energyRepo.findByUsernameAndMonthAndYear(username,year,month).getFirst().getCarbon_emissions();
         }else {
             throw new UsernameNotFoundException(("User with username " + username +" not found"));
         }

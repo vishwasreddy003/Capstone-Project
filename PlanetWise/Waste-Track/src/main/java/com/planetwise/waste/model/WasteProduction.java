@@ -19,6 +19,7 @@ public class WasteProduction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID waste_id;
     private String username;
+    @Enumerated(EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Month month;
     private Year year;

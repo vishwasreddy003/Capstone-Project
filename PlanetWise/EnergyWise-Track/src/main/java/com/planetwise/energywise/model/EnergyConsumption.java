@@ -1,10 +1,7 @@
 package com.planetwise.energywise.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,7 @@ public class EnergyConsumption {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID entry_id;
     private String username;
+    @Enumerated(EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Month month;
     private Year year;

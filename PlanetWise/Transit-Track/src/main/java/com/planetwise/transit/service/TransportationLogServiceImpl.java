@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,9 +83,9 @@ public class TransportationLogServiceImpl implements TransportationLogService {
     }
 
     @Override
-    public Double getCarbonEmissions(String username) {
+    public Double getCarbonEmissions(String username, String token, Year year, Month month) {
         if(transportRepo.existsByUsername(username)){
-            return transportRepo.findByUsername(username).getFirst().getCarbon_emissions();
+            return transportRepo.findByUsernameAndMonthAndYear(username,year,month).getFirst().getCarbon_emissions();
         }else {
             throw new UsernameNotFoundException(("User with username " + username +" not found"));
         }

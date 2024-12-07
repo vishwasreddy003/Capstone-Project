@@ -51,9 +51,9 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     }
 
     @Override
-    public Double getCarbonEmissions(String username) {
+    public Double getCarbonEmissions(String username,String token,Year year,Month month) {
         if(wasteProductionRepo.existsByUsername(username)){
-            return wasteProductionRepo.findByUsername(username).getCarbon_emissions();
+            return wasteProductionRepo.findByUsernameAndYearAndMonth(username,year,month).getFirst().getCarbon_emissions();
         }else{
             throw new UsernameNotFoundException("User with username " + username +" not found");
         }

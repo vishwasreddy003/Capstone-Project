@@ -23,5 +23,5 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   boolean existsByUsername(String username);
 
-  WasteProduction findByUsername(String username);
+  List<WasteProduction> findByUsernameAndYearAndMonth(String username,Year year,Month month);
 }
