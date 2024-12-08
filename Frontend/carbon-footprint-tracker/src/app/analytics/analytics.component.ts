@@ -27,7 +27,7 @@ export class AnalyticsComponent implements AfterViewInit {
   };
 
   private months: string[] = [
-    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+    'JANUARY', 'FEBRAUARY', 'MAR', 'APR', 'MAY', 'JUN',
     'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
   ];
 

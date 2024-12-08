@@ -35,6 +35,9 @@ export class TrackerApiService {
     let username = sessionStorage.getItem('username')
     return this.http.post(this.baseUrl+`/greenScore/${username}/calculate`,greenScore);
   }
-
+ 
+  getAllGoals(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl+`/goals/allGoals`);
+  }
 
 }

@@ -82,35 +82,39 @@
         <h5 class="card-title mb-4">Carbon Reduction Goals</h5>
 
         <!-- Task View Buttons -->
-        <div class="btn-group mb-4">
-          <button class="btn" [class.btn-success]="selectedTaskView === 'current'"
-            [class.btn-outline-success]="selectedTaskView !== 'current'" (click)="selectTaskView('current')">
-            Current Tasks
-          </button>
-          <button class="btn" [class.btn-success]="selectedTaskView === 'completed'"
-            [class.btn-outline-success]="selectedTaskView !== 'completed'" (click)="selectTaskView('completed')">
-            Completed Tasks
-          </button>
-          <button class="btn" [class.btn-success]="selectedTaskView === 'available'"
-            [class.btn-outline-success]="selectedTaskView !== 'available'" (click)="selectTaskView('available')">
-            Available Tasks
-          </button>
-        </div>
+        <!-- Task View Buttons -->
+<div class="btn-group mb-4">
+  <button class="btn" [class.btn-success]="selectedTaskView === 'current'"
+    [class.btn-outline-success]="selectedTaskView !== 'current'" (click)="selectTaskView('current')">
+    Current Tasks
+  </button>
+  <button class="btn" [class.btn-success]="selectedTaskView === 'completed'"
+    [class.btn-outline-success]="selectedTaskView !== 'completed'" (click)="selectTaskView('completed')">
+    Completed Tasks
+  </button>
+  <button class="btn" [class.btn-success]="selectedTaskView === 'available'"
+    [class.btn-outline-success]="selectedTaskView !== 'available'" (click)="selectTaskView('available')">
+    Available Tasks
+  </button>
+</div>
+
 
         <!-- Task List -->
-        <div class="row">
-          <div class="col-md-4" *ngFor="let task of getDisplayedTasks()">
-            <div class="card mb-3">
-              <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted text-capitalize">{{task.category}}</h6>
-                <p class="card-text">{{task.task}}</p>
-                <span class="badge" [class.bg-success]="task.impact < 0" [class.bg-danger]="task.impact >= 0">
-                  {{task.impact}} kg CO₂/month
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Task List -->
+<div class="row">
+  <div class="col-md-4" *ngFor="let task of getDisplayedTasks()">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted text-capitalize">{{task.category}}</h6>
+        <p class="card-text">{{task.task}}</p>
+        <span class="badge" [class.bg-success]="task.impact < 0" [class.bg-danger]="task.impact >= 0">
+          {{task.impact}} kg CO₂/month
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   </div>

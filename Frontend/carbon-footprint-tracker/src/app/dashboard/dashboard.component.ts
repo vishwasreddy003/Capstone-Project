@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 import { environment } from '../../environments/environment.development';
+import { TrackerApiService } from '../tracker-api.service';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -33,7 +34,9 @@ interface Recommendation {
   imports:[CommonModule]
 })
 export class DashboardComponent implements OnInit {
-  selectedTaskView: string = 'current';
+  selectedTaskView: string = 'available';
+
+  availableGoals: Task[] = [];
 
   selectTaskView(view: string): void {
     this.selectedTaskView = view;
@@ -42,6 +45,8 @@ export class DashboardComponent implements OnInit {
   getDisplayedTasks(): Task[] {
     return this.tasks[this.selectedTaskView] || [];
   }
+
+
   selectedCategory: CategoryKey = 'overall';
   aiRecommendations: string[] = [];
   carbonData: Record<CategoryKey, number> = {
@@ -52,40 +57,55 @@ export class DashboardComponent implements OnInit {
   };
 
   tasks: { [key: string]: Task[] } = {
-    current: [
-      { id: 1, category: 'daily', task: 'Use reusable bags for shopping', impact: -2 },
-      { id: 2, category: 'weekly', task: 'Carpool to work 3 days', impact: -5 },
-      { id: 3, category: 'monthly', task: 'Install LED lightbulbs', impact: -20 },
-    ],
-    completed: [
-      { id: 4, category: 'daily', task: 'Turn off unused lights', impact: -1, completed: true },
-      { id: 5, category: 'weekly', task: 'Compost kitchen waste', impact: -3, completed: true },
-    ],
-    available: [
-      { id: 6, category: 'monthly', task: 'Install solar panels', impact: -50 },
-      { id: 7, category: 'weekly', task: 'Start a kitchen garden', impact: -8 },
-    ],
+    current: [],
+    completed: [],
+    available: [],
   };
 
   currentScore: number = 0;
   recommendations: Recommendation[] = [];
   private genAI: GoogleGenerativeAI;
 
-  constructor() {
+  constructor(private trackerApiService:TrackerApiService) {
     this.genAI = new GoogleGenerativeAI(environment.API_KEY);
+    
   }
 
   ngOnInit(): void {
+    this.loadAvailableGoals(); 
     this.updateScore('overall');
      this.generateRecommendations();
   }
 
+  loadAvailableGoals() : void {
+    this.trackerApiService.getAllGoals().subscribe(
+      (goals) => {
+        // Assuming goals are formatted in a compatible structure for your component
+        this.availableGoals = goals.map((goal) => ({
+          id: goal.id,
+          category: goal.category,
+          task: goal.task,
+          impact: goal.impact,
+          completed: goal.completed,
+        }));
+        this.tasks['available'] = this.availableGoals;
+      },
+      (error) => {
+        console.error('Error fetching available goals', error);
+      }
+    );
+  }
 
   selectCategory(category: CategoryKey): void {
     this.selectedCategory = category;
     this.updateScore(category);
     this.currentScore = this.calculateScore(category);
   }
+
+
+
+
+
 
   async generateRecommendations(): Promise<void> {
     try {
@@ -124,8 +144,8 @@ export class DashboardComponent implements OnInit {
       // Improved parsing logic
       this.recommendations = responseText
         .split('\n')
-        .filter((line) => line.trim() !== '')
-        .map((line) => {
+        .filter((line: string) => line.trim() !== '')
+        .map((line: string) => {
           const parsed = this.parseRecommendation(line);
           return parsed;
         });
