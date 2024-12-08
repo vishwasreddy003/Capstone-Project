@@ -32,7 +32,7 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
-    public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
-        return energyService.getCarbonEmissions(username,year,month);
+    public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ) {
+        return energyService.getCarbonEmissions(username, year, month);
     }
 }
