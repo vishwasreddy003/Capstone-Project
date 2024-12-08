@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
+import { environment } from '../../environments/environment.development';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -28,92 +30,10 @@ interface Recommendation {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports:[CommonModule]
 })
 export class DashboardComponent implements OnInit {
-  selectedCategory: CategoryKey = 'overall';
   selectedTaskView: string = 'current';
-
-  carbonData: Record<CategoryKey, number> = {
-    overall: 2500,
-    household: 1200,
-    transportation: 800,
-    waste: 500
-  };
-
-  tasks: { [key: string]: Task[] } = {
-    current: [
-      { id: 1, category: 'daily', task: 'Use reusable bags for shopping', impact: -2 },
-      { id: 2, category: 'weekly', task: 'Carpool to work 3 days', impact: -5 },
-      { id: 3, category: 'monthly', task: 'Install LED lightbulbs', impact: -20 }
-    ],
-    completed: [
-      { id: 4, category: 'daily', task: 'Turn off unused lights', impact: -1, completed: true },
-      { id: 5, category: 'weekly', task: 'Compost kitchen waste', impact: -3, completed: true }
-    ],
-    available: [
-      { id: 6, category: 'monthly', task: 'Install solar panels', impact: -50 },
-      { id: 7, category: 'weekly', task: 'Start a kitchen garden', impact: -8 }
-    ]
-  };
-
-  currentScore: number = 0;
-  
-  recommendations: Recommendation[] = [];
-
-  aiRecommendations: string[] = [];
-
-  ngOnInit(): void {
-    this.updateScore('overall');
-    this.recommendations = this.getRecommendations();
-  }
-
-  getRecommendations(): Recommendation[] {
-    const recommendations: Recommendation[] = [];
-    
-    if (this.carbonData['household'] > 1000) {
-      recommendations.push({
-        icon: 'home',
-        title: 'Household Efficiency',
-        text: 'Your household emissions are high. Consider installing a smart thermostat and energy-efficient appliances to reduce consumption.',
-        impact: '-200kg CO₂/month'
-      });
-    }
-
-    if (this.carbonData['transportation'] > 700) {
-      recommendations.push({
-        icon: 'car',
-        title: 'Transportation',
-        text: 'Try carpooling or using public transport twice a week. This small change can significantly reduce your carbon footprint.',
-        impact: '-160kg CO₂/month'
-      });
-    }
-
-    if (this.carbonData['waste'] > 400) {
-      recommendations.push({
-        icon: 'package',
-        title: 'Waste Management',
-        text: 'Start composting organic waste and ensure proper recycling. This can reduce your waste emissions substantially.',
-        impact: '-100kg CO₂/month'
-      });
-    }
-
-    recommendations.push({
-      icon: 'lightbulb',
-      title: 'Energy Savings',
-      text: 'Replace all traditional bulbs with LED alternatives and unplug devices when not in use.',
-      impact: '-50kg CO₂/month'
-    });
-
-
-    return recommendations;
-  }
-
-  selectCategory(category: CategoryKey): void {
-    this.selectedCategory = category;
-    this.updateScore(category);
-    this.currentScore = this.calculateScore(category);
-  }
 
   selectTaskView(view: string): void {
     this.selectedTaskView = view;
@@ -122,73 +42,157 @@ export class DashboardComponent implements OnInit {
   getDisplayedTasks(): Task[] {
     return this.tasks[this.selectedTaskView] || [];
   }
+  selectedCategory: CategoryKey = 'overall';
+  aiRecommendations: string[] = [];
+  carbonData: Record<CategoryKey, number> = {
+    overall: 2500,
+    household: 1200,
+    transportation: 800,
+    waste: 500,
+  };
+
+  tasks: { [key: string]: Task[] } = {
+    current: [
+      { id: 1, category: 'daily', task: 'Use reusable bags for shopping', impact: -2 },
+      { id: 2, category: 'weekly', task: 'Carpool to work 3 days', impact: -5 },
+      { id: 3, category: 'monthly', task: 'Install LED lightbulbs', impact: -20 },
+    ],
+    completed: [
+      { id: 4, category: 'daily', task: 'Turn off unused lights', impact: -1, completed: true },
+      { id: 5, category: 'weekly', task: 'Compost kitchen waste', impact: -3, completed: true },
+    ],
+    available: [
+      { id: 6, category: 'monthly', task: 'Install solar panels', impact: -50 },
+      { id: 7, category: 'weekly', task: 'Start a kitchen garden', impact: -8 },
+    ],
+  };
+
+  currentScore: number = 0;
+  recommendations: Recommendation[] = [];
+  private genAI: GoogleGenerativeAI;
+
+  constructor() {
+    this.genAI = new GoogleGenerativeAI(environment.API_KEY);
+  }
+
+  ngOnInit(): void {
+    this.updateScore('overall');
+     this.generateRecommendations();
+  }
+
+
+  selectCategory(category: CategoryKey): void {
+    this.selectedCategory = category;
+    this.updateScore(category);
+    this.currentScore = this.calculateScore(category);
+  }
+
+  async generateRecommendations(): Promise<void> {
+    try {
+      const generationConfig = {
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+          },
+        ],
+        temperature: 0.8,
+        top_p: 0.9,
+        maxOutputTokens: 200,
+      };
+  
+      const model = this.genAI.getGenerativeModel({
+        model: 'gemini-pro',
+        ...generationConfig,
+      });
+  
+      const prompt = `
+        Generate 3 actionable and concise recommendations for reducing carbon emissions in daily activities for the category: ${this.selectedCategory}.
+        Each recommendation should have:
+        - An icon related to the recommendation (e.g., 'home', 'car', 'package').
+        - A title describing the recommendation.
+        - A brief text description of no more than 120 characters.
+        - The impact on nature, such as CO₂ reduction (e.g., '-200kg CO₂/month').
+        Example format:
+        icon: 'home', title: 'Household Efficiency', text: 'Install energy-efficient appliances.', impact: '-150kg CO₂/month'
+      `;
+  
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const responseText = await response.text();
+  
+      // Improved parsing logic
+      this.recommendations = responseText
+        .split('\n')
+        .filter((line) => line.trim() !== '')
+        .map((line) => {
+          const parsed = this.parseRecommendation(line);
+          return parsed;
+        });
+  
+      console.log(this.recommendations); // Debug the formatted recommendations
+    } catch (error) {
+      console.error('Error generating recommendations:', error);
+    }
+  }
+  
+  private parseRecommendation(line: string): Recommendation {
+    // Match key-value pairs like `key: 'value'`
+    const regex = /(\w+):\s*'([^']+)'/g;
+    const result: Record<string, string> = {};
+    let match: RegExpExecArray | null;
+  
+    while ((match = regex.exec(line)) !== null) {
+      result[match[1]] = match[2];
+    }
+  
+    // Return a structured recommendation object
+    return {
+      icon: result['icon'] || 'lightbulb', // Default icon if not provided
+      title: result['title'] || 'No Title',
+      text: result['text'] || 'No Description',
+      impact: result['impact'] || 'No Impact',
+    };
+  }
+  
 
   private updateScore(category: CategoryKey): void {
-    const maxScore = 100;
     const baselineEmissions: Record<CategoryKey, number> = {
       overall: 3500,
       household: 1800,
       transportation: 1200,
-      waste: 800
+      waste: 800,
     };
 
     const categoryEmissions = this.carbonData[category];
     const baselineEmission = baselineEmissions[category];
-    
-    this.currentScore = Math.min(100, Math.max(0,
-      Math.round(100 - (categoryEmissions / baselineEmission * 100))
-    ));
+
+    this.currentScore = Math.min(
+      100,
+      Math.max(
+        0,
+        Math.round(100 - (categoryEmissions / baselineEmission) * 100),
+      ),
+    );
   }
 
   private calculateScore(category: CategoryKey): number {
-    const maxScore = 100;
     const baselineEmissions: Record<CategoryKey, number> = {
       overall: 3500,
       household: 1800,
       transportation: 1200,
-      waste: 800
+      waste: 800,
     };
 
     const categoryEmissions = this.carbonData[category];
     const baselineEmission = baselineEmissions[category];
-    
-    return Math.min(100, Math.max(0,
-      Math.round(100 - (categoryEmissions / baselineEmission * 100))
-    ));
-  }
 
-  generateAIRecommendations(): void {
-    const recommendations: { [key: string]: string[] } = {
-      overall: [
-        'Focus on reducing transportation emissions for the biggest impact.',
-        'Consider switching to energy-efficient appliances.',
-        'Try carpooling or using public transport more frequently.',
-        'Implement composting and increase recycling.',
-        'Explore renewable energy options like solar panels.'
-      ],
-      household: [
-        'Switch to energy-efficient appliances.',
-        'Install LED lighting.',
-        'Reduce water heating costs by using solar water heaters.',
-        'Improve home insulation to save energy.',
-        'Use smart thermostats to optimize heating and cooling.'
-      ],
-      transportation: [
-        'Carpool or use public transport more frequently.',
-        'Consider electric or hybrid vehicles.',
-        'Plan trips to minimize travel distance.',
-        'Use bicycles for short distances.',
-        'Regularly maintain your vehicle for optimal efficiency.'
-      ],
-      waste: [
-        'Implement composting.',
-        'Increase recycling efforts.',
-        'Reduce single-use plastics.',
-        'Donate or repurpose items instead of discarding.',
-        'Buy in bulk to reduce packaging waste.'
-      ]
-    };
-
-    this.aiRecommendations = recommendations[this.selectedCategory];
+    return Math.min(
+      100,
+      Math.max(
+        0,
+        Math.round(100 - (categoryEmissions / baselineEmission) * 100),
+      ),
+    );
   }
 }

@@ -1,44 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #16423C;">
   <div class="container-fluid">
+    <!-- Brand -->
     <a class="navbar-brand" href="#" style="color: #E9EFEC; font-weight: bold;">
       <i class="fa-solid fa-seedling"></i> PlanetWise
     </a>
 
+    <!-- Toggler for Mobile View -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isLoggedIn">
         <li class="nav-item">
-          <a class="nav-link" href="/waste" style="color: #C4DAD2;">
+          <a class="nav-link" href="/getStarted" style="color: #C4DAD2;">
             <i class="fa-solid fa-bars-progress"></i> Add Data
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/analytics" style="color: #C4DAD2;">
-            <i class="fas fa-users"></i> Analytics
+            <i class="fas fa-chart-line"></i> Analytics
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="/store" style="color: #C4DAD2;">
-            <i class="fas fa-users"></i> Store
+            <i class="fas fa-shopping-cart"></i> Store
           </a>
         </li>
-
       </ul>
 
+      <!-- Right-Aligned Links -->
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="login" style="color: #E9EFEC;">Login</a>
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a class="nav-link" href="/login" style="color: #E9EFEC;">Login</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="signup" style="color: #E9EFEC;">Signup</a>
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a class="nav-link" href="/signup" style="color: #E9EFEC;">Signup</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link" [routerLink]="'/'" fragment="footer" style="color: #E9EFEC;">About</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <button class="btn btn-outline-light" (click)="logout()">Log Out</button>
         </li>
       </ul>
     </div>
@@ -46,5 +51,4 @@
 </nav>
 
 
-
-<!-- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

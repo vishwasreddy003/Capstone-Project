@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SharedStateService } from '../auth.service';
 import { LoginService } from '../login.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private router:Router
+    private router:Router,
+    private sharedStateService: SharedStateService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class LoginComponent implements OnInit {
             sessionStorage.setItem('tokenId', jwt);
             sessionStorage.setItem('username', username);
             console.log('Token and username stored successfully');
+            this.sharedStateService.login();
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Required data not found in response');

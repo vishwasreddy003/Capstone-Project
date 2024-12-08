@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnergyWasteComponent } from './energy-waste/energy-waste.component';
+import { GetStartedComponent } from './get-started/get-started.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -19,7 +20,8 @@ export const routes: Routes = [
     {path:'transport',component:TransportationComponent},
     {path:'energy',component:EnergyWasteComponent},
     {path:'analytics', component:AnalyticsComponent},
-    {path:'store',component:StoreComponent}
+    {path:'store',component:StoreComponent},
+    {path:'getStarted',component:GetStartedComponent}
 ];
 
 @NgModule({

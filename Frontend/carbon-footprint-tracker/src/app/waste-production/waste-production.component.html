@@ -23,6 +23,7 @@
                 class="form-select"
                 id="month"
                 formControlName="month"
+                (change)="onMonthChange($event)"
                 [class.is-invalid]="
                   wasteProdForm.get('month')?.touched &&
                   wasteProdForm.get('month')?.invalid
@@ -53,6 +54,7 @@
                 class="form-select"
                 id="year"
                 formControlName="year"
+                (change)="onYearChange($event)"
                 [class.is-invalid]="
                   wasteProdForm.get('year')?.touched &&
                   wasteProdForm.get('year')?.invalid

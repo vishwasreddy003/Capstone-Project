@@ -46,7 +46,7 @@ export class EnergyWasteComponent implements OnInit{
        response=>{
          alert("Form submitted successfully");
          this.router.navigate(['/dashboard'])
-         this.trackerApiService.getGreenScores(greenScore)
+        //  this.trackerApiService.getGreenScores(greenScore)
        },
        error =>{
          console.log("Error submitting Form",error);
