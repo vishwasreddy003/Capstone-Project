@@ -17,11 +17,7 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
     @Query("SELECT t FROM TransportationLog t WHERE t.username = :username")
     List<TransportationLog> findByUsername(String username);
 
-    @Query("SELECT t FROM TransportationLog t WHERE t.username = :username AND t.transportation_mode = :transportationMode")
-    List<TransportationLog> findByUsernameAndTransportMode(String username, TransportationMode transportationMode);
 
-    @Query("SELECT t FROM TransportationLog t WHERE t.username = :username AND t.fuel_type = :fuelType")
-    List<TransportationLog> findByUsernameAndFuelType(String username, FuelType fuelType);
 
     // Modified query to filter by both year and month
     @Query("SELECT t.month, SUM(t.carbon_emissions) FROM TransportationLog t WHERE t.username = :username " +
@@ -32,6 +28,6 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
     boolean existsByUsername(String username);
 
     @Query("SELECT t FROM TransportationLog t WHERE t.username = :username AND t.month = :month AND t.year = :year")
-    List<TransportationLog> findByUsernameAndMonthAndYear(String username, Year year, Month month);
+    List<TransportationLog> findByUsernameAndMonthAndYear(String username, int year, Month month);
 }
 

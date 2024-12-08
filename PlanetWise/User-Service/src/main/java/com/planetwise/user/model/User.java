@@ -48,7 +48,8 @@ public class User {
 
     private Roles role;
 
-//    @JsonIgnore
+
+//    @ElementCollection(targetClass = "")
 //    List<Goals> userGoals;
 
 

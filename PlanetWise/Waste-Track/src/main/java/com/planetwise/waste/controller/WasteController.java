@@ -35,4 +35,9 @@ public class WasteController {
     public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
         return wasteProductionService.getCarbonEmissions(username, year, month);
     }
+
+    @GetMapping("/{username}/latest")
+    public Double getCarbonEmissions(@PathVariable String username){
+        return wasteProductionService.getLatestCarbonEmissions(username);
+    }
 }

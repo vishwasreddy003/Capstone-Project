@@ -1,6 +1,8 @@
 package com.planetwise.energywise.service;
 
 import com.planetwise.energywise.calculation.CarbonEmissionCalculation;
+import com.planetwise.energywise.dto.DtoUtil;
+import com.planetwise.energywise.dto.TrendsDto;
 import com.planetwise.energywise.exception.DataAlreadyExistsException;
 import com.planetwise.energywise.exception.UsernameNotFoundException;
 import com.planetwise.energywise.model.EnergyConsumption;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
@@ -40,7 +43,7 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
 
     @Override
-    public List<EnergyConsumption> getUserTrendsForEnergyConsumption(String username) {
+    public List<TrendsDto> getUserTrendsForEnergyConsumption(String username) {
 
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusMonths(10);
@@ -48,13 +51,14 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
-        return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth);
+        return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth).stream().map(DtoUtil::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Double getCarbonEmissions(String username, Year year, Month month) {
         if(energyRepo.existsByUsername(username)){
-            return energyRepo.findByUsernameAndMonthAndYear(username,year,month).stream().mapToDouble(i->i.getCarbon_emissions()).average().getAsDouble();
+            return energyRepo.findByUsernameAndMonthAndYear(username,year,month).stream().mapToDouble(EnergyConsumption::getCarbon_emissions).average().getAsDouble();
         }else {
             throw new UsernameNotFoundException(("User with username " + username +" not found"));
         }

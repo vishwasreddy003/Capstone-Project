@@ -24,4 +24,33 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
   boolean existsByUsername(String username);
 
   List<WasteProduction> findByUsernameAndYearAndMonth(String username,Year year,Month month);
+
+//  @Query("SELECT *\n" +
+//          "FROM WasteProduction\n" +
+//          "WHERE username =:username and year = (\n" +
+//          "    SELECT MAX(year)\n" +
+//          "    FROM your_table\n" +
+//          ")\n" +
+//          "AND month = (\n" +
+//          "    SELECT month\n" +
+//          "    FROM your_table\n" +
+//          "    WHERE year = (SELECT MAX(year) FROM your_table)\n" +
+//          "    ORDER BY \n" +
+//          "      CASE month\n" +
+//          "        WHEN 'January' THEN 1\n" +
+//          "        WHEN 'February' THEN 2\n" +
+//          "        WHEN 'March' THEN 3\n" +
+//          "        WHEN 'April' THEN 4\n" +
+//          "        WHEN 'May' THEN 5\n" +
+//          "        WHEN 'June' THEN 6\n" +
+//          "        WHEN 'July' THEN 7\n" +
+//          "        WHEN 'August' THEN 8\n" +
+//          "        WHEN 'September' THEN 9\n" +
+//          "        WHEN 'October' THEN 10\n" +
+//          "        WHEN 'November' THEN 11\n" +
+//          "        WHEN 'December' THEN 12\n" +
+//          "      END DESC\n" +
+//          "    LIMIT 1\n" +
+//          ");\n")
+//  List<WasteProduction> getLatestData(String username);
 }
