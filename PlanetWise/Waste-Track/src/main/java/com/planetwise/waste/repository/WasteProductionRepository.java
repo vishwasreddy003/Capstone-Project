@@ -14,7 +14,7 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   @Query("SELECT w FROM WasteProduction w WHERE w.username = :username " +
           "AND (w.year > :startYear OR (w.year = :startYear AND w.month >= :startMonth))")
-  List<WasteProduction> findWasteProductionFromLastTenMonths(String username, int startYear, Month startMonth);
+  List<WasteProduction> findWasteProductionFromLastTenMonths(String username, Year startYear, Month startMonth);
 
 
   @Query("SELECT count(*) > 0 FROM WasteProduction w WHERE w.username = :username " +

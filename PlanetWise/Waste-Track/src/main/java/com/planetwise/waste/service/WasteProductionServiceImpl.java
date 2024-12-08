@@ -48,9 +48,10 @@ public class WasteProductionServiceImpl implements WasteProductionService{
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
+        Year y = Year.of(startYear);
 
 
-        List<WasteProduction> wasteProductions = wasteProductionRepo.findWasteProductionFromLastTenMonths(username, startYear, startMonth);
+        List<WasteProduction> wasteProductions = wasteProductionRepo.findWasteProductionFromLastTenMonths(username, y, startMonth);
 
         // Group by month and year, and sum up carbon emissions
         Map<String, Double> aggregatedData = wasteProductions.stream()

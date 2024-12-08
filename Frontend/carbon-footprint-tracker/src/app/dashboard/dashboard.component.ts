@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
+import { error } from 'console';
+import { of } from 'rxjs/internal/observable/of';
+import { catchError, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
 import { TrackerApiService } from '../tracker-api.service';
 
@@ -11,12 +14,12 @@ interface CarbonData {
   value: number;
 }
 
-interface Task {
-  id: number;
-  category: string;
-  task: string;
-  impact: number;
-  completed?: boolean;
+ interface Task {
+  goalTitle: string;        // Title of the goal
+  goalDescription: string;  // Detailed description of the goal
+  goalDifficulty: string;   // Difficulty level (e.g., "EASY", "MEDIUM", "HARD")
+  goalFrequency: string;    // Frequency of the goal (e.g., "DAILY", "WEEKLY")
+  greenCoins: number;       // Number of green coins associated with the goal
 }
 
 interface Recommendation {
@@ -40,6 +43,7 @@ export class DashboardComponent implements OnInit {
 
   selectTaskView(view: string): void {
     this.selectedTaskView = view;
+    this.loadAvailableGoals();
   }
 
   getDisplayedTasks(): Task[] {
@@ -72,26 +76,27 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadAvailableGoals(); 
+    //this.loadAvailableGoals(); 
     this.updateScore('overall');
      this.generateRecommendations();
   }
 
-  loadAvailableGoals() : void {
+  loadAvailableGoals(): void {
     this.trackerApiService.getAllGoals().subscribe(
-      (goals) => {
-        // Assuming goals are formatted in a compatible structure for your component
-        this.availableGoals = goals.map((goal) => ({
-          id: goal.id,
-          category: goal.category,
-          task: goal.task,
-          impact: goal.impact,
-          completed: goal.completed,
+      (response: any[]) => {
+        console.log('Fetched Goals:', response);
+        // Map response data to the availableGoals array
+        this.availableGoals = response.map((goal) => ({
+          goalTitle: goal.goal_title,
+          goalDescription: goal.goal_description,
+          goalDifficulty: goal.goal_difficulty,
+          goalFrequency: goal.goal_frequency,
+          greenCoins: goal.green_coins,
         }));
-        this.tasks['available'] = this.availableGoals;
+        console.log('Mapped Goals:', this.availableGoals); // Debugging log
       },
       (error) => {
-        console.error('Error fetching available goals', error);
+        console.error('Error fetching goals:', error);
       }
     );
   }
@@ -101,11 +106,6 @@ export class DashboardComponent implements OnInit {
     this.updateScore(category);
     this.currentScore = this.calculateScore(category);
   }
-
-
-
-
-
 
   async generateRecommendations(): Promise<void> {
     try {

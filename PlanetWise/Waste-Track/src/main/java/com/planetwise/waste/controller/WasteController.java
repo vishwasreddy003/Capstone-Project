@@ -1,5 +1,6 @@
 package com.planetwise.waste.controller;
 
+import com.planetwise.waste.dto.TrendsDto;
 import com.planetwise.waste.service.WasteProductionService;
 import com.planetwise.waste.model.WasteProduction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class WasteController {
     }
 
     @GetMapping("/{username}/analytics")
-    public ResponseEntity<List<WasteProduction>> getAnalyticsForWasteProduction(@PathVariable String username) {
-        List<WasteProduction> wasteTrends = wasteProductionService.getTrendsForWasteProduction(username);
+    public ResponseEntity<List<TrendsDto>> getAnalyticsForWasteProduction(@PathVariable String username) {
+        List<TrendsDto> wasteTrends = wasteProductionService.getTrendsForWasteProduction(username);
         return new ResponseEntity<>(wasteTrends, HttpStatus.OK);
     }
 

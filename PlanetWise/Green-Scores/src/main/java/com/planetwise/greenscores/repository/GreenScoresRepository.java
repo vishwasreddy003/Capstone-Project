@@ -13,4 +13,5 @@ public interface GreenScoresRepository extends JpaRepository<GreenScores, UUID> 
     @Query("SELECT g FROM GreenScores g WHERE g.username = :username " +
             "AND (g.year > :startYear OR (g.year = :startYear AND g.month >= :startMonth))")
     List<GreenScores> findGreenScoresFromLastTenMonths(String username, int startYear, Month startMonth);
+
 }

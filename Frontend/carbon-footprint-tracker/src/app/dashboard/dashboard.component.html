@@ -101,20 +101,32 @@
 
         <!-- Task List -->
         <!-- Task List -->
-<div class="row">
-  <div class="col-md-4" *ngFor="let task of getDisplayedTasks()">
-    <div class="card mb-3">
-      <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted text-capitalize">{{task.category}}</h6>
-        <p class="card-text">{{task.task}}</p>
-        <span class="badge" [class.bg-success]="task.impact < 0" [class.bg-danger]="task.impact >= 0">
-          {{task.impact}} kg CO₂/month
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
+        <div class="row">
+          <div class="col-md-4" *ngFor="let goal of availableGoals">
+            <div class="card mb-3">
+              <div class="card-body">
+                <!-- Goal Title -->
+                <h5 class="card-title">{{ goal.goalTitle }}</h5>
+        
+                <!-- Goal Description -->
+                <p class="card-text">{{ goal.goalDescription }}</p>
+        
+                <!-- Goal Details -->
+                <p class="card-text">
+                  <strong>Difficulty:</strong> {{ goal.goalDifficulty }}
+                </p>
+                <p class="card-text">
+                  <strong>Frequency:</strong> {{ goal.goalFrequency }}
+                </p>
+        
+                <!-- Green Coins Badge -->
+                <span class="badge bg-success">
+                  {{ goal.greenCoins }} Green Coins
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>        
       </div>
     </div>
   </div>

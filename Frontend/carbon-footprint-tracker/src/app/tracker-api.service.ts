@@ -37,7 +37,9 @@ export class TrackerApiService {
   }
  
   getAllGoals(): Observable<any[]> {
+    console.log('ok');
     return this.http.get<any[]>(this.baseUrl+`/goals/allGoals`);
+
   }
 
 }
