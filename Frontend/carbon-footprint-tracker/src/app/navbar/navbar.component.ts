@@ -14,6 +14,8 @@ import { SharedStateService } from '../auth.service';
 
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
+  username: string = '';
+  greenCoins: number = 0;
 
   constructor(private sharedStateService: SharedStateService, private router:Router) {}
 
@@ -22,10 +24,23 @@ export class NavbarComponent implements OnInit {
     this.sharedStateService.getLoginStatus$().subscribe((status) => {
       this.isLoggedIn = status;
     });
+    this.sharedStateService.getUsername$().subscribe((username) => {
+      this.username = username;
+    });
+
+    this.sharedStateService.getGreenCoins$().subscribe((coins) => {
+      this.greenCoins = coins;
+    });
   }
 
   logout(): void {
     this.sharedStateService.logout(); 
     this.router.navigate(['/home']);
   }
+
+
+  
 }
+
+
+

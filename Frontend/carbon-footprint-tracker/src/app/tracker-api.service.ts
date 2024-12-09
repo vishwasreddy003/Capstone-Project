@@ -59,9 +59,8 @@ export class TrackerApiService {
   // baseurl + planetwise+user+{username}+goals;
 
   addGoals(goalId:string) {
-    let username = sessionStorage.getItem('username')
-    return this.http.post(this.baseUrl+`/user/${username}/addGoal`,goalId);
+    let username = sessionStorage.getItem('username');
+    return this.http.post(this.baseUrl+`/user/${username}/addGoal/${goalId}`,{});
   } 
-
 
 }

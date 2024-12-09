@@ -18,33 +18,54 @@
 
           <!-- Category Buttons -->
           <div class="category-buttons d-grid gap-2">
-            <button class="btn d-flex justify-content-between align-items-center"
+            <button
+              class="btn d-flex justify-content-between align-items-center"
               [class.btn-success]="selectedCategory === 'overall'"
-              [class.btn-outline-success]="selectedCategory !== 'overall'" (click)="selectCategory('overall')">
+              [class.btn-outline-success]="selectedCategory !== 'overall'"
+              (click)="selectCategory('overall')"
+            >
               <span>Overall Emissions</span>
-              <span class="badge bg-light text-dark">{{carbonData['overall']}} kg</span>
+              <span class="badge bg-light text-dark"
+                >{{ carbonData["overall"] }} kg</span
+              >
             </button>
 
-            <button class="btn d-flex justify-content-between align-items-center"
+            <button
+              class="btn d-flex justify-content-between align-items-center"
               [class.btn-success]="selectedCategory === 'household'"
-              [class.btn-outline-success]="selectedCategory !== 'household'" (click)="selectCategory('household')">
+              [class.btn-outline-success]="selectedCategory !== 'household'"
+              (click)="selectCategory('household')"
+            >
               <span>Household</span>
-              <span class="badge bg-light text-dark">{{carbonData['household']}} kg</span>
+              <span class="badge bg-light text-dark"
+                >{{ carbonData["household"] }} kg</span
+              >
             </button>
 
-            <button class="btn d-flex justify-content-between align-items-center"
+            <button
+              class="btn d-flex justify-content-between align-items-center"
               [class.btn-success]="selectedCategory === 'transportation'"
-              [class.btn-outline-success]="selectedCategory !== 'transportation'"
-              (click)="selectCategory('transportation')">
+              [class.btn-outline-success]="
+                selectedCategory !== 'transportation'
+              "
+              (click)="selectCategory('transportation')"
+            >
               <span>Transportation</span>
-              <span class="badge bg-light text-dark">{{carbonData['transportation']}} kg</span>
+              <span class="badge bg-light text-dark"
+                >{{ carbonData["transportation"] }} kg</span
+              >
             </button>
 
-            <button class="btn d-flex justify-content-between align-items-center"
+            <button
+              class="btn d-flex justify-content-between align-items-center"
               [class.btn-success]="selectedCategory === 'waste'"
-              [class.btn-outline-success]="selectedCategory !== 'waste'" (click)="selectCategory('waste')">
+              [class.btn-outline-success]="selectedCategory !== 'waste'"
+              (click)="selectCategory('waste')"
+            >
               <span>Waste</span>
-              <span class="badge bg-light text-dark">{{carbonData['waste']}} kg</span>
+              <span class="badge bg-light text-dark"
+                >{{ carbonData["waste"] }} kg</span
+              >
             </button>
           </div>
         </div>
@@ -56,7 +77,10 @@
         <div class="card-body">
           <h5 class="card-title">AI Recommendations</h5>
           <div *ngIf="recommendations.length > 0; else noRecommendations">
-            <div class="recommendation-card mb-3" *ngFor="let rec of recommendations">
+            <div
+              class="recommendation-card mb-3"
+              *ngFor="let rec of recommendations"
+            >
               <div class="d-flex align-items-start mb-2">
                 <i class="bi bi-{{ rec.icon }} recommendation-icon me-2"></i>
                 <div>
@@ -73,8 +97,6 @@
         </div>
       </div>
     </div>
-    
-
 
     <!-- Bottom Card - Tasks/Goals -->
     <div class="card mt-4 col-md-12`">
@@ -83,35 +105,46 @@
 
         <!-- Task View Buttons -->
         <!-- Task View Buttons -->
-<div class="btn-group mb-4">
-  <button class="btn" [class.btn-success]="selectedTaskView === 'current'"
-    [class.btn-outline-success]="selectedTaskView !== 'current'" (click)="selectTaskView('current')">
-    Current Tasks
-  </button>
-  <button class="btn" [class.btn-success]="selectedTaskView === 'completed'"
-    [class.btn-outline-success]="selectedTaskView !== 'completed'" (click)="selectTaskView('completed')">
-    Completed Tasks
-  </button>
-  <button class="btn" [class.btn-success]="selectedTaskView === 'available'"
-    [class.btn-outline-success]="selectedTaskView !== 'available'" (click)="selectTaskView('available')">
-    Available Tasks
-  </button>
-</div>
-
+        <div class="btn-group mb-4">
+          <button
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'current'"
+            [class.btn-outline-success]="selectedTaskView !== 'current'"
+            (click)="selectTaskView('current')"
+          >
+            Current Tasks
+          </button>
+          <button
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'completed'"
+            [class.btn-outline-success]="selectedTaskView !== 'completed'"
+            (click)="selectTaskView('completed')"
+          >
+            Completed Tasks
+          </button>
+          <button
+            class="btn"
+            [class.btn-success]="selectedTaskView === 'available'"
+            [class.btn-outline-success]="selectedTaskView !== 'available'"
+            (click)="selectTaskView('available')"
+          >
+            Available Tasks
+          </button>
+        </div>
 
         <!-- Task List -->
         <!-- Task List -->
-        <div class="row" >
-         <div *ngIf="selectedTaskView === 'available'"></div>
+        <div class="row">
+          <div *ngIf="selectedTaskView === 'available'"></div>
           <div class="col-md-4" *ngFor="let goal of availableGoals">
             <div class="card mb-3">
               <div class="card-body">
                 <!-- Goal Title -->
                 <h5 class="card-title">{{ goal.goalTitle }}</h5>
-        
+
                 <!-- Goal Description -->
                 <p class="card-text">{{ goal.goalDescription }}</p>
-        
+
                 <!-- Goal Details -->
                 <p class="card-text">
                   <strong>Difficulty:</strong> {{ goal.goalDifficulty }}
@@ -119,26 +152,26 @@
                 <p class="card-text">
                   <strong>Frequency:</strong> {{ goal.goalFrequency }}
                 </p>
-        
+
                 <!-- Green Coins Badge -->
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">
                     {{ goal.greenCoins }} Green Coins
                   </span>
-                  
+
                   <!-- Add Task Button -->
-                  <button 
-                    class="btn btn-primary btn-sm" 
-                    *ngIf ="selectedTaskView === 'available'"
-                    (click)="addTaskToCurrent({{goal.goalId}})">
+                  <button
+                    class="btn btn-primary btn-sm"
+                    *ngIf="selectedTaskView === 'available'"
+                    (click)="addTaskToCurrent(goal.goalId)"
+                  >
                     Add Task
                   </button>
                 </div>
               </div>
             </div>
           </div>
-         </div>
-        </div>        
+        </div>
       </div>
     </div>
   </div>

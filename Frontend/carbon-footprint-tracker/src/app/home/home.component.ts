@@ -17,13 +17,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       description: 'Racing is the ultimate test of speed and skill...',
     },
     {
-      img: 'assets/env.jpg',
+      img: 'assets/plantation.jpg',
       category: 'cars',
       title: 'Porsche',
       description: 'Porsche is the epitome of luxury and performance...',
     },
     {
-      img: 'assets/img3.jpg',
+      img: 'assets/img7.jpg',
       category: 'cars',
       title: 'Team',
       description: 'Cars are more than transportation...',

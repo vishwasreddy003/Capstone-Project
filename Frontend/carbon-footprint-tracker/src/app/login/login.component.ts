@@ -35,13 +35,15 @@ export class LoginComponent implements OnInit {
       this.loginService.validateUser(credentials).subscribe({
         next: (response) => {
           console.log('Response from backend:', response); // Debugging log
-          const { jwt, username } = response;
+          const { jwt, username,greenCoins} = response;
 
-          if (jwt && username) {
+
+          if (jwt && username && greenCoins !== undefined) {
             sessionStorage.setItem('tokenId', jwt);
             sessionStorage.setItem('username', username);
             console.log('Token and username stored successfully');
-            this.sharedStateService.login();
+            sessionStorage.setItem('greenCoins', greenCoins.toString());
+            this.sharedStateService.login(username, greenCoins);
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Required data not found in response');

@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
         console.log('Fetched Goals:', response);
         // Map response data to the availableGoals array
         this.availableGoals = response.map((goal) => ({
-          goalId:goal.goalId,
+          goalId:goal.goal_id,
           goalTitle: goal.goal_title,
           goalDescription: goal.goal_description,
           goalDifficulty: goal.goal_difficulty,
@@ -105,6 +105,7 @@ export class DashboardComponent implements OnInit {
 
 
   addTaskToCurrent(goalId:string){
+    console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       response=>{
         alert("task added successfully");
