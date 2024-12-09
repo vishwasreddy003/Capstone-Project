@@ -15,4 +15,6 @@ public interface GoalService {
 
     public void deleteGoal(UUID goalId);
 
+    List<Goals> getUserGoals(List<UUID> goalIds);
+
 }
