@@ -5,6 +5,7 @@ import { error } from 'console';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
+import { Task } from '../model/task';
 import { TrackerApiService } from '../tracker-api.service';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
@@ -14,13 +15,6 @@ interface CarbonData {
   value: number;
 }
 
- interface Task {
-  goalTitle: string;        // Title of the goal
-  goalDescription: string;  // Detailed description of the goal
-  goalDifficulty: string;   // Difficulty level (e.g., "EASY", "MEDIUM", "HARD")
-  goalFrequency: string;    // Frequency of the goal (e.g., "DAILY", "WEEKLY")
-  greenCoins: number;       // Number of green coins associated with the goal
-}
 
 interface Recommendation {
   icon: string;
@@ -37,18 +31,25 @@ interface Recommendation {
   imports:[CommonModule]
 })
 export class DashboardComponent implements OnInit {
+
   selectedTaskView: string = 'available';
 
   availableGoals: Task[] = [];
 
   selectTaskView(view: string): void {
     this.selectedTaskView = view;
-    this.loadAvailableGoals();
+    if (view === 'available') {
+      this.loadAvailableGoals();
+    }
   }
 
   getDisplayedTasks(): Task[] {
     return this.tasks[this.selectedTaskView] || [];
   }
+
+  // baseurl + planetwise+user+{username}+addGoal+{goalID};
+
+  // baseurl + planetwise+user+{username}+goals;
 
 
   selectedCategory: CategoryKey = 'overall';
@@ -87,6 +88,7 @@ export class DashboardComponent implements OnInit {
         console.log('Fetched Goals:', response);
         // Map response data to the availableGoals array
         this.availableGoals = response.map((goal) => ({
+          goalId:goal.goalId,
           goalTitle: goal.goal_title,
           goalDescription: goal.goal_description,
           goalDifficulty: goal.goal_difficulty,
@@ -101,6 +103,19 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+
+  addTaskToCurrent(goalId:string){
+    this.trackerApiService.addGoals(goalId).subscribe(
+      response=>{
+        alert("task added successfully");
+      },
+      error=>{
+        alert("task didn't added");
+      }
+    );
+  }
+
+  
   selectCategory(category: CategoryKey): void {
     this.selectedCategory = category;
     this.updateScore(category);

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EnergyData } from './model/EnergyData';
 import { GreenScore } from './model/GreenScore';
+import { Task } from './model/task';
 import { TransportData } from './model/TransportData';
 import { TrendsDto } from './model/TrendsDto';
 import { WasteProdData } from './model/WasteProdData';
@@ -12,6 +13,9 @@ import { WasteProdData } from './model/WasteProdData';
   providedIn: 'root'
 })
 export class TrackerApiService {
+  moveTaskToCurrent(id: number | undefined) {
+    throw new Error('Method not implemented.');
+  }
 
   baseUrl = 'http://localhost:8080/PlanetWise'
 
@@ -49,5 +53,15 @@ export class TrackerApiService {
     );
   }
   
+
+  // baseurl + planetwise+user+{username}+addGoal+{goalID};
+
+  // baseurl + planetwise+user+{username}+goals;
+
+  addGoals(goalId:string) {
+    let username = sessionStorage.getItem('username')
+    return this.http.post(this.baseUrl+`/user/${username}/addGoal`,goalId);
+  } 
+
 
 }
