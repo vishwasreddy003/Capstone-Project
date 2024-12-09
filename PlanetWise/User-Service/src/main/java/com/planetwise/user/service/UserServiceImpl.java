@@ -53,20 +53,26 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addGoaltoUser(String username, UUID goalId) {
+    public void addGoaltoUser(String username, String goalId) {
         Optional<User> user = userRepo.findByUsername(username);
 
         if(user.isPresent()){
             User currUser = user.get();
             List<UUID> goals = currUser.getUserGoals();
 
-            goals.add(goalId);
+
+            goals.add(UUID.fromString(goalId));
 
             currUser.setUserGoals(goals);
             userRepo.save(currUser);
         }else {
             throw new UsernameNotFoundException("User with " + username + " does not exist");
         }
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username).get();
     }
 
 

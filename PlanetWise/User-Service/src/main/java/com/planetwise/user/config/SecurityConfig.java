@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/PlanetWise/user/all").permitAll()
                         .requestMatchers("/PlanetWise/user/register").permitAll()
                         .requestMatchers("/PlanetWise/user/login").permitAll()
-                        .requestMatchers("/PlanetWise/user/validate").permitAll()
+                        .requestMatchers("/PlanetWise/user/validate").permitAll().requestMatchers("/PlanetWise/user/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->

@@ -28,6 +28,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             }
 
             String token = authHeader.substring(7);
+            System.out.println(token);
             return webClientBuilder.build()
                     .post()
                     .uri("/validate?token="+token)

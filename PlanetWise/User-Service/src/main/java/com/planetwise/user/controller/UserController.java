@@ -42,10 +42,11 @@ public class UserController {
     @PostMapping("/validate")
     public void  validateToken(@RequestParam String token){
         authService.validateToken(token);
+        System.out.println("done");
     }
 
-    @PostMapping("/{username}/addGoal")
-    public void addGoal(@RequestParam UUID goalId,@PathVariable String username){
+    @PostMapping("/{username}/addGoal/{goalId}")
+    public void addGoal(@PathVariable String goalId,@PathVariable String username){
         userService.addGoaltoUser(username,goalId);
     }
 

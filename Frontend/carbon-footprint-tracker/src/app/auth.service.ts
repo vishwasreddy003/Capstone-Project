@@ -61,7 +61,6 @@ export class SharedStateService {
   // Log in the user
   login(username:string,greenCoins:number): void {
     if (isPlatformBrowser(this.platformId)) {
-      sessionStorage.setItem('tokenId','your-token-here');
       sessionStorage.setItem('username',username);
       sessionStorage.setItem('greenCoins',greenCoins.toString());
 

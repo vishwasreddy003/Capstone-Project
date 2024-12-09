@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -43,7 +45,8 @@ public class AuthenticationService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userCredentials.username(), userCredentials.password()));
             String username = authentication.getName();
-            return new JwtToken(jwtUtil.generateToken(username),userCredentials.username());
+            User user = userService.findByUsername(username);
+            return new JwtToken(jwtUtil.generateToken(username),userCredentials.username(),user.getGreen_coins());
 
 
         } catch (AuthenticationException e) {

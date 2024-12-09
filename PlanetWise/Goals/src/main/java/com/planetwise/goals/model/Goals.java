@@ -32,4 +32,6 @@ public class Goals {
     public LocalDate endDate;
     public boolean status=false;
     public int green_coins;
+
+
 }
