@@ -45,20 +45,26 @@
         <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link" href="/signup" style="color: #E9EFEC;">Signup</a>
         </li>
-
-        <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
     
 
-        <!-- Dropdown for logged-in users -->
         <li class="nav-item dropdown" *ngIf="isLoggedIn">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: #E9EFEC;">
+          <a 
+            class="nav-link dropdown-toggle" 
+            href="#" 
+            id="navbarDropdown" 
+            role="button" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false" 
+            style="color: #E9EFEC;"
+          >
             <i class="fas fa-user"></i> {{ username }}
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">GreenCoins: {{ greenCoins }}</a></li>
-            <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+          <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="navbarDropdown">
+            <li><span class="dropdown-item custom-dropdown-item">GreenCoins: {{ greenCoins }}</span></li>
+            <li><a class="dropdown-item custom-dropdown-item" href="#" (click)="logout()">Logout</a></li>
           </ul>
         </li>
+        
       </ul>
     </div>
   </div>

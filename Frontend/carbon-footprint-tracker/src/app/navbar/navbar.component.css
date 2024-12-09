@@ -14,3 +14,32 @@
 .navbar-brand:hover {
   color: #1b5e20;
 }
+
+/* Navbar Dropdown Styling */
+.custom-dropdown {
+  background-color: #16423C; /* Green background color */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.custom-dropdown-item {
+  color: #E9EFEC; /* Light text color */
+  font-weight: bold; /* Bold text */
+  padding: 10px 20px; /* Padding for better spacing */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+.custom-dropdown-item:hover {
+  background-color: #1F5A4A; /* Darker green on hover */
+  color: #FFFFFF; /* White text on hover */
+  border-radius: 5px; /* Add rounded effect on hover */
+}
+
+.custom-dropdown .dropdown-item {
+  border-bottom: 1px solid rgba(233, 239, 236, 0.2); /* Light divider */
+}
+
+.custom-dropdown .dropdown-item:last-child {
+  border-bottom: none; /* Remove last item's border */
+}
