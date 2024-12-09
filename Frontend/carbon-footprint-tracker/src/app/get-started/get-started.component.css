@@ -1,51 +1,81 @@
-/* Container Styling */
-.monthly-data-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Spacing between sections */
-    padding: 20px; /* Padding around the container */
-    background-color: #f4f9f6; /* Light background for contrast */
-    border-radius: 10px; /* Rounded corners for the container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  }
-  
-  /* Section Styling */
-  .current-month-section,
-  .specific-month-section {
-    text-align: center; /* Center align text and buttons */
-  }
-  
-  /* Info Text Styling */
-  .info-text {
-    color: #16423C; /* Green theme color */
-    font-size: 1.2rem; /* Slightly larger font */
-    font-weight: bold; /* Emphasize the text */
-    margin-bottom: 10px; /* Add spacing between text and button */
-  }
-  
-  /* Button Styling */
-  .btn-custom {
-    background-color: #16423C; /* Green background */
-    color: #ffffff; /* White text */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Button padding */
-    font-size: 1rem; /* Standard font size */
-    font-weight: bold; /* Bold text for emphasis */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-  }
-  
-  /* Button Hover Effect */
-  .btn-custom:hover {
-    background-color: #1f5a4a; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly enlarge button on hover */
-  }
-  
-  /* Button Active Effect */
-  .btn-custom:active {
-    transform: scale(0.95); /* Slightly shrink button on click */
-    background-color: #13322a; /* Even darker green on click */
-  }
-  
+/* General Styling */
+body {
+  background-color: #f8f9fa;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Card Container */
+.card-container {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Individual Cards */
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Titles */
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Card Text */
+.card-text {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border: none;
+}
+
+.btn-info:hover {
+  background-color: #117a8b;
+}

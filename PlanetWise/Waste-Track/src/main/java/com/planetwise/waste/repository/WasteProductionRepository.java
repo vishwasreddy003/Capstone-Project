@@ -25,32 +25,33 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   List<WasteProduction> findByUsernameAndYearAndMonth(String username,Year year,Month month);
 
-//  @Query("SELECT *" +
-//          "FROM WasteProduction\n" +
-//          "WHERE username =:username and year = (\n" +
-//          "    SELECT MAX(year)\n" +
-//          "    FROM your_table\n" +
-//          ")\n" +
-//          "AND month = (\n" +
-//          "    SELECT month\n" +
-//          "    FROM your_table\n" +
-//          "    WHERE year = (SELECT MAX(year) FROM your_table)\n" +
-//          "    ORDER BY \n" +
-//          "      CASE month\n" +
-//          "        WHEN 'January' THEN 1\n" +
-//          "        WHEN 'February' THEN 2\n" +
-//          "        WHEN 'March' THEN 3\n" +
-//          "        WHEN 'April' THEN 4\n" +
-//          "        WHEN 'May' THEN 5\n" +
-//          "        WHEN 'June' THEN 6\n" +
-//          "        WHEN 'July' THEN 7\n" +
-//          "        WHEN 'August' THEN 8\n" +
-//          "        WHEN 'September' THEN 9\n" +
-//          "        WHEN 'October' THEN 10\n" +
-//          "        WHEN 'November' THEN 11\n" +
-//          "        WHEN 'December' THEN 12\n" +
-//          "      END DESC\n" +
-//          "    LIMIT 1\n" +
-//          ");\n")
-//  List<WasteProduction> getLatestData(String username);
+  @Query(value = """
+        SELECT * 
+        FROM WasteProduction 
+        WHERE username = :username 
+        AND year = (SELECT MAX(year) FROM WasteProduction) 
+        AND month = (
+            SELECT month 
+            FROM WasteProduction 
+            WHERE year = (SELECT MAX(year) FROM WasteProduction) 
+            ORDER BY 
+                CASE month 
+                    WHEN 'January' THEN 1 
+                    WHEN 'February' THEN 2 
+                    WHEN 'March' THEN 3 
+                    WHEN 'April' THEN 4 
+                    WHEN 'May' THEN 5 
+                    WHEN 'June' THEN 6 
+                    WHEN 'July' THEN 7 
+                    WHEN 'August' THEN 8 
+                    WHEN 'September' THEN 9 
+                    WHEN 'October' THEN 10 
+                    WHEN 'November' THEN 11 
+                    WHEN 'December' THEN 12 
+                END DESC 
+            LIMIT 1
+        )
+        """, nativeQuery = true)
+  List<WasteProduction> getLatestData(String username);
+
 }

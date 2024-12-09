@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-get-started',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './get-started.component.html',
   styleUrl: './get-started.component.css'
 })
@@ -15,12 +15,10 @@ export class GetStartedComponent {
 
   }
 
-  addMonthlyData(){
+  addCurrentMonthData(){
     this.router.navigate(['/waste']);
   }
 
-  addCertainMonthData(){
-    
-  }
+  
 
 }

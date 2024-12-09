@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addGoaltoUser(String username, UUID goalId) {
+    public void addGoalToUser(String username, UUID goalId) {
         Optional<User> user = userRepo.findByUsername(username);
 
         if(user.isPresent()){
@@ -70,9 +70,51 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
+    @Override
+    public void checkGoalToUser(String username, UUID goalId) {
+        Optional<User> user = userRepo.findByUsername(username);
+
+        if(user.isPresent()){
+            User currUser = user.get();
+            List<UUID> goals = currUser.getCheckedGoals();
+
+
+            goals.add(goalId);
+
+            currUser.setUserGoals(goals);
+            userRepo.save(currUser);
+        }else {
+            throw new UsernameNotFoundException("User with " + username + " does not exist");
+        }
+    }
+
+
     @Override
     public User findByUsername(String username) {
         return userRepo.findByUsername(username).get();
+    }
+
+    @Override
+    public List<UUID> getUserGoalIds(String username) {
+        Optional<User> user = userRepo.findByUsername(username);
+
+        if(user.isPresent()){
+            return user.get().getUserGoals();
+        }else {
+            throw new UsernameNotFoundException("User with " + username + " does not exist");
+        }
+    }
+
+    @Override
+    public List<UUID> getCheckedGoalIds(String username) {
+        Optional<User> user = userRepo.findByUsername(username);
+
+        if(user.isPresent()){
+            return user.get().getCheckedGoals();
+        }else {
+            throw new UsernameNotFoundException("User with " + username + " does not exist");
+        }
     }
 
 

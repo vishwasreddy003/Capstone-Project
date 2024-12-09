@@ -1,12 +1,25 @@
-<div class="monthly-data-container">
-    <div class="current-month-section">
-      <p class="info-text">Want to add your current monthly data in all categories</p>
-      <button class="btn-custom" (click)="addMonthlyData()">Add</button>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card-container d-flex flex-column flex-md-row gap-4 p-3">
+    <!-- Left Card -->
+    <div class="card text-center shadow-lg border-0" style="width: 20rem; border-radius: 15px;">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">Current Month Data</h5>
+        <p class="card-text text-muted">Want to add your current monthly data in all categories?</p>
+        <button class="btn btn-primary btn-lg px-4" (click)="addCurrentMonthData()">Add Current Month Data</button>
+      </div>
     </div>
-  
-    <div class="specific-month-section">
-      <p class="info-text">Missed to add any specific month data? No problem, we got you covered :)</p>
-      <button class="btn-custom">Add</button>
+    
+    <!-- Right Card -->
+    <div class="card text-center shadow-lg border-0" style="width: 20rem; border-radius: 15px;">
+      <div class="card-body">
+        <h5 class="card-title fw-bold">Specific Month Data</h5>
+        <p class="card-text text-muted">Missed adding any specific month data? No problem, we got you covered :)</p>
+        <div class="d-grid gap-3">
+          <button class="btn btn-success btn-lg px-4" [routerLink]="['/waste']">Waste</button>
+          <button class="btn btn-warning btn-lg px-4 text-white" [routerLink]="['/transport']">Transport</button>
+          <button class="btn btn-info btn-lg px-4 text-white" [routerLink]="['/energy']">Energy</button>
+        </div>
+      </div>
     </div>
   </div>
-  
+</div>

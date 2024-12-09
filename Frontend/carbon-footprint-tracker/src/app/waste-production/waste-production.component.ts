@@ -60,14 +60,36 @@ export class WasteProductionComponent implements OnInit {
     this.sharedStateService.setSelectedMonth(selectedValue);
   }
 
+
+
   onYearChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.sharedStateService.setSelectedYear(selectedValue);
   }
 
+
+
   resetForm(): void {
     this.wasteProdForm.reset();
   }
+
+  submitData():void{
+    if (this.wasteProdForm.valid) {
+      const wasteProdData = this.wasteProdForm.value;
+      this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
+        (response) => {
+          alert('Form submitted successfully');
+          this.resetForm();
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          console.log('Error submitting form', error);
+        }
+      );
+    }
+  }
+
+
   goToTransportPage(): void {
     if (this.wasteProdForm.valid) {
       const wasteProdData = this.wasteProdForm.value;
