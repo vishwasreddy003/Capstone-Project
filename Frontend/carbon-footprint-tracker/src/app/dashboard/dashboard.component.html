@@ -101,7 +101,8 @@
 
         <!-- Task List -->
         <!-- Task List -->
-        <div class="row">
+        <div class="row" >
+         <div *ngIf="selectedTaskView === 'available'"></div>
           <div class="col-md-4" *ngFor="let goal of availableGoals">
             <div class="card mb-3">
               <div class="card-body">
@@ -120,12 +121,23 @@
                 </p>
         
                 <!-- Green Coins Badge -->
-                <span class="badge bg-success">
-                  {{ goal.greenCoins }} Green Coins
-                </span>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="badge bg-success">
+                    {{ goal.greenCoins }} Green Coins
+                  </span>
+                  
+                  <!-- Add Task Button -->
+                  <button 
+                    class="btn btn-primary btn-sm" 
+                    *ngIf ="selectedTaskView === 'available'"
+                    (click)="addTaskToCurrent({{goal.goalId}})">
+                    Add Task
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+         </div>
         </div>        
       </div>
     </div>
