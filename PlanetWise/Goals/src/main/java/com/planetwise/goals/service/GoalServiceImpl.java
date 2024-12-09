@@ -7,6 +7,7 @@ import com.planetwise.goals.repository.GoalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,4 +43,12 @@ public class GoalServiceImpl implements GoalService {
             throw new GoalDoesNotExistException("Goal Does not Exist");
         }
     }
+
+    @Override
+    public List<Goals> getUserGoals(List<UUID> goalIds) {
+        // Use a single query to fetch all goals by their IDs
+        List<Goals> goals = goalRepo.findAllById(goalIds);
+        return goals;
+    }
+
 }

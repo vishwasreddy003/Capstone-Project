@@ -48,4 +48,10 @@ public class GoalController {
         goalService.deleteGoal(goalId);
         return new ResponseEntity<>("Goal deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/getMyGoals")
+    public ResponseEntity<List<Goals>> getGoalsForUser(@RequestBody List<UUID> goalIds){
+        List<Goals> userGoals =  goalService.getUserGoals(goalIds);
+        return new ResponseEntity<>(userGoals,HttpStatus.OK);
+    }
 }
