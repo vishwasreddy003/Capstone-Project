@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addGoaltoUser(String username, String goalId) {
+    public void addGoaltoUser(String username, UUID goalId) {
         Optional<User> user = userRepo.findByUsername(username);
 
         if(user.isPresent()){
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
             List<UUID> goals = currUser.getUserGoals();
 
 
-            goals.add(UUID.fromString(goalId));
+            goals.add(goalId);
 
             currUser.setUserGoals(goals);
             userRepo.save(currUser);

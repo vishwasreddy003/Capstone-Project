@@ -60,7 +60,7 @@ export class TrackerApiService {
 
   addGoals(goalId:string) {
     let username = sessionStorage.getItem('username');
-    return this.http.post(this.baseUrl+`/user/${username}/addGoal/${goalId}`,{});
+    return this.http.post(this.baseUrl+`/user/addGoal/${username}/${goalId}`,{});
   } 
 
 }

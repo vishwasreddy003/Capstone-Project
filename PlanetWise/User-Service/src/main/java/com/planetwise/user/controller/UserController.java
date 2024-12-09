@@ -45,8 +45,8 @@ public class UserController {
         System.out.println("done");
     }
 
-    @PostMapping("/{username}/addGoal/{goalId}")
-    public void addGoal(@PathVariable String goalId,@PathVariable String username){
+    @PostMapping("/addGoal/{username}/{goalId}")
+    public void addGoal(@PathVariable UUID goalId,@PathVariable String username){
         userService.addGoaltoUser(username,goalId);
     }
 
