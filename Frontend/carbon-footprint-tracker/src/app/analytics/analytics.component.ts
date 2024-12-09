@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { TrackerApiService } from '../tracker-api.service';
+
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-analytics',
-  imports:[CommonModule],
+  imports: [CommonModule],
   standalone: true,
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css']
@@ -17,32 +19,57 @@ export class AnalyticsComponent implements AfterViewInit {
   private transportationType: string = 'public'; // Default transportation type
 
   private chartData: any = {
-    household: [20, 30, 40, 50, 60, 70, 80, 85, 90, 95, 100, 110],
+    household: [],
     transportation: {
-      public: [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65],
-      private: [50, 60, 70, 80, 90, 100, 110, 115, 120, 125, 130, 135]
+      public: [],
+      private: []
     },
-    wastage: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-    overall: [30, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
+    wastage: [],
+    overall: []
   };
 
-  private months: string[] = [
-    'JANUARY', 'FEBRAUARY', 'MAR', 'APR', 'MAY', 'JUN',
-    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
-  ];
+  private months: string[] = Array(12).fill(''); // To be updated with backend data
+
+  constructor(private trackerApiService: TrackerApiService) {}
 
   ngAfterViewInit(): void {
-    this.initializeChart('household'); // Initialize with the default chart
+    this.loadChartData('household'); // Initialize with the default chart
+  }
+
+  loadChartData(type: string): void {
+    this.trackerApiService.getTrendsData(type).subscribe(
+      (data) => {
+        // Process backend data
+        console.log(data);
+        const sortedData = data.sort((a, b) =>
+          a.year !== b.year ? a.year - b.year : a.month.localeCompare(b.month)
+        );
+        const months = sortedData.map((d) => d.month.substring(0, 3).toUpperCase());
+        const emissions = sortedData.map((d) => d.emissions);
+
+        if (type === 'transportation') {
+          this.chartData.transportation[this.transportationType] = emissions;
+        } else {
+          this.chartData[type] = emissions;
+        }
+
+        this.months = months; // Update months
+        this.initializeChart(type); // Initialize chart with new data
+      },
+      (error) => {
+        console.error('Error fetching trends data:', error);
+      }
+    );
   }
 
   initializeChart(type: string): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-  
+
     // Destroy the existing chart instance
     if (this.chart) {
       this.chart.destroy();
     }
-  
+
     let data;
     if (type === 'transportation') {
       // Transportation requires the selected transportation type
@@ -51,10 +78,7 @@ export class AnalyticsComponent implements AfterViewInit {
       // Other types directly map to the chartData
       data = this.chartData[type];
     }
-  
-    // Log the data for debugging
-    console.log(`Initializing chart: ${type}`, data);
-  
+
     // Create the new chart instance
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -64,34 +88,8 @@ export class AnalyticsComponent implements AfterViewInit {
           {
             label: `${type.charAt(0).toUpperCase() + type.slice(1)} Data`,
             data: data,
-            backgroundColor: [
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(201, 203, 207, 0.2)',
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(201, 203, 207, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
           }
         ]
@@ -165,20 +163,16 @@ export class AnalyticsComponent implements AfterViewInit {
       }
     });
   }
-  
 
   updateChart(type: string): void {
-    // Set state variables
     this.selectedChartType = type;
     this.showDropdown = type === 'transportation'; 
-    console.log(this.showDropdown,type);
-    this.initializeChart(type); // Re-initialize the chart
+    this.loadChartData(type); // Fetch new data and initialize chart
   }
 
   updateTransportationType(event: Event): void {
-    // Update the transportation type and re-initialize the chart
     const target = event.target as HTMLSelectElement;
     this.transportationType = target.value;
-    this.initializeChart('transportation');
+    this.loadChartData('transportation'); // Fetch new data for transportation
   }
 }

@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class WasteProductionServiceImpl implements WasteProductionService{
+public class WasteProductionServiceImpl implements WasteProductionService {
 
     @Autowired
     private WasteProductionRepository wasteProductionRepo;
@@ -26,43 +26,46 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     @Autowired
     private CarbonEmissionCalculation logic;
 
-
     @Override
-    public WasteProduction saveWasteProduction(String username,WasteProduction wasteProduction) {
+    public WasteProduction saveWasteProduction(String username, WasteProduction wasteProduction) {
+        if (username == null || wasteProduction == null) {
+            throw new IllegalArgumentException("Username or waste production data cannot be null.");
+        }
 
-        if(!wasteProductionRepo.existsByUsernameWastetypeAndMonth(username,wasteProduction.getWaste_type(),wasteProduction.getMonth(),wasteProduction.getYear())){
+        if (!wasteProductionRepo.existsByUsernameWastetypeAndMonth(
+                username, wasteProduction.getWaste_type(), wasteProduction.getMonth(), wasteProduction.getYear())) {
             double emissions = logic.calculateCarbonEmissions(wasteProduction.getQuantity_kgs(), wasteProduction.getWaste_type());
             wasteProduction.setCarbon_emissions(emissions);
             return wasteProductionRepo.save(wasteProduction);
-        }
-        else{
-            throw new DataAlreadyExistsException("Data Already exists");
+        } else {
+            throw new DataAlreadyExistsException("Data already exists for this month, year, and waste type.");
         }
     }
 
     @Override
     public List<TrendsDto> getTrendsForWasteProduction(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusMonths(12);
 
-
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
-        Year y = Year.of(startYear);
+
+        List<WasteProduction> wasteProductions = Optional.ofNullable(
+                wasteProductionRepo.findWasteProductionFromLastTenMonths(username, Year.of(startYear), startMonth)
+        ).orElseThrow(() -> new UsernameNotFoundException("No data found for username: " + username));
 
 
-        List<WasteProduction> wasteProductions = wasteProductionRepo.findWasteProductionFromLastTenMonths(username, y, startMonth);
-
-        // Group by month and year, and sum up carbon emissions
         Map<String, Double> aggregatedData = wasteProductions.stream()
                 .collect(Collectors.groupingBy(
-                        // Group by a composite key of year and month
                         wp -> wp.getYear() + "-" + wp.getMonth(),
-                        // Summing the carbon emissions for each group
-                        Collectors.summingDouble(WasteProduction::getCarbon_emissions)
+                        Collectors.summingDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
                 ));
 
-        // Convert the aggregated data to TrendsDto
+
         return aggregatedData.entrySet().stream()
                 .map(entry -> {
                     String[] yearMonth = entry.getKey().split("-");
@@ -76,22 +79,35 @@ public class WasteProductionServiceImpl implements WasteProductionService{
     }
 
     @Override
-    public Double getCarbonEmissions(String username,Year year,Month month) {
-        if(wasteProductionRepo.existsByUsername(username)){
-            return wasteProductionRepo.findByUsernameAndYearAndMonth(username,year,month).stream().mapToDouble(i->i.getCarbon_emissions()).average().getAsDouble();
-        }else{
-            throw new UsernameNotFoundException("User with username " + username +" not found");
+    public Double getCarbonEmissions(String username, Year year, Month month) {
+        if (username == null || year == null || month == null) {
+            throw new IllegalArgumentException("Username, year, or month cannot be null.");
+        }
+
+        if (wasteProductionRepo.existsByUsername(username)) {
+            return wasteProductionRepo.findByUsernameAndYearAndMonth(username, year, month).stream()
+                    .mapToDouble(i -> Optional.ofNullable(i.getCarbon_emissions()).orElse(0.0))
+                    .average()
+                    .orElse(0.0);
+        } else {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
         }
     }
 
     @Override
     public Double getLatestCarbonEmissions(String username) {
-//        if(wasteProductionRepo.existsByUsername(username)){
-//            return wasteProductionRepo.getLatestData(username).stream().mapToDouble(i->i.getCarbon_emissions()).average().getAsDouble();
-//        }else{
-//            throw new UsernameNotFoundException("User with username " + username +" not found");
+//        if (username == null) {
+//            throw new IllegalArgumentException("Username cannot be null.");
 //        }
+//
+//        if (!wasteProductionRepo.existsByUsername(username)) {
+//            throw new UsernameNotFoundException("User with username " + username + " not found.");
+//        }
+//
+//        return wasteProductionRepo.getLatestData(username).stream()
+//                .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
+//                .average()
+//                .orElse(0.0); // Default to 0.0 if no data is present
         return  0.0d;
     }
-
 }

@@ -48,9 +48,8 @@ public class User {
 
     private Roles role;
 
-
-//    @ElementCollection(targetClass = "")
-//    List<Goals> userGoals;
+    @ElementCollection
+    List<UUID> userGoals;
 
 
 }

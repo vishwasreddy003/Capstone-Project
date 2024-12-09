@@ -15,7 +15,7 @@ import { SharedStateService } from '../auth.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
 
-  constructor(private sharedStateService: SharedStateService) {}
+  constructor(private sharedStateService: SharedStateService, private router:Router) {}
 
   ngOnInit(): void {
     // Subscribe to login state changes
@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.sharedStateService.logout(); // Log out the user
+    this.sharedStateService.logout(); 
+    this.router.navigate(['/home']);
   }
 }

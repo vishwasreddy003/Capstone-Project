@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -50,7 +52,22 @@ public class UserServiceImpl implements UserService{
         return !userRepo.existsByUsername(username);
     }
 
+    @Override
+    public void addGoaltoUser(String username, UUID goalId) {
+        Optional<User> user = userRepo.findByUsername(username);
 
+        if(user.isPresent()){
+            User currUser = user.get();
+            List<UUID> goals = currUser.getUserGoals();
+
+            goals.add(goalId);
+
+            currUser.setUserGoals(goals);
+            userRepo.save(currUser);
+        }else {
+            throw new UsernameNotFoundException("User with " + username + " does not exist");
+        }
+    }
 
 
 }

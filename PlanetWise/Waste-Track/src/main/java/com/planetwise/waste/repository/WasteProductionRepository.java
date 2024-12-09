@@ -25,7 +25,7 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   List<WasteProduction> findByUsernameAndYearAndMonth(String username,Year year,Month month);
 
-//  @Query("SELECT *\n" +
+//  @Query("SELECT *" +
 //          "FROM WasteProduction\n" +
 //          "WHERE username =:username and year = (\n" +
 //          "    SELECT MAX(year)\n" +

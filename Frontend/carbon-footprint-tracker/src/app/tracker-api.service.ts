@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { EnergyData } from './model/EnergyData';
 import { GreenScore } from './model/GreenScore';
 import { TransportData } from './model/TransportData';
+import { TrendsDto } from './model/TrendsDto';
 import { WasteProdData } from './model/WasteProdData';
 
 
@@ -39,7 +40,14 @@ export class TrackerApiService {
   getAllGoals(): Observable<any[]> {
     console.log('ok');
     return this.http.get<any[]>(this.baseUrl+`/goals/allGoals`);
-
   }
+
+  getTrendsData(category: string): Observable<TrendsDto[]> {
+    const username = sessionStorage.getItem('username');
+    return this.http.get<TrendsDto[]>(
+      `${this.baseUrl}/WasteProduction/${username}/analytics`
+    );
+  }
+  
 
 }

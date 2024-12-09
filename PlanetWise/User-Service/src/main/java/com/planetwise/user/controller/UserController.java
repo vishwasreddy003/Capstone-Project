@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/PlanetWise/user")
@@ -41,6 +42,11 @@ public class UserController {
     @PostMapping("/validate")
     public void  validateToken(@RequestParam String token){
         authService.validateToken(token);
+    }
+
+    @PostMapping("/{username}/addGoal")
+    public void addGoal(@RequestParam UUID goalId,@PathVariable String username){
+        userService.addGoaltoUser(username,goalId);
     }
 
 }
