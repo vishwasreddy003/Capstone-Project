@@ -83,7 +83,6 @@
       </div>
       <p class="text-muted text-center" *ngIf="!parsedRecommendations.length">No recommendations available.</p>
     </div>
-  
   </div>
 
   <!-- Bottom Card - Tasks/Goals -->
@@ -125,46 +124,6 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} Green Coins</span>
                   <button class="btn btn-primary btn-sm" (click)="addTaskToCurrent(goal.goalId)">Add Task</button>
-    <!-- Bottom Card - Tasks/Goals -->
-    <div class="card mt-4 col-md-12">
-      <div class="card-body">
-        <h5 class="card-title mb-4">Carbon Reduction Goals</h5>
-
-        <!-- Task View Buttons -->
-        <div class="btn-group mb-4">
-          <button class="btn" [class.btn-success]="selectedTaskView === 'current'"
-            [class.btn-outline-success]="selectedTaskView !== 'current'" (click)="selectTaskView('current')">
-            Current Tasks
-          </button>
-          <button class="btn" [class.btn-success]="selectedTaskView === 'completed'"
-            [class.btn-outline-success]="selectedTaskView !== 'completed'" (click)="selectTaskView('completed')">
-            Completed Tasks
-          </button>
-          <button class="btn" [class.btn-success]="selectedTaskView === 'available'"
-            [class.btn-outline-success]="selectedTaskView !== 'available'" (click)="selectTaskView('available')">
-            Available Tasks
-          </button>
-        </div>
-
-        <!-- Task List -->
-        <div class="row">
-          <!-- Available Tasks -->
-          <div *ngIf="selectedTaskView === 'available'">
-            <div class="row">
-              <div class="col-md-4 mb-3" *ngFor="let goal of availableGoals">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ goal.goalTitle }}</h5>
-                    <p class="card-text">{{ goal.goalDescription }}</p>
-                    <p class="card-text"><strong>Difficulty:</strong> {{ goal.goalDifficulty }}</p>
-                    <p class="card-text"><strong>Frequency:</strong> {{ goal.goalFrequency }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="badge bg-success">{{ goal.greenCoins }} Green Coins</span>
-                      <button class="btn btn-primary btn-sm" (click)="addTaskToCurrent(goal.goalId)">
-                        Add Task
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -191,7 +150,27 @@
             </div>
           </div>
         </ng-container>
-        </div>
+
+        <!-- Completed Tasks -->
+        <!-- <ng-container *ngIf="selectedTaskView === 'completed'">
+          <div class="col-md-4 mb-3" *ngFor="let goal of completedGoals">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ goal.goalTitle }}</h5>
+                <p class="card-text">{{ goal.goalDescription }}</p>
+                <p class="card-text">
+                  <strong>Difficulty:</strong> {{ goal.goalDifficulty }}
+                </p>`
+                <p class="card-text">
+                  <strong>Frequency:</strong> {{ goal.goalFrequency }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="badge bg-success">{{ goal.greenCoins }} Green Coins</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container> -->
       </div>
     </div>
   </div>
