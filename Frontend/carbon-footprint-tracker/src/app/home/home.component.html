@@ -1,9 +1,11 @@
-<div class="slider">
+<!-- <div class="slider">
   <div class="list">
     <div class="item" *ngFor="let item of items; let i = index" [class.active]="i === itemActive">
-      <img [src]="item.img" alt="slider-img" />
+      <div class="image-container">
+        <img [src]="item.img" alt="slider-img" />
+      </div>
       <div class="content">
-        <p>{{ item.category }}</p>
+        <p class="category">{{ item.category }}</p>
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
       </div>
@@ -20,6 +22,18 @@
       (click)="goToSlide(i)">
       <img [src]="item.img" alt="thumbnail" />
       <div class="content">{{ item.title }}</div>
+    </div>
+  </div>
+</div> -->
+<div class="home-container">
+  <div *ngFor="let item of items; let i = index" class="row" [class.reverse]="i % 2 !== 0">
+    <div class="content">
+      <p>{{ item.category }}</p>
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.description }}</p>
+    </div>
+    <div class="image-container">
+      <img [src]="item.img" alt="item-img" />
     </div>
   </div>
 </div>

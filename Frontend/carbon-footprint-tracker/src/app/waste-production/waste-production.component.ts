@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedStateService } from '../auth.service';
+import { ErrorHandlerService } from '../error-handler.service';
 import { TrackerApiService } from '../tracker-api.service';
 
 
@@ -23,11 +24,13 @@ export class WasteProductionComponent implements OnInit {
 
   wasteProdForm: FormGroup = new FormGroup({})
   yearsList: number[] = [];
+  submissionStatus: { message: string, type: string } | null = null;
+
 
   constructor(private formBuilder: FormBuilder,
     private trackerApiService: TrackerApiService,
     private router: Router,
-    private sharedStateService: SharedStateService) { }
+    private sharedStateService: SharedStateService,private errorHandler:ErrorHandlerService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
@@ -45,11 +48,18 @@ export class WasteProductionComponent implements OnInit {
       const wasteProdData = this.wasteProdForm.value;
       this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
         response => {
-          alert("Form submitted successfully");
+          this.submissionStatus = {
+            message: 'Form submitted successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
           this.resetForm();
         },
         error => {
-          console.log("Error submitting Form", error);
+          this.submissionStatus={
+            message: 'Error submitting Form',
+            type:'alert-error'
+          };
         }
       );
     }
@@ -60,14 +70,10 @@ export class WasteProductionComponent implements OnInit {
     this.sharedStateService.setSelectedMonth(selectedValue);
   }
 
-
-
   onYearChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
     this.sharedStateService.setSelectedYear(selectedValue);
   }
-
-
 
   resetForm(): void {
     this.wasteProdForm.reset();
@@ -78,32 +84,56 @@ export class WasteProductionComponent implements OnInit {
       const wasteProdData = this.wasteProdForm.value;
       this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
         (response) => {
-          alert('Form submitted successfully');
+          this.submissionStatus = {
+            message: 'Form submitted successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
           this.resetForm();
           this.router.navigate(['/dashboard']);
         },
         (error) => {
-          console.log('Error submitting form', error);
+          this.submissionStatus={
+            message: 'Error submitting Form',
+            type:'alert-error'
+          };
         }
       );
     }
   }
-
 
   goToTransportPage(): void {
     if (this.wasteProdForm.valid) {
       const wasteProdData = this.wasteProdForm.value;
       this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
         (response) => {
-          alert('Form submitted successfully');
+          this.submissionStatus = {
+            message: 'Form submitted successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
           this.resetForm();
           this.router.navigate(['/transport']);
         },
         (error) => {
-          console.log('Error submitting form', error);
+          this.submissionStatus={
+            message: 'Error submitting Form',
+            type:'alert-error'
+          };
+          this.autoClearAlert();
         }
       );
+    
     }
+  }
+   private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
   }
 }
 

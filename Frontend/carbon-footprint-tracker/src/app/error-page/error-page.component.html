@@ -1,12 +1,8 @@
 <div class="error-container">
-    <h1> Error : {{errorHandler.errorResponse.status}} </h1>
-    <p>
-        {{errorHandler.errorResponse.message}}
-    </p>
-    <p>
-        {{errorHandler.errorResponse.timestamp|date:'hh:mm:ss'}}
-    </p>
-    <a href="/">
-        Go Back to Home
-    </a>
+    <h1>Error: {{errorHandler.errorResponse.status}}</h1>
+    <p>{{errorHandler.errorResponse.message}}</p>
+    <p>{{errorHandler.errorResponse.timestamp | date:'hh:mm:ss'}}</p>
+    <a href="/">Go Back to Home</a>
 </div>
+
+

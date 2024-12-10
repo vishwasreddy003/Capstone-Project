@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ErrorHandlerService } from '../error-handler.service';
 import { TrackerApiService } from '../tracker-api.service';
 
 @Component({
@@ -18,11 +19,12 @@ export class EnergyWasteComponent implements OnInit {
   constructor(
     private formBuiler: FormBuilder,
     private trackerApiService: TrackerApiService,
-    private router: Router
+    private router: Router,
   ) {}
 
   energyWasteForm: FormGroup = new FormGroup({});
   yearsList: number[] = [];
+  submissionStatus: { message: string, type: string } | null = null;
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
@@ -42,24 +44,46 @@ export class EnergyWasteComponent implements OnInit {
         year: this.energyWasteForm.get('year')?.value,
         month: this.energyWasteForm.get('month')?.value
       };
-
       this.trackerApiService.submitEnergyData(energyData).subscribe(
         response => {
-          alert("Form submitted successfully");
+          this.submissionStatus = {
+            message: "Form submitted successfully",
+            type: "alert-success"  // This will apply the success alert styling
+          };
+          this.autoClearAlert();
           this.router.navigate(['/dashboard']);
           this.trackerApiService.getGreenScores(greenScore).subscribe(
             response => {
               console.log("Green score calculated", response);
             },
             error => {
-              console.log("Error calculating the score", error);
+              this.submissionStatus = {
+                message: "Error submitting form",
+                type: "alert-error"  // This will apply the error alert styling
+              };
+              this.autoClearAlert();
+              console.log("Error calculating green score", error);
             }
           );
         },
         error => {
+          this.submissionStatus = {
+            message: "Error submitting form",
+            type: "alert-error"  // This will apply the error alert styling
+          };
+          this.autoClearAlert();
           console.log("Error submitting form", error);
         }
       );
     }
+  }
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
   }
 }

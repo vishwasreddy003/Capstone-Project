@@ -1,0 +1,84 @@
+/* General Body Styling */
+body {
+    background-color: #f8f9fa;  /* Light grey background for the whole page */
+    font-family: 'Arial', sans-serif; /* Simple and clean font */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure that the body fills the entire viewport */
+  }
+  
+  /* Error Container Styling */
+  /* Error Container Styling */
+.error-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px;  /* Increased padding for better spacing */
+    background-color: #ffffff; /* White background for the error box */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px;
+    max-width: 600px; /* Max width to avoid it stretching too far on wide screens */
+    margin: auto;
+    min-height: 400px; /* Set a minimum height to increase the overall height */
+}
+
+  
+  /* Heading Style */
+  .error-container h1 {
+    font-size: 36px;
+    color: #dc3545;  /* Red color for the error heading */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Paragraph Styling */
+  .error-container p {
+    font-size: 18px;
+    color: #333333; /* Dark gray text for the message */
+    margin-bottom: 15px;
+  }
+  
+  /* Timestamp Styling */
+  .error-container p:last-child {
+    font-size: 14px;
+    color: #868e96; /* Lighter gray for the timestamp */
+    margin-bottom: 30px;
+  }
+  
+  /* Go Back Link Styling */
+  .error-container a {
+    font-size: 16px;
+    color: #007bff; /* Blue color for the link */
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #e2e6ea;  /* Light background */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .error-container a:hover {
+    background-color: #cbd3d9;  /* Slightly darker when hovered */
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #343a40; /* Dark footer background */
+    color: #ffffff; /* White text in the footer */
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  /* Footer Text */
+  footer p {
+    margin: 0;
+    font-size: 16px;
+  }
+  

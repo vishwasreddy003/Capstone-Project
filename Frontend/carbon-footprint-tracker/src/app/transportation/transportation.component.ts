@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ErrorHandlerService } from '../error-handler.service';
 import { TrackerApiService } from '../tracker-api.service';
 
 
@@ -20,11 +21,12 @@ export class TransportationComponent implements OnInit {
   months: string[] = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
     'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
   yearsList: number[] = [];
+  submissionStatus: { message: string, type: string } | null = null;
 
 
   transportForm: FormGroup = new FormGroup({})
 
-  constructor(private formBuilder: FormBuilder, private trackerApiService: TrackerApiService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private trackerApiService: TrackerApiService, private router: Router,private errorHandler :ErrorHandlerService) { }
 
   ngOnInit(): void {
     const currentYear = new Date().getFullYear();
@@ -44,12 +46,20 @@ export class TransportationComponent implements OnInit {
       const transportData = this.transportForm.value;
       this.trackerApiService.submitTransportData(transportData).subscribe(
         (response) => {
-          alert('Form submitted successfully');
+          this.submissionStatus = {
+            message: "Form submitted successfully",
+            type: "alert-success"
+          };
+          this.autoClearAlert();
           this.resetForm(); // Reset the form after successful submission
         },
         (error) => {
-          console.log('Error submitting form', error);
-        }
+          this.submissionStatus = {
+            message: "Error submitting form",
+            type: "alert-error"
+        };
+        this.autoClearAlert();
+      }
       );
     }
   }
@@ -62,12 +72,20 @@ export class TransportationComponent implements OnInit {
       const transportData = this.transportForm.value;
       this.trackerApiService.submitTransportData(transportData).subscribe(
         (response) => {
-          alert('Form submitted successfully');
+          this.submissionStatus = {
+            message: "Form submitted successfully",
+            type: "alert-success"
+          };
+          this.autoClearAlert();
           this.resetForm();
           this.router.navigate(['/dashboard']);
         },
         (error) => {
-          console.log('Error submitting form', error);
+          this.submissionStatus = {
+            message: "Error submitting form",
+            type: "alert-error"
+          };
+          this.autoClearAlert();
         }
       );
     }
@@ -79,14 +97,32 @@ export class TransportationComponent implements OnInit {
       const transportData = this.transportForm.value;
       this.trackerApiService.submitTransportData(transportData).subscribe(
         (response) => {
-          alert('Form submitted successfully');
+          this.submissionStatus = {
+            message: 'Form submitted successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
           this.resetForm();
           this.router.navigate(['/energy']);
         },
         (error) => {
-          console.log('Error submitting form', error);
+         this.submissionStatus={
+           message: 'Error submitting Form',
+           type:'alert-error'
+         };
+         this.autoClearAlert();
         }
       );
     }
+  }
+
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
   }
 }

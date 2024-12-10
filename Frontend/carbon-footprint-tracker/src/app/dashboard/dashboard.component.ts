@@ -4,7 +4,9 @@ import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/ge
 import { environment } from '../../environments/environment.development';
 import { Task } from '../model/task';
 import { TrackerApiService } from '../tracker-api.service';
-import { forkJoin, map, switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
+import { ErrorHandlerService } from '../error-handler.service';
+import { Router } from '@angular/router';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -36,6 +38,7 @@ export class DashboardComponent implements OnInit {
   availableGoals: Task[] = [];
   currentGoals: Task[] = [];
   recommendations: Recommendation[] = [];
+  submissionStatus: { message: string, type: string } | null = null;
 
   // Carbon and scoring data
   carbonData: Record<CategoryKey, number> = {
@@ -49,7 +52,7 @@ export class DashboardComponent implements OnInit {
   // Google AI instance
   private genAI: GoogleGenerativeAI;
 
-  constructor(private trackerApiService: TrackerApiService) {
+  constructor(private trackerApiService: TrackerApiService,private errorHandler:ErrorHandlerService,private router:Router) {
     this.genAI = new GoogleGenerativeAI(environment.API_KEY);
   }
 
@@ -88,9 +91,14 @@ export class DashboardComponent implements OnInit {
         console.log('Mapped Goals:', this.availableGoals);
       },
       (error) => {
-        console.error('Error fetching goals:', error);
+        this.handleError('Error fetching goals:');
       }
     );
+  }
+  
+  handleError(errorMessage: string) {
+    this.errorHandler.setError(500, errorMessage);  // Set error details in the service
+    this.router.navigate(['/error']);  // Navigate to the error page
   }
 
 
@@ -128,13 +136,15 @@ export class DashboardComponent implements OnInit {
     );
   }
   
-
-
   addTaskToCurrent(goalId: string): void {
     console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       (response) => {
-        alert('Task added successfully');
+          this.submissionStatus = {
+            message: 'Task added successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
         // Update current and available goals
         const task = this.availableGoals.find((goal) => goal.goalId === goalId);
         if (task) {
@@ -143,7 +153,11 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error) => {
-        alert("Task wasn't added");
+       this.submissionStatus = {
+            message: "Task wasn't added",
+            type: 'alert-error'
+          };
+          this.autoClearAlert();
       }
     );
   }
@@ -186,7 +200,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'car', title: 'Carpooling', text: 'Share rides to reduce fuel consumption.', impact: '-200kg CO₂/month' },
         { icon: 'home', title: 'Energy-efficient Appliances', text: 'Use energy-efficient appliances to reduce electricity use.', impact: '-300kg CO₂/month' },
         { icon: 'solar-panel', title: 'Install Solar Panels', text: 'Harness solar energy to reduce electricity bills and CO₂ emissions.', impact: '-350kg CO₂/month' },
-        { icon: 'tree', title: 'Plant Trees', text: 'Plant trees to absorb carbon and improve air quality.', impact: '-500kg CO₂/year' },
+        { icon: 'tree', title: 'Plant Trees', text: 'Plant trees to absorb carbon and improve air quality.', impact: '-500kg CO₂/year' }
         //{ icon: 'leaf', title: 'Green Building Practices', text: 'Invest in green building materials and energy-efficient insulation.', impact: '-250kg CO₂/month' }
       ],
       
@@ -195,7 +209,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'thermometer', title: 'Lower Heating and Cooling', text: 'Adjust the thermostat to a moderate temperature.', impact: '-100kg CO₂/month' },
         { icon: 'water', title: 'Water Conservation', text: 'Use low-flow showerheads and fix leaks.', impact: '-50kg CO₂/month' },
         { icon: 'washing-machine', title: 'Efficient Laundry Practices', text: 'Wash clothes in cold water and air dry to reduce energy consumption.', impact: '-75kg CO₂/month' },
-        { icon: 'fridge', title: 'Energy-efficient Fridges', text: 'Upgrade to energy-efficient refrigerators and keep them well-maintained.', impact: '-120kg CO₂/month' },
+        { icon: 'fridge', title: 'Energy-efficient Fridges', text: 'Upgrade to energy-efficient refrigerators and keep them well-maintained.', impact: '-120kg CO₂/month' }
        // { icon: 'insulation', title: 'Improve Home Insulation', text: 'Seal windows and doors to prevent energy loss and reduce heating costs.', impact: '-200kg CO₂/month' }
       ],
     
@@ -204,7 +218,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'bicycle', title: 'Biking', text: 'Opt for biking over short distances.', impact: '-100kg CO₂/month' },
         { icon: 'electric-car', title: 'Electric Vehicle', text: 'Switch to an electric vehicle to reduce emissions.', impact: '-350kg CO₂/month' },
         { icon: 'bus', title: 'Take the Bus', text: 'Use the bus for long commutes to reduce individual car use.', impact: '-150kg CO₂/month' },
-        { icon: 'train', title: 'Use Trains for Long Distances', text: 'Opt for trains instead of flying to reduce emissions.', impact: '-400kg CO₂/month' },
+        { icon: 'train', title: 'Use Trains for Long Distances', text: 'Opt for trains instead of flying to reduce emissions.', impact: '-400kg CO₂/month' }
        // { icon: 'car', title: 'Car Maintenance', text: 'Keep your vehicle well-maintained to optimize fuel efficiency.', impact: '-50kg CO₂/month' }
       ],
     
@@ -214,12 +228,22 @@ export class DashboardComponent implements OnInit {
         { icon: 'recycle', title: 'Recycling', text: 'Sort recyclables and ensure they are disposed of properly.', impact: '-80kg CO₂/month' },
         { icon: 'compost', title: 'Start Composting', text: 'Compost organic waste to reduce landfill and methane emissions.', impact: '-150kg CO₂/month' },
         { icon: 'shopping-cart', title: 'Buy in Bulk', text: 'Purchase items in bulk to reduce packaging waste.', impact: '-60kg CO₂/month' },
-        { icon: 'donate', title: 'Donate Old Items', text: 'Donate unused goods instead of throwing them away to reduce waste.', impact: '-90kg CO₂/month' },
+        { icon: 'donate', title: 'Donate Old Items', text: 'Donate unused goods instead of throwing them away to reduce waste.', impact: '-90kg CO₂/month' }
         //{ icon: 'battery', title: 'Recycle Batteries Properly', text: 'Recycle batteries to avoid hazardous waste and preserve resources.', impact: '-30kg CO₂/month' }
       ]
     };
 
     this.recommendations = recommendationsByCategory[this.selectedCategory] || [];
+  }
+
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
   }
 
   // async generateRecommendations(): Promise<void> {
