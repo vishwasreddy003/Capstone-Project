@@ -47,7 +47,7 @@ export class WasteProductionComponent implements OnInit {
     if (this.wasteProdForm.valid) {
       const wasteProdData = this.wasteProdForm.value;
       this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
-        response => {
+        (response) => {
           this.submissionStatus = {
             message: 'Form submitted successfully',
             type: 'alert-success'
@@ -55,15 +55,27 @@ export class WasteProductionComponent implements OnInit {
           this.autoClearAlert();
           this.resetForm();
         },
-        error => {
-          this.submissionStatus={
+        (error) => {
+          this.submissionStatus = {
             message: 'Error submitting Form',
-            type:'alert-error'
+            type: 'alert-error'
           };
+          this.autoClearAlert();
         }
       );
     }
   }
+  
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+  
+  clearStatus(): void {
+    this.submissionStatus = null;
+  }
+  
 
   onMonthChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -97,6 +109,7 @@ export class WasteProductionComponent implements OnInit {
             message: 'Error submitting Form',
             type:'alert-error'
           };
+          this.autoClearAlert();
         }
       );
     }
@@ -123,17 +136,7 @@ export class WasteProductionComponent implements OnInit {
           this.autoClearAlert();
         }
       );
-    
     }
-  }
-   private autoClearAlert(): void {
-    setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
-    }, 3000); // 3000 ms = 3 seconds
-  }
-
-  clearStatus(): void {
-    this.submissionStatus = null;
   }
 }
 

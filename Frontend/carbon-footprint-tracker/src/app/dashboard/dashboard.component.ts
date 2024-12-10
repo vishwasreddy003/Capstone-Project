@@ -174,6 +174,16 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
+  }
+
   // -----------------------------------
   // CARBON DATA METHODS
   // -----------------------------------
