@@ -75,4 +75,22 @@ export class TrackerApiService {
   }
   
 
+  getLatestWasteEmission():Observable<number>{
+    let username = sessionStorage.getItem('username');
+
+    return this.http.get<number>(`${this.baseUrl}/WasteProduction/${username}/latest`);
+  }
+
+  getLatestTransportEmission():Observable<number>{
+    let username = sessionStorage.getItem('username');
+
+    return this.http.get<number>(`${this.baseUrl}/transportation/${username}/latest`);
+  }
+
+  getLatestHouseholdEmission():Observable<number>{
+    let username = sessionStorage.getItem('username');
+
+    return this.http.get<number>(`${this.baseUrl}/energy/${username}/latest`);
+  }
+
 }

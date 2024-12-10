@@ -13,4 +13,6 @@ public interface EnergyConsumptionService {
     List<TrendsDto> getUserTrendsForEnergyConsumption(String username);
 
     Double getCarbonEmissions(String username, Year year, Month month);
+
+    Double getLatestCarbonEmissions(String username);
 }

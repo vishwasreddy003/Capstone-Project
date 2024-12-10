@@ -1,5 +1,6 @@
 package com.planetwise.energywise.controller;
 
+import com.planetwise.energywise.dto.TrendsDto;
 import com.planetwise.energywise.model.EnergyConsumption;
 import com.planetwise.energywise.service.EnergyConsumptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,18 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/{username}/analytics")
-    public ResponseEntity<List<EnergyConsumption>> getAnalytics(@PathVariable String username) {
-        List<EnergyConsumption> analytics = energyService.getUserTrendsForEnergyConsumption(username);
+    public ResponseEntity<List<TrendsDto>> getAnalytics(@PathVariable String username) {
+        List<TrendsDto> analytics = energyService.getUserTrendsForEnergyConsumption(username);
         return new ResponseEntity<>(analytics, HttpStatus.OK);
     }
 
     @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
     public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ) {
         return energyService.getCarbonEmissions(username, year, month);
+    }
+
+    @GetMapping("/{username}/latest")
+    public Double getCarbonEmissions(@PathVariable String username){
+        return energyService.getLatestCarbonEmissions(username);
     }
 }

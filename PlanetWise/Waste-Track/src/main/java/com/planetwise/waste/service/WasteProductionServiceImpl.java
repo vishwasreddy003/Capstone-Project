@@ -96,18 +96,17 @@ public class WasteProductionServiceImpl implements WasteProductionService {
 
     @Override
     public Double getLatestCarbonEmissions(String username) {
-//        if (username == null) {
-//            throw new IllegalArgumentException("Username cannot be null.");
-//        }
-//
-//        if (!wasteProductionRepo.existsByUsername(username)) {
-//            throw new UsernameNotFoundException("User with username " + username + " not found.");
-//        }
-//
-//        return wasteProductionRepo.getLatestData(username).stream()
-//                .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
-//                .average()
-//                .orElse(0.0); // Default to 0.0 if no data is present
-        return  0.0d;
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!wasteProductionRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+
+        return wasteProductionRepo.getLatestData(username).stream()
+                .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
+                .average()
+                .orElse(0.0);
     }
 }

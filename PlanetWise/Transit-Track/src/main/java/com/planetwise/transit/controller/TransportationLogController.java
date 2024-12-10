@@ -1,5 +1,6 @@
 package com.planetwise.transit.controller;
 
+import com.planetwise.transit.dto.TrendsDto;
 import com.planetwise.transit.model.FuelType;
 import com.planetwise.transit.model.TransportationLog;
 import com.planetwise.transit.model.TransportationMode;
@@ -28,33 +29,21 @@ public class TransportationLogController {
         return new ResponseEntity<>(savedLog, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<List<TransportationLog>> getAnalyticsOfTransportation(@PathVariable String username) {
-        List<TransportationLog> logs = transportationLogService.getUserTransportationLog(username);
-        return new ResponseEntity<>(logs, HttpStatus.OK);
-    }
-
-    @GetMapping("/type/{username}/{mode}")
-    public ResponseEntity<List<TransportationLog>> getAnalyticsOfTransportationByMode(@PathVariable String username, @PathVariable TransportationMode mode) {
-        List<TransportationLog> logsByMode = transportationLogService.getUserTransportationLogByTransportMode(username, mode);
-        return new ResponseEntity<>(logsByMode, HttpStatus.OK);
-    }
-
-    @GetMapping("/mode/{username}/{type}")
-    public ResponseEntity<List<TransportationLog>> getAnalyticsOfTransportationByType(@PathVariable String username, @PathVariable FuelType type) {
-        List<TransportationLog> logsByType = transportationLogService.getUserTransportationLogByFuelType(username, type);
-        return new ResponseEntity<>(logsByType, HttpStatus.OK);
-    }
 
     @GetMapping("/{username}/emissions")
-    public ResponseEntity<Map<Month, Double>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
-        Map<Month, Double> emissions = transportationLogService.getTrendsForTransportation(username);
+    public ResponseEntity<List<TrendsDto>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
+        List<TrendsDto> emissions = transportationLogService.getTrendsForTransportation(username);
         return ResponseEntity.ok(emissions);
     }
 
     @GetMapping("/{username}/getCarbonEmissions/{year}/{month}")
     public Double getCarbonEmissions(@PathVariable String username, @PathVariable Year year, @PathVariable Month month ){
         return transportationLogService.getCarbonEmissions(username,year,month);
+    }
+
+    @GetMapping("/{username}/latest")
+    public Double getCarbonEmissions(@PathVariable String username){
+        return transportationLogService.getLatestCarbonEmissions(username);
     }
 
 }

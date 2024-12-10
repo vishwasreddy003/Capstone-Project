@@ -27,13 +27,13 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   @Query(value = """
         SELECT * 
-        FROM WasteProduction 
+        FROM waste_production 
         WHERE username = :username 
-        AND year = (SELECT MAX(year) FROM WasteProduction) 
+        AND year = (SELECT MAX(year) FROM waste_production) 
         AND month = (
             SELECT month 
-            FROM WasteProduction 
-            WHERE year = (SELECT MAX(year) FROM WasteProduction) 
+            FROM waste_production 
+            WHERE year = (SELECT MAX(year) FROM waste_production) 
             ORDER BY 
                 CASE month 
                     WHEN 'January' THEN 1 

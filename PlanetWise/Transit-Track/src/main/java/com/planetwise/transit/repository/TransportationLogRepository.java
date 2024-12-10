@@ -29,5 +29,34 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
 
     @Query("SELECT t FROM TransportationLog t WHERE t.username = :username AND t.month = :month AND t.year = :year")
     List<TransportationLog> findByUsernameAndMonthAndYear(String username, int year, Month month);
+
+    @Query(value = """
+        SELECT * 
+        FROM transportation_log 
+        WHERE username = :username 
+        AND year = (SELECT MAX(year) FROM transportation_log) 
+        AND month = (
+            SELECT month 
+            FROM transportation_log 
+            WHERE year = (SELECT MAX(year) FROM transportation_log) 
+            ORDER BY 
+                CASE month 
+                    WHEN 'January' THEN 1 
+                    WHEN 'February' THEN 2 
+                    WHEN 'March' THEN 3 
+                    WHEN 'April' THEN 4 
+                    WHEN 'May' THEN 5 
+                    WHEN 'June' THEN 6 
+                    WHEN 'July' THEN 7 
+                    WHEN 'August' THEN 8 
+                    WHEN 'September' THEN 9 
+                    WHEN 'October' THEN 10 
+                    WHEN 'November' THEN 11 
+                    WHEN 'December' THEN 12 
+                END DESC 
+            LIMIT 1
+        )
+        """, nativeQuery = true)
+    List<TransportationLog> getLatestData(String username);
 }
 

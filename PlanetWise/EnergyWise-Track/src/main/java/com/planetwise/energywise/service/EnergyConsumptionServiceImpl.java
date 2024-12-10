@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,5 +63,21 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
         }else {
             throw new UsernameNotFoundException(("User with username " + username +" not found"));
         }
+    }
+
+    @Override
+    public Double getLatestCarbonEmissions(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!energyRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+
+        return energyRepo.getLatestData(username).stream()
+                .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
+                .average()
+                .orElse(0.0);
     }
 }

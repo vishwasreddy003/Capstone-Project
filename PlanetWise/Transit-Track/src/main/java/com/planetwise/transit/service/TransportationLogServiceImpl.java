@@ -81,4 +81,20 @@ public class TransportationLogServiceImpl implements TransportationLogService {
             throw new UsernameNotFoundException("User with username " + username + " not found");
         }
     }
+
+    @Override
+    public Double getLatestCarbonEmissions(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!transportRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+
+        return transportRepo.getLatestData(username).stream()
+                .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
+                .average()
+                .orElse(0.0);
+    }
 }

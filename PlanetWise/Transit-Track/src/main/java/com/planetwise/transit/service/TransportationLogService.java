@@ -14,4 +14,6 @@ public interface TransportationLogService {
     public List<TrendsDto> getTrendsForTransportation(String username);
 
     Double getCarbonEmissions(String username, Year year, Month month);
+
+    Double getLatestCarbonEmissions(String username);
 }
