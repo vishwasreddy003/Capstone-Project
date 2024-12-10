@@ -25,9 +25,7 @@
               (click)="selectCategory('overall')"
             >
               <span>Overall Emissions</span>
-              <span class="badge bg-light text-dark"
-                >{{ carbonData["overall"] }} kg</span
-              >
+              <span class="badge bg-light text-dark">{{ carbonData["overall"] }} kg</span>
             </button>
 
             <button
@@ -37,23 +35,17 @@
               (click)="selectCategory('household')"
             >
               <span>Household</span>
-              <span class="badge bg-light text-dark"
-                >{{ carbonData["household"] }} kg</span
-              >
+              <span class="badge bg-light text-dark">{{ carbonData["household"] }} kg</span>
             </button>
 
             <button
               class="btn d-flex justify-content-between align-items-center"
               [class.btn-success]="selectedCategory === 'transportation'"
-              [class.btn-outline-success]="
-                selectedCategory !== 'transportation'
-              "
+              [class.btn-outline-success]="selectedCategory !== 'transportation'"
               (click)="selectCategory('transportation')"
             >
               <span>Transportation</span>
-              <span class="badge bg-light text-dark"
-                >{{ carbonData["transportation"] }} kg</span
-              >
+              <span class="badge bg-light text-dark">{{ carbonData["transportation"] }} kg</span>
             </button>
 
             <button
@@ -63,15 +55,14 @@
               (click)="selectCategory('waste')"
             >
               <span>Waste</span>
-              <span class="badge bg-light text-dark"
-                >{{ carbonData["waste"] }} kg</span
-              >
+              <span class="badge bg-light text-dark">{{ carbonData["waste"] }} kg</span>
             </button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Right Card - AI Recommendations -->
     <div class="col-md-6">
       <div class="card h-100">
         <div class="card-body">
@@ -99,11 +90,10 @@
     </div>
 
     <!-- Bottom Card - Tasks/Goals -->
-    <div class="card mt-4 col-md-12`">
+    <div class="card mt-4 col-md-12">
       <div class="card-body">
         <h5 class="card-title mb-4">Carbon Reduction Goals</h5>
 
-        <!-- Task View Buttons -->
         <!-- Task View Buttons -->
         <div class="btn-group mb-4">
           <button
@@ -132,7 +122,6 @@
           </button>
         </div>
 
-        <!-- Task List -->
         <!-- Task List -->
         <div class="row">
           <div *ngIf="selectedTaskView === 'available'"></div>

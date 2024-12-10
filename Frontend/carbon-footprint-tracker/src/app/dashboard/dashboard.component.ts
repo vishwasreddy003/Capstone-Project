@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'home', title: 'Energy-efficient Appliances', text: 'Use energy-efficient appliances to reduce electricity use.', impact: '-300kg CO₂/month' },
         { icon: 'solar-panel', title: 'Install Solar Panels', text: 'Harness solar energy to reduce electricity bills and CO₂ emissions.', impact: '-350kg CO₂/month' },
         { icon: 'tree', title: 'Plant Trees', text: 'Plant trees to absorb carbon and improve air quality.', impact: '-500kg CO₂/year' },
-        { icon: 'leaf', title: 'Green Building Practices', text: 'Invest in green building materials and energy-efficient insulation.', impact: '-250kg CO₂/month' }
+        //{ icon: 'leaf', title: 'Green Building Practices', text: 'Invest in green building materials and energy-efficient insulation.', impact: '-250kg CO₂/month' }
       ],
       
       household: [
@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'water', title: 'Water Conservation', text: 'Use low-flow showerheads and fix leaks.', impact: '-50kg CO₂/month' },
         { icon: 'washing-machine', title: 'Efficient Laundry Practices', text: 'Wash clothes in cold water and air dry to reduce energy consumption.', impact: '-75kg CO₂/month' },
         { icon: 'fridge', title: 'Energy-efficient Fridges', text: 'Upgrade to energy-efficient refrigerators and keep them well-maintained.', impact: '-120kg CO₂/month' },
-        { icon: 'insulation', title: 'Improve Home Insulation', text: 'Seal windows and doors to prevent energy loss and reduce heating costs.', impact: '-200kg CO₂/month' }
+       // { icon: 'insulation', title: 'Improve Home Insulation', text: 'Seal windows and doors to prevent energy loss and reduce heating costs.', impact: '-200kg CO₂/month' }
       ],
     
       transportation: [
@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'electric-car', title: 'Electric Vehicle', text: 'Switch to an electric vehicle to reduce emissions.', impact: '-350kg CO₂/month' },
         { icon: 'bus', title: 'Take the Bus', text: 'Use the bus for long commutes to reduce individual car use.', impact: '-150kg CO₂/month' },
         { icon: 'train', title: 'Use Trains for Long Distances', text: 'Opt for trains instead of flying to reduce emissions.', impact: '-400kg CO₂/month' },
-        { icon: 'car', title: 'Car Maintenance', text: 'Keep your vehicle well-maintained to optimize fuel efficiency.', impact: '-50kg CO₂/month' }
+       // { icon: 'car', title: 'Car Maintenance', text: 'Keep your vehicle well-maintained to optimize fuel efficiency.', impact: '-50kg CO₂/month' }
       ],
     
       waste: [
@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit {
         { icon: 'compost', title: 'Start Composting', text: 'Compost organic waste to reduce landfill and methane emissions.', impact: '-150kg CO₂/month' },
         { icon: 'shopping-cart', title: 'Buy in Bulk', text: 'Purchase items in bulk to reduce packaging waste.', impact: '-60kg CO₂/month' },
         { icon: 'donate', title: 'Donate Old Items', text: 'Donate unused goods instead of throwing them away to reduce waste.', impact: '-90kg CO₂/month' },
-        { icon: 'battery', title: 'Recycle Batteries Properly', text: 'Recycle batteries to avoid hazardous waste and preserve resources.', impact: '-30kg CO₂/month' }
+        //{ icon: 'battery', title: 'Recycle Batteries Properly', text: 'Recycle batteries to avoid hazardous waste and preserve resources.', impact: '-30kg CO₂/month' }
       ]
     };
 
