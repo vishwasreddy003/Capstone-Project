@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment.development';
 import { Task } from '../model/task';
 import { TrackerApiService } from '../tracker-api.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { ErrorHandlerService } from '../error-handler.service';
+import { Router } from '@angular/router';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -42,6 +44,8 @@ export class DashboardComponent implements OnInit {
   availableGoals: Task[] = [];
   currentGoals: Task[] = [];
   parsedRecommendations: Recommendation[] = [];
+  recommendations: Recommendation[] = [];
+  submissionStatus: { message: string, type: string } | null = null;
 
   // Carbon and scoring data
   carbonData: Record<CategoryKey, number> = {
@@ -55,7 +59,7 @@ export class DashboardComponent implements OnInit {
   // Google AI instance
   private genAI: GoogleGenerativeAI;
 
-  constructor(private trackerApiService: TrackerApiService) {
+  constructor(private trackerApiService: TrackerApiService,private errorHandler:ErrorHandlerService,private router:Router) {
     this.genAI = new GoogleGenerativeAI(environment.API_KEY);
   }
 
@@ -94,9 +98,14 @@ export class DashboardComponent implements OnInit {
         console.log('Mapped Goals:', this.availableGoals);
       },
       (error) => {
-        console.error('Error fetching goals:', error);
+        this.handleError('Error fetching goals:');
       }
     );
+  }
+  
+  handleError(errorMessage: string) {
+    this.errorHandler.setError(500, errorMessage);  // Set error details in the service
+    this.router.navigate(['/error']);  // Navigate to the error page
   }
 
   loadCurrentGoals(): void {
@@ -135,11 +144,18 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  
   addTaskToCurrent(goalId: string): void {
     console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       (response) => {
         alert('Task added successfully');
+          this.submissionStatus = {
+            message: 'Task added successfully',
+            type: 'alert-success'
+          };
+          this.autoClearAlert();
+        // Update current and available goals
         const task = this.availableGoals.find((goal) => goal.goalId === goalId);
         if (task) {
           this.currentGoals.push(task);
@@ -149,7 +165,11 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error) => {
-        alert("Task wasn't added");
+       this.submissionStatus = {
+            message: "Task wasn't added",
+            type: 'alert-error'
+          };
+          this.autoClearAlert();
       }
     );
   }

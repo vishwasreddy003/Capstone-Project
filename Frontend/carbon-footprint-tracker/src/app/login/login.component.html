@@ -1,44 +1,66 @@
 <div class="container-fluid d-flex align-items-center justify-content-center vh-100">
   <div class="row w-100">
+    <!-- Left Column: Image Section -->
     <div class="col-md-7 d-flex justify-content-center align-items-center">
       <img src="assets/environment.jpg" alt="Sustainable Planet" class="large-image" />
     </div>
 
+    <!-- Right Column: Login Form Section -->
     <div class="col-md-5 d-flex flex-column justify-content-center align-items-center">
       <div class="outer">
         <div class="main">
+          <!-- Login Header -->
           <h1>Sign In</h1>
           <h3>Enter your login credentials</h3>
 
+          <div *ngIf="submissionStatus" class="alert-container">
+            <div class="alert" [ngClass]="submissionStatus.type" role="alert">
+              <div class="alert-icon">
+                <i *ngIf="submissionStatus.type === 'alert-success'" class="fas fa-check-circle"></i>
+                <i *ngIf="submissionStatus.type === 'alert-error'" class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="alert-content">
+                {{ submissionStatus.message }}
+              </div>
+              <button type="button" class="close-btn" (click)="clearStatus()">X</button>
+            </div>
+          </div>
+          
+          <!-- Login Form -->
           <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+            <!-- Username Input Field -->
             <div class="form-group">
-              <label for="username">Username:
-                <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
-                  <small class="text-danger" *ngIf="loginForm.get('username')?.hasError('required')">
-                    Username is required.
-                  </small>
-                </div>
-              </label>
+              <label for="username">Username:</label>
               <input formControlName="username" type="text" id="username" placeholder="Enter your Username" required>
-             
+              
+              <!-- Username Error Message -->
+              <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                <small class="text-danger" *ngIf="loginForm.get('username')?.hasError('required')">
+                  Username is required.
+                </small>
+              </div>
             </div>
 
+            <!-- Password Input Field -->
             <div class="form-group">
-              <label for="password">Password:
-                <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-                  <small class="text-danger" *ngIf="loginForm.get('password')?.hasError('required')">
-                    Password is required.
-                  </small>
-                </div>
-              </label>
+              <label for="password">Password:</label>
               <input formControlName="password" type="password" id="password" placeholder="Enter your Password" required>
+              
+              <!-- Password Error Message -->
+              <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                <small class="text-danger" *ngIf="loginForm.get('password')?.hasError('required')">
+                  Password is required.
+                </small>
+              </div>
             </div>
 
+            <!-- Submit Button -->
             <div class="form-group wrap">
               <button type="submit" [disabled]="loginForm.invalid">Log In</button>
             </div>
           </form>
 
+          <!-- Signup Link -->
           <p>Not registered? 
             <a routerLink="/signup" style="text-decoration: none;">Create an account</a>
           </p>

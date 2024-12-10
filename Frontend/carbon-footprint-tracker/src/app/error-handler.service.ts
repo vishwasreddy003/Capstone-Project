@@ -5,11 +5,27 @@ import { ErrorResponse } from './model/ErrorResponse';
   providedIn: 'root'
 })
 export class ErrorHandlerService {
-  errorResponse : ErrorResponse = {
-    status:404,
-    message: "Oops! The page you're looking for is not here.",
-    timestamp:new Date()
+  public errorResponse: ErrorResponse = {
+    status: 0,
+    message: 'An unknown error occurred.',
+    timestamp: new Date(),
   };
 
-  constructor() { }
+  // Set error details when an error occurs
+  setError(status: number, message: string): void {
+    this.errorResponse = {
+      status,
+      message,
+      timestamp: new Date(),
+    };
+  }
+
+  // Reset error details
+  resetError(): void {
+    this.errorResponse = {
+      status: 0,
+      message: 'An unknown error occurred.',
+      timestamp: new Date(),
+    };
+  }
 }

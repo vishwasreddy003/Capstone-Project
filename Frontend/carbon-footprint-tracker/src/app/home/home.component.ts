@@ -11,34 +11,34 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 export class HomeComponent implements OnInit, OnDestroy {
   items = [
     {
-      img: 'assets/environment.jpg',
-      category: 'cars',
-      title: 'Racing',
-      description: 'Racing is the ultimate test of speed and skill...',
+      img: 'assets/Image2.jpg',
+      category: 'Understanding Carbon Footprint',
+      title: 'Know Your CO₂ Emissions',
+      description: 'Get started on understanding the impact of your daily activities on carbon emissions and how to reduce them...'
     },
     {
-      img: 'assets/plantation.jpg',
-      category: 'cars',
-      title: 'Porsche',
-      description: 'Porsche is the epitome of luxury and performance...',
+      img: 'assets/IMG.jpg',
+      category: 'Save Natural resources',
+      title: 'Rainwater Harvesting',
+      description: 'Rainwater Harvesting and rainwater garden outline concept...',
     },
     {
-      img: 'assets/img7.jpg',
-      category: 'cars',
-      title: 'Team',
-      description: 'Cars are more than transportation...',
+      img: 'assets/Image.jpg',
+      category: 'Learning to live sustainable.',
+      title: 'A Lesson.',
+      description: 'separate, recycle and compost trash.',
     },
+    // {
+    //   img: 'assets/img14.jpg',
+    //   category: 'cars',
+    //   title: 'Team',
+    //   description: 'Cars are more than transportation...',
+    // },
     {
-      img: 'assets/img4.jpg',
-      category: 'cars',
-      title: 'Action',
-      description: 'Car action is adrenaline-fueled excitement...',
-    },
-    {
-      img: 'assets/img5.jpg',
-      category: 'cars',
-      title: '3 2 1 Go',
-      description: '"3, 2, 1, Go!" signals the start...',
+      img: 'assets/Image4.jpg',
+      category: 'Get Exciting rewards',
+      title: 'Carbon Credits',
+      description: 'Complete Tasks...',
     },
   ];
 
@@ -79,3 +79,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
   }
 }
+
+

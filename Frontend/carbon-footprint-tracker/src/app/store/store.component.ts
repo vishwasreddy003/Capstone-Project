@@ -53,11 +53,11 @@ export class StoreComponent {
       description: 'Stylish, reusable tote bag made from organic cotton.',
     },
     {
-      image: 'https://m.media-amazon.com/images/I/71pOBsa9QlL._AC_SL1500_.jpg',
+      image: 'https://tiimg.tistatic.com/fp/1/007/280/green-color-foldable-bicycle-499.jpg',
       brand: 'GreenCycle',
-      product: 'Compost Bin',
+      product: 'Bicycle',
       greenCoins: 300,
-      description: 'Compact compost bin for converting waste into compost.',
+      description: 'Pedal towards a greener future – every ride counts for the planet!',
     },
     {
       image: 'https://imgmedia.lbb.in/media/2021/12/61c2d2e296f2a326b41b7d9d_1640157922129.png',
