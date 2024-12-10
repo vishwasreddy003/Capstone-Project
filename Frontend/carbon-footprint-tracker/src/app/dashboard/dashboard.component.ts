@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
-import { error } from 'console';
-import { of } from 'rxjs/internal/observable/of';
-import { catchError, timeout } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
 import { Task } from '../model/task';
 import { TrackerApiService } from '../tracker-api.service';
+import { forkJoin, map, switchMap } from 'rxjs';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -14,7 +12,6 @@ interface CarbonData {
   category: string;
   value: number;
 }
-
 
 interface Recommendation {
   icon: string;
@@ -28,80 +25,159 @@ interface Recommendation {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports:[CommonModule]
+  imports: [CommonModule],
 })
 export class DashboardComponent implements OnInit {
-
+  // State variables
   selectedTaskView: string = 'available';
-
-  availableGoals: Task[] = [];
-
-  selectTaskView(view: string): void {
-    this.selectedTaskView = view;
-    if (view === 'available') {
-      this.loadAvailableGoals();
-    }
-  }
-
-  getDisplayedTasks(): Task[] {
-    return this.tasks[this.selectedTaskView] || [];
-  }
-
-  // baseurl + planetwise+user+{username}+addGoal+{goalID};
-
-  // baseurl + planetwise+user+{username}+goals;
-
-
   selectedCategory: CategoryKey = 'overall';
-  aiRecommendations: string[] = [];
+
+  // Data arrays
+  availableGoals: Task[] = [];
+  currentGoals: Task[] = [];
+  recommendations: Recommendation[] = [];
+
+  // Carbon and scoring data
   carbonData: Record<CategoryKey, number> = {
     overall: 2500,
     household: 1200,
     transportation: 800,
     waste: 500,
   };
-
-  tasks: { [key: string]: Task[] } = {
-    current: [],
-    completed: [],
-    available: [],
-  };
-
   currentScore: number = 0;
-  recommendations: Recommendation[] = [];
+
+  // Google AI instance
   private genAI: GoogleGenerativeAI;
 
-  constructor(private trackerApiService:TrackerApiService) {
+  constructor(private trackerApiService: TrackerApiService) {
     this.genAI = new GoogleGenerativeAI(environment.API_KEY);
-    
   }
 
+  // Lifecycle Hook
   ngOnInit(): void {
-    //this.loadAvailableGoals(); 
+    // this.loadAvailableGoals();
     this.updateScore('overall');
-     this.loadRecommendations();
+    this.loadRecommendations();
+  }
+
+  // -----------------------------------
+  // TASK VIEW METHODS
+  // -----------------------------------
+
+  selectTaskView(view: string): void {
+    this.selectedTaskView = view;
+    if (view === 'available') {
+      this.loadAvailableGoals();
+    }else if(view === 'current'){
+      this.loadCurrentGoals();
+    }
   }
 
   loadAvailableGoals(): void {
     this.trackerApiService.getAllGoals().subscribe(
       (response: any[]) => {
         console.log('Fetched Goals:', response);
-        // Map response data to the availableGoals array
         this.availableGoals = response.map((goal) => ({
-          goalId:goal.goal_id,
+          goalId: goal.goal_id,
           goalTitle: goal.goal_title,
           goalDescription: goal.goal_description,
           goalDifficulty: goal.goal_difficulty,
           goalFrequency: goal.goal_frequency,
           greenCoins: goal.green_coins,
         }));
-        console.log('Mapped Goals:', this.availableGoals); // Debugging log
+        console.log('Mapped Goals:', this.availableGoals);
       },
       (error) => {
         console.error('Error fetching goals:', error);
       }
     );
   }
+
+
+
+  loadCurrentGoals(): void {
+    this.trackerApiService.getUserGoalIds().pipe(
+      switchMap((goalIds: string[]) => {
+        console.log('Fetched Goal IDs:', goalIds);
+        // Fetch goals by their IDs
+        return this.trackerApiService.getGoalsByIds(goalIds);
+      }),
+      // Map backend fields to the frontend Task model
+      map((response: any[]) => {
+        return response.map((goal) => ({
+          goalId: goal.goal_id,
+          goalTitle: goal.goal_title,
+          goalDescription: goal.goal_description,
+          goalDifficulty: goal.goal_difficulty,
+          goalFrequency: goal.goal_frequency,
+          greenCoins: goal.green_coins,
+          startDate: goal.startDate,
+          endDate: goal.endDate,
+          status: goal.status,
+        }));
+      })
+    ).subscribe(
+      (mappedGoals: Task[]) => {
+        // Update the currentGoals array with the mapped goals
+        this.currentGoals = mappedGoals;
+        console.log('Current Goals Loaded:', this.currentGoals);
+      },
+      (error) => {
+        console.error('Error loading current goals:', error);
+      }
+    );
+  }
+  
+
+
+  addTaskToCurrent(goalId: string): void {
+    console.log(goalId);
+    this.trackerApiService.addGoals(goalId).subscribe(
+      (response) => {
+        alert('Task added successfully');
+        // Update current and available goals
+        const task = this.availableGoals.find((goal) => goal.goalId === goalId);
+        if (task) {
+          this.currentGoals.push(task);
+          this.availableGoals = this.availableGoals.filter((g) => g.goalId !== goalId);
+        }
+      },
+      (error) => {
+        alert("Task wasn't added");
+      }
+    );
+  }
+
+  // -----------------------------------
+  // CARBON DATA METHODS
+  // -----------------------------------
+
+  selectCategory(category: CategoryKey): void {
+    this.selectedCategory = category;
+    this.updateScore(category);
+    this.loadRecommendations();
+  }
+
+  private updateScore(category: CategoryKey): void {
+    const baselineEmissions: Record<CategoryKey, number> = {
+      overall: 3500,
+      household: 1800,
+      transportation: 1200,
+      waste: 800,
+    };
+
+    const categoryEmissions = this.carbonData[category];
+    const baselineEmission = baselineEmissions[category];
+
+    this.currentScore = Math.min(
+      100,
+      Math.max(0, Math.round(100 - (categoryEmissions / baselineEmission) * 100))
+    );
+  }
+
+  // -----------------------------------
+  // RECOMMENDATION METHODS
+  // -----------------------------------
 
   loadRecommendations(): void {
     const recommendationsByCategory: Record<CategoryKey, Recommendation[]> = {
@@ -146,132 +222,62 @@ export class DashboardComponent implements OnInit {
     this.recommendations = recommendationsByCategory[this.selectedCategory] || [];
   }
 
-  addTaskToCurrent(goalId:string){
-    console.log(goalId);
-    this.trackerApiService.addGoals(goalId).subscribe(
-      response=>{
-        alert("task added successfully");
-      },
-      error=>{
-        alert("task didn't added");
-      }
-    );
-  }
+  // async generateRecommendations(): Promise<void> {
+  //   try {
+  //     const generationConfig = {
+  //       safetySettings: [
+  //         {
+  //           category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+  //           threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  //         },
+  //       ],
+  //       temperature: 0.8,
+  //       top_p: 0.9,
+  //       maxOutputTokens: 200,
+  //     };
 
-  
-  selectCategory(category: CategoryKey): void {
-    this.selectedCategory = category;
-    this.updateScore(category);
-    this.loadRecommendations();
-    this.currentScore = this.calculateScore(category);
-  }
+  //     const model = this.genAI.getGenerativeModel({
+  //       model: 'gemini-pro',
+  //       ...generationConfig,
+  //     });
 
-  async generateRecommendations(): Promise<void> {
-    try {
-      const generationConfig = {
-        safetySettings: [
-          {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-          },
-        ],
-        temperature: 0.8,
-        top_p: 0.9,
-        maxOutputTokens: 200,
-      };
-  
-      const model = this.genAI.getGenerativeModel({
-        model: 'gemini-pro',
-        ...generationConfig,
-      });
-  
-      const prompt = `
-        Generate 3 actionable and concise recommendations for reducing carbon emissions in daily activities for the category: ${this.selectedCategory}.
-        Each recommendation should have:
-        - An icon related to the recommendation (e.g., 'home', 'car', 'package').
-        - A title describing the recommendation.
-        - A brief text description of no more than 120 characters.
-        - The impact on nature, such as CO₂ reduction (e.g., '-200kg CO₂/month').
-        Example format:
-        icon: 'home', title: 'Household Efficiency', text: 'Install energy-efficient appliances.', impact: '-150kg CO₂/month'
-      `;
-  
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const responseText = await response.text();
-  
-      // Improved parsing logic
-      this.recommendations = responseText
-        .split('\n')
-        .filter((line: string) => line.trim() !== '')
-        .map((line: string) => {
-          const parsed = this.parseRecommendation(line);
-          return parsed;
-        });
-  
-      console.log(this.recommendations); // Debug the formatted recommendations
-    } catch (error) {
-      console.error('Error generating recommendations:', error);
-    }
-  }
-  
-  private parseRecommendation(line: string): Recommendation {
-    // Match key-value pairs like `key: 'value'`
-    const regex = /(\w+):\s*'([^']+)'/g;
-    const result: Record<string, string> = {};
-    let match: RegExpExecArray | null;
-  
-    while ((match = regex.exec(line)) !== null) {
-      result[match[1]] = match[2];
-    }
-  
-    // Return a structured recommendation object
-    return {
-      icon: result['icon'] || 'lightbulb', // Default icon if not provided
-      title: result['title'] || 'No Title',
-      text: result['text'] || 'No Description',
-      impact: result['impact'] || 'No Impact',
-    };
-  }
-  
+  //     const prompt = `
+  //       Generate 3 actionable and concise recommendations for reducing carbon emissions in daily activities for the category: ${this.selectedCategory}.
+  //       Each recommendation should have:
+  //       - An icon related to the recommendation (e.g., 'home', 'car', 'package').
+  //       - A title describing the recommendation.
+  //       - A brief text description of no more than 120 characters.
+  //       - The impact on nature, such as CO₂ reduction (e.g., '-200kg CO₂/month').
+  //     `;
 
-  private updateScore(category: CategoryKey): void {
-    const baselineEmissions: Record<CategoryKey, number> = {
-      overall: 3500,
-      household: 1800,
-      transportation: 1200,
-      waste: 800,
-    };
+  //     const result = await model.generateContent(prompt);
+  //     const responseText = await result.response.text();
 
-    const categoryEmissions = this.carbonData[category];
-    const baselineEmission = baselineEmissions[category];
+  //     this.recommendations = responseText
+  //       .split('\n')
+  //       .filter((line) => line.trim() !== '')
+  //       .map((line) => this.parseRecommendation(line));
 
-    this.currentScore = Math.min(
-      100,
-      Math.max(
-        0,
-        Math.round(100 - (categoryEmissions / baselineEmission) * 100),
-      ),
-    );
-  }
+  //     console.log(this.recommendations);
+  //   } catch (error) {
+  //     console.error('Error generating recommendations:', error);
+  //   }
+  // }
 
-  private calculateScore(category: CategoryKey): number {
-    const baselineEmissions: Record<CategoryKey, number> = {
-      overall: 3500,
-      household: 1800,
-      transportation: 1200,
-      waste: 800,
-    };
+  // private parseRecommendation(line: string): Recommendation {
+  //   const regex = /(\w+):\s*'([^']+)'/g;
+  //   const result: Record<string, string> = {};
+  //   let match: RegExpExecArray | null;
 
-    const categoryEmissions = this.carbonData[category];
-    const baselineEmission = baselineEmissions[category];
+  //   while ((match = regex.exec(line)) !== null) {
+  //     result[match[1]] = match[2];
+  //   }
 
-    return Math.min(
-      100,
-      Math.max(
-        0,
-        Math.round(100 - (categoryEmissions / baselineEmission) * 100),
-      ),
-    );
-  }
+  //   return {
+  //     icon: result['icon'] || 'lightbulb',
+  //     title: result['title'] || 'No Title',
+  //     text: result['text'] || 'No Description',
+  //     impact: result['impact'] || 'No Impact',
+  //   };
+  // }
 }

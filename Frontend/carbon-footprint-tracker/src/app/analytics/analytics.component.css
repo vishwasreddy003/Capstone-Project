@@ -1,15 +1,64 @@
+/* General container styling */
+.container { /* Light green background */
+  padding: 20px;
+  border-radius: 15px;
+  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
+}
+
+/* Chart control buttons */
+button {
+  background-color: #40916c; /* Eco-friendly green */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #2d6a4f; /* Darker green for hover */
+  transform: translateY(-2px);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(45, 106, 79, 0.5);
+}
+
+/* Dropdown for Transportation */
+.form-select {
+  border: 2px solid #b7d7c2;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-select:focus {
+  border-color: #2d6a4f;
+  box-shadow: 0 0 8px rgba(45, 106, 79, 0.3);
+}
+
+/* Label for dropdown */
+label {
+  font-size: 16px;
+  color: #52796f;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Chart container styling */
 .chart-container {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  button {
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0056b3 !important; /* Darker shade for hover */
-  }
-  
+  border: 2px solid #b7d7c2; /* Soft green border */
+  border-radius: 15px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+}

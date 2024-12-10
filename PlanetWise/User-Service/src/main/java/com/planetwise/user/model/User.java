@@ -51,5 +51,8 @@ public class User {
     @ElementCollection
     List<UUID> userGoals;
 
+    @ElementCollection
+    List<UUID> checkedGoals;
+
 
 }

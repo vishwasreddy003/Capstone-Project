@@ -47,8 +47,27 @@ public class UserController {
 
     @PostMapping("/addGoal/{username}/{goalId}")
     public void addGoal(@PathVariable UUID goalId,@PathVariable String username){
-        userService.addGoaltoUser(username,goalId);
+        userService.addGoalToUser(username,goalId);
     }
+
+
+    @PostMapping("/checkGoal/{username}/{goalId}")
+    public void checkGoal(@PathVariable UUID goalId,@PathVariable String username){
+        userService.checkGoalToUser(username,goalId);
+    }
+
+    @GetMapping("/getGoals/{username}")
+    public List<UUID> getUserGoals(@PathVariable String username) {
+        return userService.getUserGoalIds(username);
+    }
+
+    @GetMapping("/getCheckedGoals/{username}")
+    public List<UUID> getCheckedGoals(@PathVariable String username) {
+        return userService.getCheckedGoalIds(username);
+    }
+
+
+
 
 
 

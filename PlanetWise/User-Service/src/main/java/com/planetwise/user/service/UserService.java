@@ -16,7 +16,14 @@ public interface UserService {
 
     boolean isUsernameUnique(String username);
 
-    void addGoaltoUser(String username, UUID goalId);
+    void addGoalToUser(String username, UUID goalId);
+
+    void checkGoalToUser(String username, UUID goalId);
 
     User findByUsername(String username);
+
+    List<UUID> getUserGoalIds(String username);
+
+    List<UUID> getCheckedGoalIds(String username);
+
 }

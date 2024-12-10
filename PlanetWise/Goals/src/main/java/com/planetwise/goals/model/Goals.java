@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -29,6 +30,7 @@ public class Goals {
     public Difficulty goal_difficulty;
 
     public LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     public LocalDate endDate;
     public boolean status=false;
     public int green_coins;

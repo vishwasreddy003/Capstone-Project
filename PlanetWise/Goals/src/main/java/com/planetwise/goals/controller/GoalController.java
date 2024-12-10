@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -49,8 +50,9 @@ public class GoalController {
         return new ResponseEntity<>("Goal deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/getMyGoals")
-    public ResponseEntity<List<Goals>> getGoalsForUser(@RequestBody List<UUID> goalIds){
+    @PostMapping("/getMyGoals")
+    public ResponseEntity<List<Goals>> getGoalsForUser(@RequestBody Map<String, List<UUID>> request){
+        List<UUID> goalIds = request.get("goalIds");
         List<Goals> userGoals =  goalService.getUserGoals(goalIds);
         return new ResponseEntity<>(userGoals,HttpStatus.OK);
     }

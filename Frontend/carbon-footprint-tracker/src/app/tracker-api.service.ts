@@ -63,4 +63,16 @@ export class TrackerApiService {
     return this.http.post(this.baseUrl+`/user/addGoal/${username}/${goalId}`,{});
   } 
 
+  getUserGoalIds(): Observable<string[]> {
+    let username = sessionStorage.getItem('username');  
+    console.log(username);
+    return this.http.get<string[]>(`${this.baseUrl}/user/getGoals/${username}`);
+  }
+
+  getGoalsByIds(goalIds: string[]): Observable<Task[]> {
+    const body = { goalIds }; 
+    return this.http.post<Task[]>(`${this.baseUrl}/goals/getMyGoals`, body);
+  }
+  
+
 }

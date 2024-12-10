@@ -152,12 +152,20 @@
 
           <!-- Submit Button -->
           <div class="row">
-            <div class="col-6 mb-3">
+            <div class="col-4 mb-3">
               <button type="button" class="btn btn-info" [disabled]="wasteProdForm.invalid" (click)="onSubmit()">
                 Add New Form
               </button>
             </div>
-            <div class="col-6 mb-3">
+
+            <div class="col-4 mb-3">
+              <button type="button" class="btn btn-info" [disabled]="wasteProdForm.invalid" (click)="submitData()">
+                Submit
+              </button>
+            </div>
+
+
+            <div class="col-4 mb-3">
               <button
                 type="button"
                 class="btn btn-primary"
