@@ -11,6 +11,8 @@ import { TrackerApiService } from '../tracker-api.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler.service';
 import { Router } from '@angular/router';
+import { type } from 'os';
+import { response } from 'express';
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -37,12 +39,14 @@ interface Recommendation {
 export class DashboardComponent implements OnInit {
   // State variables
   categoryKeys: CategoryKey[] = ['overall', 'household', 'transportation', 'waste'];
-  selectedTaskView: string = 'available';
+  selectedTaskView: string = 'current';
   selectedCategory: CategoryKey = 'overall';
+  scoreMessage: string = "Fetching you green score 😊";
 
   // Data arrays
   availableGoals: Task[] = [];
   currentGoals: Task[] = [];
+  completedGoals: Task[] = [];
   parsedRecommendations: Recommendation[] = [];
   recommendations: Recommendation[] = [];
   submissionStatus: { message: string, type: string } | null = null;
@@ -54,12 +58,19 @@ export class DashboardComponent implements OnInit {
     transportation: 0,
     waste: 0,
   };
+
+  avgMonthlyData: Record<CategoryKey, number> = {
+    overall: 180,
+    household: 65.65,
+    transportation: 60,
+    waste: 54.35,
+  };
   currentScore: number = 0;
 
   // Google AI instance
   private genAI: GoogleGenerativeAI;
 
-  constructor(private trackerApiService: TrackerApiService,private errorHandler:ErrorHandlerService,private router:Router) {
+  constructor(private trackerApiService: TrackerApiService, private errorHandler: ErrorHandlerService, private router: Router) {
     this.genAI = new GoogleGenerativeAI(environment.API_KEY);
   }
 
@@ -67,7 +78,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadEmissions();
     this.generateRecommendations();
-    this.loadAvailableGoals();
+    this.loadCurrentGoals();
   }
 
   // -----------------------------------
@@ -83,43 +94,16 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  loadAvailableGoals(): void {
-    this.trackerApiService.getAllGoals().subscribe(
-      (response: any[]) => {
-        console.log('Fetched Goals:', response);
-        this.availableGoals = response.map((goal) => ({
-          goalId: goal.goal_id,
-          goalTitle: goal.goal_title,
-          goalDescription: goal.goal_description,
-          goalDifficulty: goal.goal_difficulty,
-          goalFrequency: goal.goal_frequency,
-          greenCoins: goal.green_coins,
-        }));
-        console.log('Mapped Goals:', this.availableGoals);
-      },
-      (error) => {
-        this.handleError('Error fetching goals:');
-      }
-    );
-  }
-  
-  handleError(errorMessage: string) {
-    this.errorHandler.setError(500, errorMessage);  // Set error details in the service
-    this.router.navigate(['/error']);  // Navigate to the error page
-  }
-
   loadCurrentGoals(): void {
     this.trackerApiService
       .getUserGoalIds()
       .pipe(
         switchMap((goalIds: string[]) => {
           console.log('Fetched Goal IDs:', goalIds);
-          // Fetched goals by their IDs
           return this.trackerApiService.getGoalsByIds(goalIds);
         }),
-        // Mapped backend fields to the frontend Task model
         map((response: any[]) => {
-          return response.map((goal) => ({
+          this.currentGoals = response.map((goal) => ({
             goalId: goal.goal_id,
             goalTitle: goal.goal_title,
             goalDescription: goal.goal_description,
@@ -128,33 +112,53 @@ export class DashboardComponent implements OnInit {
             greenCoins: goal.green_coins,
             startDate: goal.startDate,
             endDate: goal.endDate,
-            status: goal.status,
           }));
+          console.log('Current Goals Loaded:', this.currentGoals);
         })
       )
       .subscribe(
-        (mappedGoals: Task[]) => {
-          // Update the currentGoals array with the mapped goals
-          this.currentGoals = mappedGoals;
-          console.log('Current Goals Loaded:', this.currentGoals);
-        },
-        (error) => {
-          console.error('Error loading current goals:', error);
+        () => {
+          this.loadAvailableGoals(); // Call after currentGoals are loaded
         }
       );
   }
 
-  
+  loadAvailableGoals(): void {
+    this.trackerApiService.getAllGoals().subscribe(
+      (response: any[]) => {
+        const currentGoalIds = this.currentGoals.map((goal) => goal.goalId);
+        this.availableGoals = response
+          .filter((goal) => !currentGoalIds.includes(goal.goal_id))
+          .map((goal) => ({
+            goalId: goal.goal_id,
+            goalTitle: goal.goal_title,
+            goalDescription: goal.goal_description,
+            goalDifficulty: goal.goal_difficulty,
+            goalFrequency: goal.goal_frequency,
+            greenCoins: goal.green_coins,
+            startDate: goal.startDate,
+            endDate: goal.endDate,
+          }));
+        console.log('Mapped Available Goals:', this.availableGoals);
+      },
+      (error) => {
+        this.handleError('Error fetching goals:');
+      }
+    );
+  }
+
+
+
   addTaskToCurrent(goalId: string): void {
     console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       (response) => {
         alert('Task added successfully');
-          this.submissionStatus = {
-            message: 'Task added successfully',
-            type: 'alert-success'
-          };
-          this.autoClearAlert();
+        this.submissionStatus = {
+          message: 'Task added successfully',
+          type: 'alert-success'
+        };
+        this.autoClearAlert();
         // Update current and available goals
         const task = this.availableGoals.find((goal) => goal.goalId === goalId);
         if (task) {
@@ -165,23 +169,55 @@ export class DashboardComponent implements OnInit {
         }
       },
       (error) => {
-       this.submissionStatus = {
-            message: "Task wasn't added",
-            type: 'alert-error'
-          };
-          this.autoClearAlert();
+        this.submissionStatus = {
+          message: "Task wasn't added",
+          type: 'alert-error'
+        };
+        this.autoClearAlert();
       }
     );
   }
 
+  completeGoal(goalId: string) {
+    this.trackerApiService.markAsCompleted(goalId).subscribe(
+      (response) => {
+        alert('Task completed successfully');
+        this.submissionStatus = {
+          message: 'Task Completed successfully',
+          type: 'alert-success'
+        };
+        this.autoClearAlert();
+        const task = this.currentGoals.find((goal) => goal.goalId === goalId);
+        if (task) {
+          this.completedGoals.push(task);
+          this.currentGoals = this.currentGoals.filter(
+            (g) => g.goalId !== goalId
+          );
+        }
+      },
+      (error) => {
+        this.submissionStatus = {
+          message: "Task wasn't completed",
+          type: 'alert-error'
+        };
+        this.autoClearAlert();
+      }
+    )
+  }
+
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
-    }, 3000); // 3000 ms = 3 seconds
+      this.submissionStatus = null;
+    }, 3000);
   }
 
   clearStatus(): void {
     this.submissionStatus = null;
+  }
+
+  handleError(errorMessage: string) {
+    this.errorHandler.setError(500, errorMessage);  // Set error details in the service
+    this.router.navigate(['/error']);  // Navigate to the error page
   }
 
   // -----------------------------------
@@ -191,6 +227,15 @@ export class DashboardComponent implements OnInit {
   selectCategory(category: CategoryKey): void {
     this.selectedCategory = category;
     this.generateRecommendations();
+    if (category == 'overall') {
+      this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
+    } else if (category == 'household') {
+      this.currentScore = Math.round(this.carbonData['household'] / this.avgMonthlyData['household'] * 100);
+    } else if (category == 'transportation') {
+      this.currentScore = Math.round(this.carbonData['transportation'] / this.avgMonthlyData['transportation'] * 100);
+    } else {
+      this.currentScore = Math.round(this.carbonData['waste'] / this.avgMonthlyData['waste'] * 100);
+    }
   }
 
   loadEmissions(): void {
@@ -211,7 +256,8 @@ export class DashboardComponent implements OnInit {
           this.carbonData['transportation'] +
           this.carbonData['household'];
 
-        console.log(this.carbonData); 
+        console.log(this.carbonData);
+        this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
       },
       (error) => {
         alert('Error fetching emissions data');
@@ -220,32 +266,55 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  scoreClass(): string {
+    if (this.currentScore < 100) {
+      return 'green';
+    } else if (this.currentScore <= 200) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  }
+
+  getscoreMessage(): string {
+    if (this.currentScore < 100) {
+      return 'Great job! Keep it up!';
+    } else if (this.currentScore <= 200) {
+      return 'Moderate score, let’s aim for improvement!';
+    } else {
+      return 'High carbon score! Time to take action!';
+    }
+  }
+
+
+
+
   // -----------------------------------
   // RECOMMENDATION METHODS
   // -----------------------------------
 
-  
+
 
   async generateRecommendations(): Promise<void> {
     try {
-        const generationConfig = {
-            safetySettings: [
-                {
-                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-                },
-            ],
-            temperature: 0.8,
-            top_p: 0.9,
-            maxOutputTokens: 200,
-        };
+      const generationConfig = {
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+          },
+        ],
+        temperature: 0.8,
+        top_p: 0.9,
+        maxOutputTokens: 200,
+      };
 
-        const model = this.genAI.getGenerativeModel({
-            model: 'gemini-pro',
-            ...generationConfig,
-        });
+      const model = this.genAI.getGenerativeModel({
+        model: 'gemini-pro',
+        ...generationConfig,
+      });
 
-        const prompt = `
+      const prompt = `
             Generate 6 actionable and concise recommendations for reducing carbon emissions in daily activities for the category: ${this.selectedCategory}.
             Return the output as a JSON array, where each object contains:
             - icon: string (e.g., 🌿)
@@ -254,36 +323,36 @@ export class DashboardComponent implements OnInit {
             - impact: string (e.g., -300kg CO₂/year)
         `;
 
-        const result = await model.generateContent(prompt);
+      const result = await model.generateContent(prompt);
 
-        let responseText = await result.response.text();
-        console.log("Raw Response Text:", responseText);
-
-        
-        responseText = responseText
-            .replace(/^.*?JSON/, "") 
-            .replace(/```json|```/g, "") 
-
-        console.log("Cleaned Response Text:", responseText);
-
-        const recommendations = JSON.parse(responseText);
+      let responseText = await result.response.text();
+      console.log("Raw Response Text:", responseText);
 
 
-        if (Array.isArray(recommendations)) {
-            this.parsedRecommendations = recommendations.map((rec: any) => ({
-                icon: rec.icon,
-                title: rec.title,
-                text: rec.description, 
-                impact: rec.impact,
-            }));
-            console.log("Parsed Recommendations as JSON:", this.parsedRecommendations);
-        } else {
-            throw new Error("Unexpected response format. Expected a JSON array.");
-        }
+      responseText = responseText
+        .replace(/^.*?JSON/, "")
+        .replace(/```json|```/g, "")
+
+      console.log("Cleaned Response Text:", responseText);
+
+      const recommendations = JSON.parse(responseText);
+
+
+      if (Array.isArray(recommendations)) {
+        this.parsedRecommendations = recommendations.map((rec: any) => ({
+          icon: rec.icon,
+          title: rec.title,
+          text: rec.description,
+          impact: rec.impact,
+        }));
+        console.log("Parsed Recommendations as JSON:", this.parsedRecommendations);
+      } else {
+        throw new Error("Unexpected response format. Expected a JSON array.");
+      }
     } catch (error) {
-        console.error("Error generating recommendations:", error);
+      console.error("Error generating recommendations:", error);
     }
-}
+  }
 
 
 }

@@ -32,7 +32,6 @@ public class Goals {
     public LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     public LocalDate endDate;
-    public boolean status=false;
     public int green_coins;
 
 

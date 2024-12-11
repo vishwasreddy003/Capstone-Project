@@ -64,7 +64,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                         authRegistry ->
                                 authRegistry
-                        .requestMatchers("/PlanetWise/user/all").permitAll()
                         .requestMatchers("/PlanetWise/user/register").permitAll()
                         .requestMatchers("/PlanetWise/user/login").permitAll()
                         .requestMatchers("/PlanetWise/user/validate").permitAll()

@@ -1,4 +1,3 @@
-
 .dashboard-container {
   background-color: #f8faf7;
   min-height: 100vh;
@@ -38,6 +37,22 @@
   justify-content: center;
   background: linear-gradient(135deg, #34d399 0%, #059669 100%);
   box-shadow: 0 4px 15px rgba(52, 211, 153, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.score-circle.green {
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.2);
+}
+
+.score-circle.yellow {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+}
+
+.score-circle.red {
+  background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+  box-shadow: 0 4px 15px rgba(248, 113, 113, 0.2);
 }
 
 .score-inner {
@@ -58,12 +73,24 @@
   margin-bottom: 0.25rem;
 }
 
+.score-value.green {
+  color: #059669;
+}
+
+.score-value.yellow {
+  color:  #f59e0b;
+}
+
+.score-value.red {
+  color:  #dc2626;
+}
+
 .score-label {
-  color: #64748b;
+  color: #0f1111;
   font-size: 0.875rem;
 }
 
-/* Category Buttons */
+
 .category-buttons .btn {
   padding: 1rem 1.5rem;
   border-radius: 12px;
@@ -122,24 +149,23 @@
   .dashboard-container {
     padding: 1rem;
   }
-  
+
   .score-circle {
     width: 150px;
     height: 150px;
   }
-  
+
   .score-inner {
     width: 120px;
     height: 120px;
   }
-  
+
   .score-value {
     font-size: 2rem;
   }
 }
 
-
-
+/* Impact Badge */
 .impact-badge {
   display: inline-block;
   padding: 0.35em 0.65em;
@@ -154,7 +180,7 @@
   background-color: #059669;
 }
 
-
+/* Recommendation Card */
 .recommendation-card {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -184,7 +210,6 @@
 .recommendation-card .text-success {
   font-size: 12px;
 }
-
 
 .recommendation-card {
   border: 1px solid #ccc;

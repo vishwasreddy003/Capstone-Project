@@ -55,13 +55,17 @@ export class TrackerApiService {
   
 
   // baseurl + planetwise+user+{username}+addGoal+{goalID};
-
   // baseurl + planetwise+user+{username}+goals;
 
   addGoals(goalId:string) {
     let username = sessionStorage.getItem('username');
     return this.http.post(this.baseUrl+`/user/addGoal/${username}/${goalId}`,{});
-  } 
+  }
+
+  markAsCompleted(goalId:string){
+    let username = sessionStorage.getItem('username');
+    return this.http.post(this.baseUrl+`/user/checkGoal/${username}/${goalId}`,{});
+  }
 
   getUserGoalIds(): Observable<string[]> {
     let username = sessionStorage.getItem('username');  

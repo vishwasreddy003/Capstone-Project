@@ -59,8 +59,6 @@ public class UserServiceImpl implements UserService{
         if(user.isPresent()){
             User currUser = user.get();
             List<UUID> goals = currUser.getUserGoals();
-
-
             goals.add(goalId);
 
             currUser.setUserGoals(goals);
@@ -77,11 +75,13 @@ public class UserServiceImpl implements UserService{
 
         if(user.isPresent()){
             User currUser = user.get();
-            List<UUID> goals = currUser.getCheckedGoals();
+            List<UUID> checkedGoals = currUser.getCheckedGoals();
+            List<UUID> goals = currUser.getUserGoals();
+            goals.stream().filter(i -> i != goalId).toList();
 
+            checkedGoals.add(goalId);
 
-            goals.add(goalId);
-
+            currUser.setCheckedGoals(checkedGoals);
             currUser.setUserGoals(goals);
             userRepo.save(currUser);
         }else {
