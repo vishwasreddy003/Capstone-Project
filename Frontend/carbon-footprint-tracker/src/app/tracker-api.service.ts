@@ -52,10 +52,6 @@ export class TrackerApiService {
       `${this.baseUrl}/WasteProduction/${username}/analytics`
     );
   }
-  
-
-  // baseurl + planetwise+user+{username}+addGoal+{goalID};
-  // baseurl + planetwise+user+{username}+goals;
 
   addGoals(goalId:string) {
     let username = sessionStorage.getItem('username');

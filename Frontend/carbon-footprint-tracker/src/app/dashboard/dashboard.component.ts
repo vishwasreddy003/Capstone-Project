@@ -314,7 +314,7 @@ export class DashboardComponent implements OnInit {
         this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
       },
       (error) => {
-        alert('Error fetching emissions data');
+       // alert('Error fetching emissions data');
         console.error(error);
       }
     );

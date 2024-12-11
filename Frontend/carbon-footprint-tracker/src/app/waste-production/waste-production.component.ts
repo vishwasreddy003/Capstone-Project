@@ -65,17 +65,7 @@ export class WasteProductionComponent implements OnInit {
       );
     }
   }
-  
-  private autoClearAlert(): void {
-    setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 3 seconds
-    }, 3000); // 3000 ms = 3 seconds
-  }
-  
-  clearStatus(): void {
-    this.submissionStatus = null;
-  }
-  
+
 
   onMonthChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
@@ -138,6 +128,17 @@ export class WasteProductionComponent implements OnInit {
       );
     }
   }
+  
+  private autoClearAlert(): void {
+    setTimeout(() => {
+      this.submissionStatus = null;  // Clear the alert after 3 seconds
+    }, 3000); // 3000 ms = 3 seconds
+  }
+  
+  clearStatus(): void {
+    this.submissionStatus = null;
+  }
+  
 }
 
 
