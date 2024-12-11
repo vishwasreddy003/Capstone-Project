@@ -18,5 +18,7 @@ public class Rewards {
     @Column(unique = true)
     private String reward_title;
     private String brand_name;
+    private String imageUrl;
     private int redeem_cost;
+    private String description;
 }

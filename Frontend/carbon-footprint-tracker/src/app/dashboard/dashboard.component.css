@@ -237,3 +237,79 @@
 .recommendation-card-body p {
   margin-bottom: 8px;
 }
+
+
+
+.alert-container {
+  position: fixed;
+  bottom: 10px;  /* Position at the bottom */
+  right: 10px;   /* Position on the right side */
+  z-index: 1050;
+  width: 300px;  /* Thinner width (adjust as needed) */
+  max-width: 100%; /* Allow full width but limit to 300px */
+  transition: all 0.3s ease-in-out;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;  /* Adjust padding to make it thinner */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 14px;  /* Slightly smaller font size */
+  background-color: #28a745; /* Default: success */
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+.alert-success {
+  background-color: #28a745; /* Green for success */
+}
+
+.alert-error {
+  background-color: #dc3545; /* Red for error */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Close button for alerts */
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #ccc;
+}
+
+/* Alert Icon */
+.alert-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.alert-icon i {
+  font-size: 1.5em;
+}
+
+/* Alert Content */
+.alert-content {
+  flex-grow: 1;
+  font-weight: bold;
+}

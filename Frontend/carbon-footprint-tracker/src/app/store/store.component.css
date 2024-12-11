@@ -1,20 +1,26 @@
 /* Card Styling */
+/* Card Styling */
 .card {
   border-radius: 15px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: #ffffff;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures uniform height */
 }
 
 .card-img-top {
   height: 200px;
   object-fit: cover;
   border-bottom: 2px solid #b7d7c2;
+}
+
+.card-body {
+  flex-grow: 1; /* Ensures card content stretches to fill the available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes the button to the bottom */
 }
 
 .card-title {
@@ -26,6 +32,7 @@
 .card-text {
   font-size: 14px;
   color: #666;
+  flex-grow: 1; /* Push content to take up available space */
 }
 
 .btn-success {
@@ -40,6 +47,19 @@
   background-color: #2d6a4f;
   transform: translateY(-2px);
 }
+
+/* Ensure equal height for all cards in a row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-md-4 {
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 /* Custom Pop-up Styles */
 .redeem-popup {

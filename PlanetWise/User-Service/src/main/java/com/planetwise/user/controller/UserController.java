@@ -67,5 +67,10 @@ public class UserController {
     }
 
 
+    @PostMapping("/updateBalance/{username}")
+    public Integer updateGreenCoins(@PathVariable String username,@RequestParam Integer coins){
+        return  userService.updateGreenCoins(username,coins);
+    }
+
 
 }

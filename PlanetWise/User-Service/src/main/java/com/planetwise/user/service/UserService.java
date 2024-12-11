@@ -26,4 +26,5 @@ public interface UserService {
 
     List<UUID> getCheckedGoalIds(String username);
 
+    Integer updateGreenCoins(String username, Integer coins);
 }

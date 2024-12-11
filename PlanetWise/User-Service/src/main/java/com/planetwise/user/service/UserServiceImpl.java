@@ -119,5 +119,21 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public Integer updateGreenCoins(String username, Integer coins) {
+        Optional<User> user = userRepo.findByUsername(username);
+
+        if(user.isPresent()){
+            User currUser = user.get();
+            Integer updatedBalance = currUser.getGreen_coins() + coins;
+
+            currUser.setGreen_coins(updatedBalance);
+            userRepo.save(currUser);
+            return updatedBalance;
+        }else {
+            throw new UsernameNotFoundException("User with " + username + " does not exist");
+        }
+    }
+
 
 }

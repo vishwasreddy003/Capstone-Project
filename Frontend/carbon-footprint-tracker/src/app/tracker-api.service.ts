@@ -80,6 +80,11 @@ export class TrackerApiService {
     const body = { goalIds }; 
     return this.http.post<Task[]>(`${this.baseUrl}/goals/getMyGoals`, body);
   }
+
+  updateCoinBalance(coins:number):Observable<number>{
+    let username = sessionStorage.getItem('username');
+    return this.http.post<number>(`${this.baseUrl}/user/updateBalance/${username}?coins=${coins}`,{});
+  }
   
 
   getLatestWasteEmission():Observable<number>{

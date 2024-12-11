@@ -101,13 +101,13 @@ export class DashboardComponent implements OnInit {
     const currentDate = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);
-  
+
     const adjustedDate = new Date(currentDate.getTime());
     adjustedDate.setDate(currentDate.getDate() + (start.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-  
+
     return adjustedDate > end;
   }
-  
+
 
   loadCurrentGoals(): void {
     this.trackerApiService
@@ -143,7 +143,7 @@ export class DashboardComponent implements OnInit {
       (response: any[]) => {
         const currentGoalIds = new Set(this.currentGoals.map((goal) => goal.goalId));
         const completedGoalIds = new Set(this.completedGoals.map((goal) => goal.goalId));
-  
+
         this.availableGoals = response
           .filter((goal) => !currentGoalIds.has(goal.goal_id) && !completedGoalIds.has(goal.goal_id))
           .map((goal) => ({
@@ -156,7 +156,7 @@ export class DashboardComponent implements OnInit {
             startDate: goal.startDate,
             endDate: goal.endDate,
           }));
-  
+
         console.log('Mapped Available Goals:', this.availableGoals);
       },
       (error) => {
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
-  
+
 
   loadCompletedGoals(): void {
     this.trackerApiService
@@ -229,33 +229,53 @@ export class DashboardComponent implements OnInit {
 
 
 
-  completeGoal(goalId: string) {
+  completeGoal(goalId: string): void {
     this.trackerApiService.markAsCompleted(goalId).subscribe(
       (response) => {
-        this.submissionStatus = {
-          message: 'Task Completed successfully',
-          type: 'alert-success'
-        };
-        this.autoClearAlert();
         const task = this.currentGoals.find((goal) => goal.goalId === goalId);
+  
         if (task) {
           this.completedGoals.push(task);
-          this.currentGoals = this.currentGoals.filter(
-            (g) => g.goalId !== goalId
+          this.currentGoals = this.currentGoals.filter((g) => g.goalId !== goalId);
+
+          this.trackerApiService.updateCoinBalance(task.greenCoins).subscribe(
+            (updatedBalance) => {
+              sessionStorage.setItem('greenCoins', updatedBalance.toString());
+              console.log(`Updated Green Coins: ${updatedBalance}`);
+
+              this.selectedTaskView = 'completed';
+  
+              // Success alert
+              this.submissionStatus = {
+                message: 'Task Completed successfully, balance updated.',
+                type: 'alert-success'
+              };
+  
+              this.autoClearAlert();
+            },
+            (error) => {
+              this.submissionStatus = {
+                message: "Task was completed, but coin balance couldn't be updated.",
+                type: 'alert-warning'
+              };
+  
+              this.autoClearAlert();
+            }
           );
-          this.selectedTaskView = 'completed';
         }
-        
       },
       (error) => {
+        // Handling markAsCompleted failure
         this.submissionStatus = {
-          message: "Task wasn't completed",
+          message: "Task wasn't completed.",
           type: 'alert-error'
         };
+  
         this.autoClearAlert();
       }
-    )
+    );
   }
+  
 
   private autoClearAlert(): void {
     setTimeout(() => {
@@ -312,7 +332,7 @@ export class DashboardComponent implements OnInit {
         this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
       },
       (error) => {
-       // alert('Error fetching emissions data');
+        // alert('Error fetching emissions data');
         console.error(error);
       }
     );
