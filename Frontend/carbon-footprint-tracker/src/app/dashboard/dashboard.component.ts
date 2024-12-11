@@ -202,7 +202,6 @@ export class DashboardComponent implements OnInit {
     console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       (response) => {
-        alert('Task added successfully');
         this.submissionStatus = {
           message: 'Task added successfully',
           type: 'alert-success'
@@ -233,7 +232,6 @@ export class DashboardComponent implements OnInit {
   completeGoal(goalId: string) {
     this.trackerApiService.markAsCompleted(goalId).subscribe(
       (response) => {
-        alert('Task completed successfully');
         this.submissionStatus = {
           message: 'Task Completed successfully',
           type: 'alert-success'
