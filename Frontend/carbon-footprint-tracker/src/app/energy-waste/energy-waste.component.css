@@ -95,14 +95,14 @@ body {
   opacity: 1;
 }
 
+/* Alert Styles */
 .alert-container {
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10px;  /* Position at the bottom */
+  right: 10px;   /* Position on the right side */
   z-index: 1050;
-  width: 90%;
-  max-width: 400px;
+  width: 300px;  /* Thinner width (adjust as needed) */
+  max-width: 100%; /* Allow full width but limit to 300px */
   transition: all 0.3s ease-in-out;
 }
 
@@ -110,11 +110,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px 15px;  /* Adjust padding to make it thinner */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;  /* Slightly smaller font size */
   background-color: #28a745; /* Default: success */
   opacity: 0;
   animation: fadeIn 0.5s forwards;

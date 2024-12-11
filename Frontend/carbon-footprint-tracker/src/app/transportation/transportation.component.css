@@ -21,7 +21,13 @@
 h2 {
   font-size: 28px;
   color: #3c6e47; /* Eco-friendly green */
-  margin-bottom: 20px; /* Reduced bottom margin */
+  margin-bottom: 25px; /* Reduced bottom margin */
+}
+
+h3 {
+  font-size: 16px;
+  color: #4b8c4b; /* Light green */
+  margin-bottom: 2px;
 }
 
 /* Form Label Styling */
@@ -35,15 +41,16 @@ h2 {
 .form-control,
 .form-select {
   font-size: 14px;
-  padding: 8px 10px; /* Adjusted padding */
-  margin-bottom: 10px; /* Consistent margin */
+  padding: 10px; /* Adjusted padding */
+  margin-bottom: 15px; /* Consistent margin */
   border: 1px solid #b0d0b0;
   border-radius: 5px;
-  width: 100%;
 }
 
 /* Button Styling */
-.btn-success {
+.btn-success,
+.btn-info,
+.btn-primary {
   background-color: #16423C; /* Green button */
   color: white;
   font-size: 16px;
@@ -54,7 +61,10 @@ h2 {
   width: 100%; /* Full width button */
 }
 
-.btn-success:hover {
+/* Hover effect for buttons */
+.btn-success:hover,
+.btn-info:hover,
+.btn-primary:hover {
   background-color: #1E5E52; /* Darker green on hover */
 }
 
@@ -67,15 +77,19 @@ h2 {
   border-color: green !important;
 }
 
+.btn-info {
+  background-color: #16423C; /* Green button */
+  color: white;
+}
+
 /* Alert Styles */
 .alert-container {
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10px;  /* Position at the bottom */
+  right: 10px;   /* Position on the right side */
   z-index: 1050;
-  width: 90%;
-  max-width: 400px;
+  width: 300px;  /* Thinner width (adjust as needed) */
+  max-width: 100%; /* Allow full width but limit to 300px */
   transition: all 0.3s ease-in-out;
 }
 
@@ -83,11 +97,11 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px 15px;  /* Adjust padding to make it thinner */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;  /* Slightly smaller font size */
   background-color: #28a745; /* Default: success */
   opacity: 0;
   animation: fadeIn 0.5s forwards;
@@ -142,3 +156,12 @@ h2 {
   flex-grow: 1;
   font-weight: bold;
 }
+
+/* Additional Button Styling for Row Layout */
+.button-row {
+  display: flex;
+  justify-content: space-evenly; /* Distribute buttons evenly */
+  gap: 10px;  /* Optional space between buttons */
+  width: 100%; /* Ensure full width */
+}
+
