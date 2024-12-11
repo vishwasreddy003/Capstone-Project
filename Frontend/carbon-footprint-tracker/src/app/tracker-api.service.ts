@@ -48,9 +48,26 @@ export class TrackerApiService {
 
   getTrendsData(category: string): Observable<TrendsDto[]> {
     const username = sessionStorage.getItem('username');
-    return this.http.get<TrendsDto[]>(
-      `${this.baseUrl}/WasteProduction/${username}/analytics`
-    );
+
+
+    if(category === 'wastage'){
+      return this.http.get<TrendsDto[]>(
+        `${this.baseUrl}/WasteProduction/${username}/analytics`
+      );
+    }else if(category === 'transportation'){
+      return this.http.get<TrendsDto[]>(
+        `${this.baseUrl}/transportation/${username}/analytics`
+      );
+    }else if(category === 'household'){
+      return this.http.get<TrendsDto[]>(
+        `${this.baseUrl}/energy/${username}/analytics`
+      );
+    }else{
+      return this.http.get<TrendsDto[]>(
+        `${this.baseUrl}/greenScore/${username}/analytics`
+      );
+    }
+    
   }
 
   addGoals(goalId:string) {

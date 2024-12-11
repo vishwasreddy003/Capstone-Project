@@ -16,7 +16,7 @@ export class StoreComponent {
   
   ngOnInit() {
     // Retrieve and parse the balance from sessionStorage
-    const storedBalance = sessionStorage.getItem('userCoinBalance');
+    const storedBalance = sessionStorage.getItem('greenCoins');
     this.userCoinBalance = storedBalance ? parseInt(storedBalance, 10) : 100;
     this.storeItems = items;
 
@@ -40,9 +40,13 @@ export class StoreComponent {
     this.redeemCode = `REDEEM-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
   }
 
-  copyCode() {
+  copyCode(coins:number) {
     if (this.redeemCode) {
       navigator.clipboard.writeText(this.redeemCode);
+      
+      this.userCoinBalance -= coins;
+      sessionStorage.setItem('greenCoins',this.userCoinBalance.toString());
+
       alert('Redeem code copied to clipboard!');
     }
   }

@@ -33,9 +33,11 @@
       </button>
       <div *ngIf="redeemCode" class="mt-3">
         <p><strong>Redeem Code:</strong> {{ redeemCode }}</p>
-        <button class="btn btn-outline-secondary" (click)="copyCode()">
+        <button class="btn btn-outline-secondary" (click)="copyCode(selectedItem.greenCoins)">
           Copy Code
         </button>
+        <br>
+        <small>Once copied coins will be deducted</small>
       </div>
     </div>
   </div>

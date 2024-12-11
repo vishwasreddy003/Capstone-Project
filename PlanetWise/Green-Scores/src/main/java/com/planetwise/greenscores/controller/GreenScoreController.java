@@ -1,5 +1,6 @@
 package com.planetwise.greenscores.controller;
 
+import com.planetwise.greenscores.dto.TrendsDto;
 import com.planetwise.greenscores.model.GreenScores;
 import com.planetwise.greenscores.service.GreenScoreService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.tree.TreeNode;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,8 @@ public class GreenScoreController {
     }
 
     @GetMapping("/{username}/analytics")
-    public ResponseEntity<List<GreenScores>> getAnalyticsForGreenScores(@PathVariable String username) {
-        List<GreenScores> scoreTrends = greenScoreService.getTrendsForGreenScores(username);
+    public ResponseEntity<List<TrendsDto>> getAnalyticsForGreenScores(@PathVariable String username) {
+        List<TrendsDto> scoreTrends = greenScoreService.getTrendsForGreenScores(username);
         return new ResponseEntity<>(scoreTrends, HttpStatus.OK);
     }
 

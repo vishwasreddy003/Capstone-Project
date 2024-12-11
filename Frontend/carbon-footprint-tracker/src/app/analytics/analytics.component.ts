@@ -15,15 +15,11 @@ Chart.register(...registerables);
 export class AnalyticsComponent implements AfterViewInit {
   private chart: any;
   public showDropdown: boolean = false; // Controls visibility of the dropdown
-  private selectedChartType: string = 'household'; // Keeps track of the active chart type
-  private transportationType: string = 'public'; // Default transportation type
+  private selectedChartType: string = 'household'; 
 
   private chartData: any = {
     household: [],
-    transportation: {
-      public: [],
-      private: []
-    },
+    transportation: [],
     wastage: [],
     overall: []
   };
@@ -39,7 +35,6 @@ export class AnalyticsComponent implements AfterViewInit {
   loadChartData(type: string): void {
     this.trackerApiService.getTrendsData(type).subscribe(
       (data) => {
-        // Process backend data
         console.log(data);
         const sortedData = data.sort((a, b) =>
           a.year !== b.year ? a.year - b.year : a.month.localeCompare(b.month)
@@ -47,19 +42,20 @@ export class AnalyticsComponent implements AfterViewInit {
         const months = sortedData.map((d) => d.month.substring(0, 3).toUpperCase());
         const emissions = sortedData.map((d) => d.emissions);
 
-        if (type === 'transportation') {
-          this.chartData.transportation[this.transportationType] = emissions;
-        } else {
-          this.chartData[type] = emissions;
-        }
+        this.chartData.type = emissions;
 
-        this.months = months; // Update months
-        this.initializeChart(type); // Initialize chart with new data
+        this.months = months; 
+        this.initializeChart(type);
       },
       (error) => {
         console.error('Error fetching trends data:', error);
       }
     );
+  }
+
+  updateChart(type: string): void {
+    this.selectedChartType = type;
+    this.loadChartData(type); 
   }
 
   initializeChart(type: string): void {
@@ -70,14 +66,7 @@ export class AnalyticsComponent implements AfterViewInit {
       this.chart.destroy();
     }
 
-    let data;
-    if (type === 'transportation') {
-      // Transportation requires the selected transportation type
-      data = this.chartData.transportation[this.transportationType];
-    } else {
-      // Other types directly map to the chartData
-      data = this.chartData[type];
-    }
+    let data = this.chartData.type;
 
     // Create the new chart instance
     this.chart = new Chart(ctx, {
@@ -164,15 +153,6 @@ export class AnalyticsComponent implements AfterViewInit {
     });
   }
 
-  updateChart(type: string): void {
-    this.selectedChartType = type;
-    this.showDropdown = type === 'transportation'; 
-    this.loadChartData(type); 
-  }
+  
 
-  updateTransportationType(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    this.transportationType = target.value;
-    this.loadChartData('transportation');
-  }
 }

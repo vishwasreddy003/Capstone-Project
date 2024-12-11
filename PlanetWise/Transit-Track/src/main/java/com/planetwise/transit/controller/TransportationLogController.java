@@ -30,7 +30,7 @@ public class TransportationLogController {
     }
 
 
-    @GetMapping("/{username}/emissions")
+    @GetMapping("/{username}/analytics")
     public ResponseEntity<List<TrendsDto>> getUserMonthlyCarbonEmissions(@PathVariable String username) {
         List<TrendsDto> emissions = transportationLogService.getTrendsForTransportation(username);
         return ResponseEntity.ok(emissions);

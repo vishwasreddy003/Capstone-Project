@@ -1,6 +1,8 @@
 package com.planetwise.greenscores.service;
 
 import com.planetwise.greenscores.calculation.Logic;
+import com.planetwise.greenscores.dto.DtoUtil;
+import com.planetwise.greenscores.dto.TrendsDto;
 import com.planetwise.greenscores.feignClient.EnergyServiceClient;
 import com.planetwise.greenscores.feignClient.TransportServiceClient;
 import com.planetwise.greenscores.feignClient.WasteServiceClient;
@@ -43,7 +45,7 @@ public class GreenScoreServiceImpl implements GreenScoreService {
     }
 
     @Override
-    public List<GreenScores> getTrendsForGreenScores(String username) {
+    public List<TrendsDto> getTrendsForGreenScores(String username) {
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusMonths(10);
 
@@ -52,7 +54,9 @@ public class GreenScoreServiceImpl implements GreenScoreService {
         int startYear = startDate.getYear();
 
 
-        return greenScoresRepo.findGreenScoresFromLastTenMonths(username, startYear, startMonth);
+        return greenScoresRepo
+                .findGreenScoresFromLastTenMonths(username, startYear, startMonth)
+                .stream().map(DtoUtil::convertToDto).toList();
     }
 
     @Override
