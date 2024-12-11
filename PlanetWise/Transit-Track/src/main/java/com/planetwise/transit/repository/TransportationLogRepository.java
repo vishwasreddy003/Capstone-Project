@@ -20,10 +20,10 @@ public interface TransportationLogRepository extends JpaRepository<Transportatio
 
 
     // Modified query to filter by both year and month
-    @Query("SELECT t.month, SUM(t.carbon_emissions) FROM TransportationLog t WHERE t.username = :username " +
+    @Query("SELECT t.year, t.month, SUM(t.carbon_emissions) FROM TransportationLog t WHERE t.username = :username " +
             "AND (t.year > :startYear OR (t.year = :startYear AND t.month >= :startMonth)) " +
-            "GROUP BY t.month")
-    List<Object[]> findMonthlyCarbonEmissionsByUsernameAndDateRange(String username, int startYear, Month startMonth);
+            "GROUP BY t.year, t.month ORDER BY t.year, t.month")
+    List<Object[]> findMonthlyCarbonEmissionsByUsernameAndDateRange(String username, Year startYear, Month startMonth);
 
     boolean existsByUsername(String username);
 

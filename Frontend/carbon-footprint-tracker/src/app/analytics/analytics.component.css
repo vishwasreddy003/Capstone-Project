@@ -1,15 +1,17 @@
 /* General container styling */
 .container { /* Light green background */
   padding: 20px;
+   /* Eco-friendly green */
+
   border-radius: 15px;
   /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); */
 }
 
 /* Chart control buttons */
 button {
-  background-color: #40916c; /* Eco-friendly green */
-  color: #ffffff;
-  border: none;
+  background-color: #C2FFC7;
+  font-family:sans-serif;
+  border:black;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
@@ -18,8 +20,8 @@ button {
 }
 
 button:hover {
-  background-color: #2d6a4f; /* Darker green for hover */
-  transform: translateY(-2px);
+  background-color:whitesmoke; /* Darker green for hover */
+  transition: ease-in-out;
 }
 
 button:focus {
@@ -47,15 +49,16 @@ label {
   color: #52796f;
   font-weight: bold;
   margin-right: 10px;
+  font-family:sans-serif;
 }
 
 /* Chart container styling */
 .chart-container {
   border: 2px solid #b7d7c2; /* Soft green border */
   border-radius: 15px;
-  background-color: #ffffff;
+  background-color: #181717;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(202, 21, 21, 0.1);
 }
 
 .chart-container canvas {

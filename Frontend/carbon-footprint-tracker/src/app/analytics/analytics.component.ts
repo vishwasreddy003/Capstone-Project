@@ -60,14 +60,22 @@ export class AnalyticsComponent implements AfterViewInit {
 
   initializeChart(type: string): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-
+  
     // Destroy the existing chart instance
     if (this.chart) {
       this.chart.destroy();
     }
-
-    let data = this.chartData.type;
-
+  
+    // Get data for the selected chart type
+    const data = this.chartData.type;
+  
+    // Set labels dynamically based on the type
+    const yAxisLabel = type === 'overall' ? 'Green Score' : 'Carbon Emissions (kg)';
+    const chartTitle =
+      type === 'overall'
+        ? 'Green Score Trends'
+        : `Carbon Emissions - ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+  
     // Create the new chart instance
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -77,11 +85,18 @@ export class AnalyticsComponent implements AfterViewInit {
           {
             label: `${type.charAt(0).toUpperCase() + type.slice(1)} Data`,
             data: data,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            backgroundColor: function (context) {
+              const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
+              gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
+              gradient.addColorStop(1, 'rgba(75, 192, 192, 0.2)');
+              return gradient;
+            },
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }
-        ]
+            borderWidth: 2,
+            borderRadius: 10, // Rounded corners for the bars
+            hoverBackgroundColor: 'rgba(255, 99, 132, 0.8)', // Highlighted bar color on hover
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -89,12 +104,12 @@ export class AnalyticsComponent implements AfterViewInit {
         plugins: {
           title: {
             display: true,
-            text: `Carbon Emissions - ${type.charAt(0).toUpperCase() + type.slice(1)}`,
+            text: chartTitle, // Set the chart title dynamically
             font: {
               size: 18,
-              weight: 'bold'
+              weight: 'bold',
             },
-            color: '#333'
+            color: '#333',
           },
           legend: {
             display: true,
@@ -102,10 +117,21 @@ export class AnalyticsComponent implements AfterViewInit {
             labels: {
               color: '#333',
               font: {
-                size: 12
-              }
-            }
-          }
+                size: 12,
+              },
+            },
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            titleFont: {
+              size: 14,
+            },
+            bodyFont: {
+              size: 12,
+            },
+            borderColor: 'rgba(255, 255, 255, 0.8)',
+            borderWidth: 1,
+          },
         },
         scales: {
           x: {
@@ -114,44 +140,46 @@ export class AnalyticsComponent implements AfterViewInit {
               text: 'Months',
               font: {
                 size: 14,
-                weight: 'bold'
+                weight: 'bold',
               },
-              color: '#666'
+              color: '#666',
             },
             ticks: {
               color: '#333',
               font: {
-                size: 12
-              }
+                size: 12,
+              },
             },
             grid: {
-              color: 'rgba(200, 200, 200, 0.2)'
-            }
+              color: 'rgba(200, 200, 200, 0.2)',
+            },
           },
           y: {
             title: {
               display: true,
-              text: 'Carbon Emissions (kg)',
+              text: yAxisLabel, // Set the Y-axis label dynamically
               font: {
                 size: 14,
-                weight: 'bold'
+                weight: 'bold',
               },
-              color: '#666'
+              color: '#666',
             },
             ticks: {
               color: '#333',
               font: {
-                size: 12
-              }
+                size: 12,
+              },
             },
             grid: {
-              color: 'rgba(200, 200, 200, 0.2)'
-            }
-          }
-        }
-      }
+              color: 'rgba(200, 200, 200, 0.2)',
+            },
+          },
+        },
+      },
     });
   }
+  
+  
 
   
 

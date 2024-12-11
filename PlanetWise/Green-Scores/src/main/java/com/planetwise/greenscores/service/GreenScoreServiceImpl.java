@@ -55,7 +55,7 @@ public class GreenScoreServiceImpl implements GreenScoreService {
 
 
         return greenScoresRepo
-                .findGreenScoresFromLastTenMonths(username, startYear, startMonth)
+                .findGreenScoresFromLastTenMonths(username, Year.of(startYear), startMonth)
                 .stream().map(DtoUtil::convertToDto).toList();
     }
 

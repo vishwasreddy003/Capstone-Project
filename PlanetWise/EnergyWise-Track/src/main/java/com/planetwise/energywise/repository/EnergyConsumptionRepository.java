@@ -13,7 +13,7 @@ public interface EnergyConsumptionRepository extends JpaRepository<EnergyConsump
 
     @Query("SELECT e FROM EnergyConsumption e WHERE e.username = :username " +
             "AND (e.year > :startYear OR (e.year = :startYear AND e.month >= :startMonth))")
-    List<EnergyConsumption> findEnergyConsumptionOfLast10Months(String username, int startYear, Month startMonth);
+    List<EnergyConsumption> findEnergyConsumptionOfLast10Months(String username, Year startYear, Month startMonth);
 
     @Query("SELECT count(*) > 0 FROM EnergyConsumption e WHERE e.username = :username AND e.month = :month AND e.year = :year")
     Boolean existsByUsernameAndMonthAndYear(String username, Month month, Year year);

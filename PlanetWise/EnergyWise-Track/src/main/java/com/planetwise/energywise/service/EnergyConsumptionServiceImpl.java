@@ -52,7 +52,7 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
-        return energyRepo.findEnergyConsumptionOfLast10Months(username, startYear, startMonth).stream().map(DtoUtil::convertToDto)
+        return energyRepo.findEnergyConsumptionOfLast10Months(username, Year.of(startYear), startMonth).stream().map(DtoUtil::convertToDto)
                 .collect(Collectors.toList());
     }
 

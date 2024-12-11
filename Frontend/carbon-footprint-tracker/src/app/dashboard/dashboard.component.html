@@ -1,4 +1,6 @@
 <div class="dashboard-container bg-light p-4">
+
+
   <div class="row mb-4">
     <!-- Left Card - Carbon Emissions -->
     <div class="col-md-6">
@@ -68,25 +70,48 @@
       </div>
     </div>
 
+
+
     <!-- Right Card - AI Recommendations -->
-    <div class="col-md-6">
-      <div class="row" *ngFor="let recommendation of parsedRecommendations">
-        <div class="card h-100 recommendation-card">
-          <div class="card-body">
-            <!-- Icon -->
-            <div class="d-flex align-items-center mb-3">
-              <span class="icon" style="font-size: 24px;">{{ recommendation.icon }}</span>
-              <h5 class="card-title mb-0 ms-2">{{ recommendation.title }}</h5>
+    <div class="col-md-6 position-relative">
+      <!-- Loader Section -->
+      <div *ngIf="isLoading" class="loader-overlay">
+        <div class="row">
+          <h4>Generating AI curated Recommendations</h4>
+        </div>
+        <div class="row spinner-box">
+          <div class="blue-orbit leo"></div>
+          <div class="green-orbit leo"></div>
+          <div class="red-orbit leo"></div>
+          <div class="white-orbit w1 leo"></div>
+          <div class="white-orbit w2 leo"></div>
+          <div class="white-orbit w3 leo"></div>
+        </div>
+
+      </div>
+
+      <!-- Recommendations Section -->
+      <div *ngIf="!isLoading" class="recommendations-content">
+        <div class="row" *ngFor="let recommendation of parsedRecommendations">
+          <div class="card h-100 recommendation-card">
+            <div class="card-body">
+              <!-- Icon -->
+              <div class="d-flex align-items-center mb-3">
+                <span class="icon" style="font-size: 24px;">{{ recommendation.icon }}</span>
+                <h5 class="card-title mb-0 ms-2">{{ recommendation.title }}</h5>
+              </div>
+              <!-- Description -->
+              <p class="card-text text-muted">{{ recommendation.text }}</p>
+              <!-- Impact -->
+              <small class="text-success d-block">{{ recommendation.impact }}</small>
             </div>
-            <!-- Description -->
-            <p class="card-text text-muted">{{ recommendation.text }}</p>
-            <!-- Impact -->
-            <small class="text-success d-block">{{ recommendation.impact }}</small>
           </div>
         </div>
+        <p class="text-muted text-center" *ngIf="!parsedRecommendations.length">No recommendations available.</p>
       </div>
-      <p class="text-muted text-center" *ngIf="!parsedRecommendations.length">No recommendations available.</p>
     </div>
+
+
   </div>
 
   <!-- Bottom Card - Tasks/Goals -->
@@ -150,8 +175,7 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} 🪙</span>
-                  <button class="btn btn-primary btn-sm"
-                    (click)="completeGoal(goal.goalId)">
+                  <button class="btn btn-primary btn-sm" (click)="completeGoal(goal.goalId)">
                     Complete the pledge
                   </button>
 

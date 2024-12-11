@@ -1,3 +1,94 @@
+
+.loader-overlay {
+  position: absolute; /* Ensure it covers only the recommendations section */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black; /* Semi-transparent dark background */
+  z-index: 10; /* Place above recommendations content */
+  font-family:sans-serif;
+}
+
+/* Spinner Box */
+.spinner-box {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+/* Leo Orbits */
+.leo {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.blue-orbit {
+  width: 165px;
+  height: 165px;
+  border: 3px solid #91daffa5;
+  animation: spin3D 3s linear 0.2s infinite;
+}
+
+.green-orbit {
+  width: 120px;
+  height: 120px;
+  border: 3px solid #91ffbfa5;
+  animation: spin3D 2s linear 0s infinite;
+}
+
+.red-orbit {
+  width: 90px;
+  height: 90px;
+  border: 3px solid #ffca91a5;
+  animation: spin3D 1s linear 0s infinite;
+}
+
+.white-orbit {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #ffffff;
+  animation: spin3D 10s linear 0s infinite;
+}
+
+/* Unique Rotations */
+.w1 {
+  transform: rotate3D(1, 1, 1, 90deg);
+}
+
+.w2 {
+  transform: rotate3D(1, 2, 0.5, 90deg);
+}
+
+.w3 {
+  transform: rotate3D(0.5, 1, 2, 90deg);
+}
+
+@keyframes spin3D {
+  from {
+    transform: rotate3d(0.5, 0.5, 0.5, 360deg);
+  }
+  to {
+    transform: rotate3d(0deg);
+  }
+}
+
+/* Recommendations Content */
+.recommendations-content {
+  position: relative;
+  background: #fff;
+}
+
+
 .dashboard-container {
   background-color: #f8faf7;
   min-height: 100vh;
@@ -78,18 +169,17 @@
 }
 
 .score-value.yellow {
-  color:  #f59e0b;
+  color: #f59e0b;
 }
 
 .score-value.red {
-  color:  #dc2626;
+  color: #dc2626;
 }
 
 .score-label {
   color: #0f1111;
   font-size: 0.875rem;
 }
-
 
 .category-buttons .btn {
   padding: 1rem 1.5rem;
@@ -238,14 +328,12 @@
   margin-bottom: 8px;
 }
 
-
-
 .alert-container {
   position: fixed;
-  bottom: 10px;  /* Position at the bottom */
-  right: 10px;   /* Position on the right side */
+  bottom: 10px; /* Position at the bottom */
+  right: 10px; /* Position on the right side */
   z-index: 1050;
-  width: 300px;  /* Thinner width (adjust as needed) */
+  width: 300px; /* Thinner width (adjust as needed) */
   max-width: 100%; /* Allow full width but limit to 300px */
   transition: all 0.3s ease-in-out;
 }
@@ -254,11 +342,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;  /* Adjust padding to make it thinner */
+  padding: 10px 15px; /* Adjust padding to make it thinner */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
-  font-size: 14px;  /* Slightly smaller font size */
+  font-size: 14px; /* Slightly smaller font size */
   background-color: #28a745; /* Default: success */
   opacity: 0;
   animation: fadeIn 0.5s forwards;

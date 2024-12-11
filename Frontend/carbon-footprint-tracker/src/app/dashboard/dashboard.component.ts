@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
   selectedTaskView: string = 'current';
   selectedCategory: CategoryKey = 'overall';
   scoreMessage: string = "Fetching you green score 😊";
+  isLoading: boolean = false;
 
   // Data arrays
   availableGoals: Task[] = [];
@@ -365,6 +366,7 @@ export class DashboardComponent implements OnInit {
 
 
   async generateRecommendations(): Promise<void> {
+    this.isLoading = true;
     try {
       const generationConfig = {
         safetySettings: [
@@ -420,6 +422,8 @@ export class DashboardComponent implements OnInit {
       }
     } catch (error) {
       console.error("Error generating recommendations:", error);
+    }finally{
+      this.isLoading= false;
     }
   }
 

@@ -35,38 +35,31 @@ public class TransportationLogServiceImpl implements TransportationLogService {
     @Override
     public List<TrendsDto> getTrendsForTransportation(String username) {
         LocalDate now = LocalDate.now();
-        LocalDate startDate = now.minusMonths(12);
+        LocalDate startDate = now.minusMonths(10); // Adjust to last 10 months
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
 
-        // Fetch transportation logs for the last 12 months
-        List<TransportationLog> transportationLogs =
-                transportRepo.findByUsernameAndMonthAndYear(username, startYear, startMonth);
+        // Fetch transportation logs for the last 10 months
+        List<Object[]> transportationLogs =
+                transportRepo.findMonthlyCarbonEmissionsByUsernameAndDateRange(username, Year.of(startYear), startMonth);
 
         if (transportationLogs.isEmpty()) {
             throw new DataNotFoundException("No transportation data found for user: " + username);
         }
 
-        // Group by Year and Month, and sum up carbon emissions
-        Map<String, Double> aggregatedData = transportationLogs.stream()
-                .collect(Collectors.groupingBy(
-                        log -> log.getYear() + "-" + log.getMonth(),
-                        Collectors.summingDouble(TransportationLog::getCarbon_emissions)
-                ));
-
-        // Convert the aggregated data to TrendsDto with Month and Year types
-        return aggregatedData.entrySet().stream()
-                .map(entry -> {
-                    String[] yearMonth = entry.getKey().split("-");
-                    Year year = Year.of(Integer.parseInt(yearMonth[0]));
-                    Month month = Month.valueOf(yearMonth[1].toUpperCase());
-                    double carbonEmissions = entry.getValue();
+        // Map the query result to TrendsDto objects
+        return transportationLogs.stream()
+                .map(log -> {
+                    Year year = (Year) log[0];
+                    Month month = (Month) log[1];
+                    double carbonEmissions = (double) log[2];
 
                     return new TrendsDto(month, year, carbonEmissions);
                 })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public Double getCarbonEmissions(String username, Year year, Month month) {
