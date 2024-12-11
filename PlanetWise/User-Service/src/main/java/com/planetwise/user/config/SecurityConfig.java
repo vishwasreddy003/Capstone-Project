@@ -1,5 +1,6 @@
 package com.planetwise.user.config;
 
+import com.planetwise.user.util.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,11 @@ public class SecurityConfig {
 
     @Autowired
     UserDetailsService userDetailsService;
+
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -67,11 +73,13 @@ public class SecurityConfig {
                         .requestMatchers("/PlanetWise/user/register").permitAll()
                         .requestMatchers("/PlanetWise/user/login").permitAll()
                         .requestMatchers("/PlanetWise/user/validate").permitAll()
-                        .requestMatchers("/PlanetWise/user/**").permitAll()
+//                        .requestMatchers("/PlanetWise/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .authenticationProvider(authenticationProvider())
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());

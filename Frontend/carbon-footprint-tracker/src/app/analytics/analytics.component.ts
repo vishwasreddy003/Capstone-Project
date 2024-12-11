@@ -167,12 +167,12 @@ export class AnalyticsComponent implements AfterViewInit {
   updateChart(type: string): void {
     this.selectedChartType = type;
     this.showDropdown = type === 'transportation'; 
-    this.loadChartData(type); // Fetch new data and initialize chart
+    this.loadChartData(type); 
   }
 
   updateTransportationType(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.transportationType = target.value;
-    this.loadChartData('transportation'); // Fetch new data for transportation
+    this.loadChartData('transportation');
   }
 }

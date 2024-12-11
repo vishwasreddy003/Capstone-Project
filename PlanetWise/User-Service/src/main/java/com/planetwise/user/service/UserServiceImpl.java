@@ -77,9 +77,11 @@ public class UserServiceImpl implements UserService{
             User currUser = user.get();
             List<UUID> checkedGoals = currUser.getCheckedGoals();
             List<UUID> goals = currUser.getUserGoals();
-            goals.stream().filter(i -> i != goalId).toList();
-
+            goals.remove(goalId);
             checkedGoals.add(goalId);
+
+            System.out.println("current : " + goals);
+            System.out.println("Completed : " + checkedGoals);
 
             currUser.setCheckedGoals(checkedGoals);
             currUser.setUserGoals(goals);

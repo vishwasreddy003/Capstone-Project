@@ -73,11 +73,11 @@ export class StoreComponent {
 
   selectItem(item: any) {
     this.selectedItem = item;
-    this.redeemCode = null; // Reset redeem code when selecting a new item
+    this.redeemCode = null; 
   }
 
   closePopup() {
-    this.selectedItem = null; // Close the popup
+    this.selectedItem = null; 
   }
 
   redeemItem() {

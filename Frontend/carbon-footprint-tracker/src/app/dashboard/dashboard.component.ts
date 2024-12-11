@@ -11,8 +11,7 @@ import { TrackerApiService } from '../tracker-api.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler.service';
 import { Router } from '@angular/router';
-import { type } from 'os';
-import { response } from 'express';
+
 
 type CategoryKey = 'overall' | 'household' | 'transportation' | 'waste';
 
@@ -79,6 +78,8 @@ export class DashboardComponent implements OnInit {
     this.loadEmissions();
     this.generateRecommendations();
     this.loadCurrentGoals();
+    this.loadCompletedGoals();
+    this.loadAvailableGoals();
   }
 
   // -----------------------------------
@@ -91,8 +92,22 @@ export class DashboardComponent implements OnInit {
       this.loadAvailableGoals();
     } else if (view === 'current') {
       this.loadCurrentGoals();
+    } else if (view === 'completed') {
+      this.loadCompletedGoals();
     }
   }
+
+  isGoalCompletable(startDate: string, endDate: string): boolean {
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+  
+    const adjustedDate = new Date(currentDate.getTime());
+    adjustedDate.setDate(currentDate.getDate() + (start.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+    return adjustedDate > end;
+  }
+  
 
   loadCurrentGoals(): void {
     this.trackerApiService
@@ -118,7 +133,7 @@ export class DashboardComponent implements OnInit {
       )
       .subscribe(
         () => {
-          this.loadAvailableGoals(); // Call after currentGoals are loaded
+          this.loadAvailableGoals();
         }
       );
   }
@@ -126,9 +141,11 @@ export class DashboardComponent implements OnInit {
   loadAvailableGoals(): void {
     this.trackerApiService.getAllGoals().subscribe(
       (response: any[]) => {
-        const currentGoalIds = this.currentGoals.map((goal) => goal.goalId);
+        const currentGoalIds = new Set(this.currentGoals.map((goal) => goal.goalId));
+        const completedGoalIds = new Set(this.completedGoals.map((goal) => goal.goalId));
+  
         this.availableGoals = response
-          .filter((goal) => !currentGoalIds.includes(goal.goal_id))
+          .filter((goal) => !currentGoalIds.has(goal.goal_id) && !completedGoalIds.has(goal.goal_id))
           .map((goal) => ({
             goalId: goal.goal_id,
             goalTitle: goal.goal_title,
@@ -139,12 +156,44 @@ export class DashboardComponent implements OnInit {
             startDate: goal.startDate,
             endDate: goal.endDate,
           }));
+  
         console.log('Mapped Available Goals:', this.availableGoals);
       },
       (error) => {
         this.handleError('Error fetching goals:');
       }
     );
+  }
+  
+
+  loadCompletedGoals(): void {
+    this.trackerApiService
+      .getUserCheckedGoals()
+      .pipe(
+        switchMap((goalIds: string[]) => {
+          console.log('Fetched Goal IDs:', goalIds);
+          return this.trackerApiService.getGoalsByIds(goalIds);
+        }),
+        map((response: any[]) => {
+          this.completedGoals = response.map((goal) => ({
+            goalId: goal.goal_id,
+            goalTitle: goal.goal_title,
+            goalDescription: goal.goal_description,
+            goalDifficulty: goal.goal_difficulty,
+            goalFrequency: goal.goal_frequency,
+            greenCoins: goal.green_coins,
+            startDate: goal.startDate,
+            endDate: goal.endDate,
+          }));
+          console.log('Completed Goals Loaded:', this.completedGoals);
+        })
+      )
+      .subscribe(
+        () => {
+          this.loadAvailableGoals();
+        }
+      );
+
   }
 
 
@@ -166,6 +215,7 @@ export class DashboardComponent implements OnInit {
           this.availableGoals = this.availableGoals.filter(
             (g) => g.goalId !== goalId
           );
+          this.selectedTaskView = 'curent';
         }
       },
       (error) => {
@@ -177,6 +227,8 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+
 
   completeGoal(goalId: string) {
     this.trackerApiService.markAsCompleted(goalId).subscribe(
@@ -193,7 +245,9 @@ export class DashboardComponent implements OnInit {
           this.currentGoals = this.currentGoals.filter(
             (g) => g.goalId !== goalId
           );
+          this.selectedTaskView = 'completed';
         }
+        
       },
       (error) => {
         this.submissionStatus = {
@@ -286,9 +340,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
-
-
   // -----------------------------------
   // RECOMMENDATION METHODS
   // -----------------------------------
@@ -315,7 +366,7 @@ export class DashboardComponent implements OnInit {
       });
 
       const prompt = `
-            Generate 6 actionable and concise recommendations for reducing carbon emissions in daily activities for the category: ${this.selectedCategory}.
+            Generate 4 actionable and concise recommendations for reducing carbon emissions in daily activities for people in india and give the recommendations accordingly for the category: ${this.selectedCategory}.
             Return the output as a JSON array, where each object contains:
             - icon: string (e.g., 🌿)
             - title: string (short title)

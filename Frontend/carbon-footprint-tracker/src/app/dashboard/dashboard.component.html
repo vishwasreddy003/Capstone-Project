@@ -21,7 +21,7 @@
 
           <!-- Score Circle -->
           <div class="score-container text-center mb-4">
-            <div  [ngClass]="'score-circle ' + scoreClass()">
+            <div [ngClass]="'score-circle ' + scoreClass()">
               <div class="score-inner">
                 <h2 [ngClass]="'score-value '+ scoreClass()">{{ currentScore }}</h2>
                 <small class="score-label">Green Score</small>
@@ -127,7 +127,8 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} 🪙</span>
-                  <button class="btn btn-primary btn-sm" (click)="addTaskToCurrent(goal.goalId)">I Pledge to this</button>
+                  <button class="btn btn-primary btn-sm" (click)="addTaskToCurrent(goal.goalId)">I Pledge to
+                    this</button>
                 </div>
               </div>
             </div>
@@ -149,19 +150,19 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} 🪙</span>
-                  <button class="btn btn-primary btn-sm" (click)="completeGoal(goal.goalId)">
+                  <button class="btn btn-primary btn-sm"
+                    (click)="completeGoal(goal.goalId)">
                     Complete the pledge
                   </button>
-                </div>
 
-                
+                </div>
               </div>
             </div>
           </div>
         </ng-container>
 
         <!-- Completed Tasks -->
-        <!-- <ng-container *ngIf="selectedTaskView === 'completed'">
+        <ng-container *ngIf="selectedTaskView === 'completed'">
           <div class="col-md-4 mb-3" *ngFor="let goal of completedGoals">
             <div class="card h-100">
               <div class="card-body">
@@ -169,7 +170,7 @@
                 <p class="card-text">{{ goal.goalDescription }}</p>
                 <p class="card-text">
                   <strong>Difficulty:</strong> {{ goal.goalDifficulty }}
-                </p>`
+                </p>
                 <p class="card-text">
                   <strong>Frequency:</strong> {{ goal.goalFrequency }}
                 </p>
@@ -179,7 +180,7 @@
               </div>
             </div>
           </div>
-        </ng-container> -->
+        </ng-container>
       </div>
     </div>
   </div>
