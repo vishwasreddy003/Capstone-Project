@@ -8,9 +8,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black; /* Semi-transparent dark background */
   z-index: 10; /* Place above recommendations content */
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
 
 /* Spinner Box */
@@ -35,28 +34,28 @@
 .blue-orbit {
   width: 165px;
   height: 165px;
-  border: 3px solid #91daffa5;
+  border: 3px solid #1e90ff; /* Bright Blue */
   animation: spin3D 3s linear 0.2s infinite;
 }
 
 .green-orbit {
   width: 120px;
   height: 120px;
-  border: 3px solid #91ffbfa5;
+  border: 3px solid #32cd32; /* Lime Green */
   animation: spin3D 2s linear 0s infinite;
 }
 
 .red-orbit {
   width: 90px;
   height: 90px;
-  border: 3px solid #ffca91a5;
+  border: 3px solid #ff4500; /* Orange-Red */
   animation: spin3D 1s linear 0s infinite;
 }
 
 .white-orbit {
   width: 60px;
   height: 60px;
-  border: 4px solid #ffffff;
+  border: 4px solid darkgreen; /* Gold */
   animation: spin3D 10s linear 0s infinite;
 }
 
@@ -81,6 +80,7 @@
     transform: rotate3d(0deg);
   }
 }
+
 
 /* Recommendations Content */
 .recommendations-content {

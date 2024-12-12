@@ -26,31 +26,19 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
   List<WasteProduction> findByUsernameAndYearAndMonth(String username,Year year,Month month);
 
   @Query(value = """
-        SELECT * 
-        FROM waste_production 
-        WHERE username = :username 
-        AND year = (SELECT MAX(year) FROM waste_production) 
-        AND month = (
-            SELECT month 
-            FROM waste_production 
-            WHERE year = (SELECT MAX(year) FROM waste_production) 
-            ORDER BY 
-                CASE month 
-                    WHEN 'January' THEN 1 
-                    WHEN 'February' THEN 2 
-                    WHEN 'March' THEN 3 
-                    WHEN 'April' THEN 4 
-                    WHEN 'May' THEN 5 
-                    WHEN 'June' THEN 6 
-                    WHEN 'July' THEN 7 
-                    WHEN 'August' THEN 8 
-                    WHEN 'September' THEN 9 
-                    WHEN 'October' THEN 10 
-                    WHEN 'November' THEN 11 
-                    WHEN 'December' THEN 12 
-                END DESC 
-            LIMIT 1
-        )
+           SELECT *\s
+           FROM waste_production\s
+           WHERE username = :username\s
+             AND year = (SELECT MAX(year) FROM waste_production WHERE username = :username)\s
+             AND month = (
+                 SELECT MAX(month)\s
+                 FROM waste_production\s
+                 WHERE username = :username
+                   AND year = (SELECT MAX(year) FROM waste_production WHERE username = :username)
+                 Group BY month
+                 order by month desc
+           	  LIMIT 1
+             );
         """, nativeQuery = true)
   List<WasteProduction> getLatestData(String username);
 

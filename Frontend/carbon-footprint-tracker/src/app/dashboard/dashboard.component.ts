@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit {
       .getUserGoalIds()
       .pipe(
         switchMap((goalIds: string[]) => {
-          console.log('Fetched Goal IDs:', goalIds);
+          // console.log('Fetched Goal IDs:', goalIds);
           return this.trackerApiService.getGoalsByIds(goalIds);
         }),
         map((response: any[]) => {
@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit {
             startDate: goal.startDate,
             endDate: goal.endDate,
           }));
-          console.log('Current Goals Loaded:', this.currentGoals);
+          // console.log('Current Goals Loaded:', this.currentGoals);
         })
       )
       .subscribe(
@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
             endDate: goal.endDate,
           }));
 
-        console.log('Mapped Available Goals:', this.availableGoals);
+        // console.log('Mapped Available Goals:', this.availableGoals);
       },
       (error) => {
         this.handleError('Error fetching goals:');
@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
       .getUserCheckedGoals()
       .pipe(
         switchMap((goalIds: string[]) => {
-          console.log('Fetched Goal IDs:', goalIds);
+          // console.log('Fetched Goal IDs:', goalIds);
           return this.trackerApiService.getGoalsByIds(goalIds);
         }),
         map((response: any[]) => {
@@ -186,7 +186,7 @@ export class DashboardComponent implements OnInit {
             startDate: goal.startDate,
             endDate: goal.endDate,
           }));
-          console.log('Completed Goals Loaded:', this.completedGoals);
+          // console.log('Completed Goals Loaded:', this.completedGoals);
         })
       )
       .subscribe(
@@ -200,7 +200,7 @@ export class DashboardComponent implements OnInit {
 
 
   addTaskToCurrent(goalId: string): void {
-    console.log(goalId);
+    // console.log(goalId);
     this.trackerApiService.addGoals(goalId).subscribe(
       (response) => {
         this.submissionStatus = {
@@ -242,7 +242,7 @@ export class DashboardComponent implements OnInit {
           this.trackerApiService.updateCoinBalance(task.greenCoins).subscribe(
             (updatedBalance) => {
               sessionStorage.setItem('greenCoins', updatedBalance.toString());
-              console.log(`Updated Green Coins: ${updatedBalance}`);
+              // console.log(`Updated Green Coins: ${updatedBalance}`);
 
               this.selectedTaskView = 'completed';
   
@@ -318,6 +318,7 @@ export class DashboardComponent implements OnInit {
       household: this.trackerApiService.getLatestHouseholdEmission(),
     }).subscribe(
       (results) => {
+        console.log(results);
         // Update the carbon data
         this.carbonData['waste'] = results.waste;
         this.carbonData['transportation'] = results.transportation;
@@ -329,7 +330,7 @@ export class DashboardComponent implements OnInit {
           this.carbonData['transportation'] +
           this.carbonData['household'];
 
-        console.log(this.carbonData);
+        // console.log(this.carbonData);
         this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
       },
       (error) => {
@@ -397,14 +398,14 @@ export class DashboardComponent implements OnInit {
       const result = await model.generateContent(prompt);
 
       let responseText = await result.response.text();
-      console.log("Raw Response Text:", responseText);
+      // console.log("Raw Response Text:", responseText);
 
 
       responseText = responseText
         .replace(/^.*?JSON/, "")
         .replace(/```json|```/g, "")
 
-      console.log("Cleaned Response Text:", responseText);
+      // console.log("Cleaned Response Text:", responseText);
 
       const recommendations = JSON.parse(responseText);
 
@@ -416,7 +417,7 @@ export class DashboardComponent implements OnInit {
           text: rec.description,
           impact: rec.impact,
         }));
-        console.log("Parsed Recommendations as JSON:", this.parsedRecommendations);
+        // console.log("Parsed Recommendations as JSON:", this.parsedRecommendations);
       } else {
         throw new Error("Unexpected response format. Expected a JSON array.");
       }

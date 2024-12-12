@@ -106,7 +106,6 @@ public class WasteProductionServiceImpl implements WasteProductionService {
 
         return wasteProductionRepo.getLatestData(username).stream()
                 .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
-                .average()
-                .orElse(0.0);
+                .sum();
     }
 }

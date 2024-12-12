@@ -87,7 +87,6 @@ public class TransportationLogServiceImpl implements TransportationLogService {
 
         return transportRepo.getLatestData(username).stream()
                 .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
-                .average()
-                .orElse(0.0);
+                .sum();
     }
 }
