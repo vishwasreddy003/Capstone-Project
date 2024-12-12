@@ -29,9 +29,6 @@ public class Goals {
     @Enumerated(EnumType.STRING)
     public Difficulty goal_difficulty;
 
-    public LocalDate startDate;
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    public LocalDate endDate;
     public int green_coins;
 
 

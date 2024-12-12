@@ -15,7 +15,7 @@ export class StoreComponent {
   storeItems:rewards[] = [];
   
   ngOnInit() {
-    // Retrieve and parse the balance from sessionStorage
+
     const storedBalance = sessionStorage.getItem('greenCoins');
     this.userCoinBalance = storedBalance ? parseInt(storedBalance, 10) : 100;
     this.storeItems = items;
@@ -36,7 +36,6 @@ export class StoreComponent {
   }
 
   redeemItem() {
-    // Generate a mock redeem code
     this.redeemCode = `REDEEM-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
   }
 

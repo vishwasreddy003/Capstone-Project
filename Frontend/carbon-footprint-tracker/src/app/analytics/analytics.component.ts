@@ -14,7 +14,7 @@ Chart.register(...registerables);
 })
 export class AnalyticsComponent implements AfterViewInit {
   private chart: any;
-  public showDropdown: boolean = false; // Controls visibility of the dropdown
+  public showDropdown: boolean = false; 
   private selectedChartType: string = 'household'; 
 
   private chartData: any = {
@@ -24,33 +24,32 @@ export class AnalyticsComponent implements AfterViewInit {
     overall: []
   };
 
-  private months: string[] = Array(12).fill(''); // To be updated with backend data
+  private months: string[] = Array(12).fill(''); 
 
   constructor(private trackerApiService: TrackerApiService) {}
 
   ngAfterViewInit(): void {
-    this.loadChartData('household'); // Initialize with the default chart
+    this.loadChartData('household'); 
   }
 
   loadChartData(type: string): void {
     this.trackerApiService.getTrendsData(type).subscribe(
       (data) => {
         console.log(data);
-        const sortedData = data.sort((a, b) =>
-          a.year !== b.year ? a.year - b.year : a.month.localeCompare(b.month)
-        );
-        const months = sortedData.map((d) => d.month.substring(0, 3).toUpperCase());
-        const emissions = sortedData.map((d) => d.emissions);
-
+    
+        const months = data.map((d) => d.month.substring(0, 3).toUpperCase());
+        const emissions = data.map((d) => d.emissions);
+    
         this.chartData.type = emissions;
-
-        this.months = months; 
+        this.months = months;
+    
         this.initializeChart(type);
       },
       (error) => {
         console.error('Error fetching trends data:', error);
       }
     );
+    
   }
 
   updateChart(type: string): void {
@@ -61,22 +60,21 @@ export class AnalyticsComponent implements AfterViewInit {
   initializeChart(type: string): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
   
-    // Destroy the existing chart instance
+   
     if (this.chart) {
       this.chart.destroy();
     }
   
-    // Get data for the selected chart type
+  
     const data = this.chartData.type;
   
-    // Set labels dynamically based on the type
+    
     const yAxisLabel = type === 'overall' ? 'Green Score' : 'Carbon Emissions (kg)';
     const chartTitle =
       type === 'overall'
         ? 'Green Score Trends'
         : `Carbon Emissions - ${type.charAt(0).toUpperCase() + type.slice(1)}`;
-  
-    // Create the new chart instance
+
     this.chart = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -93,8 +91,8 @@ export class AnalyticsComponent implements AfterViewInit {
             },
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 2,
-            borderRadius: 10, // Rounded corners for the bars
-            hoverBackgroundColor: 'rgba(255, 99, 132, 0.8)', // Highlighted bar color on hover
+            borderRadius: 10, 
+            hoverBackgroundColor: 'rgba(255, 99, 132, 0.8)',
           },
         ],
       },
@@ -104,7 +102,7 @@ export class AnalyticsComponent implements AfterViewInit {
         plugins: {
           title: {
             display: true,
-            text: chartTitle, // Set the chart title dynamically
+            text: chartTitle,
             font: {
               size: 18,
               weight: 'bold',
@@ -157,7 +155,7 @@ export class AnalyticsComponent implements AfterViewInit {
           y: {
             title: {
               display: true,
-              text: yAxisLabel, // Set the Y-axis label dynamically
+              text: yAxisLabel, 
               font: {
                 size: 14,
                 weight: 'bold',

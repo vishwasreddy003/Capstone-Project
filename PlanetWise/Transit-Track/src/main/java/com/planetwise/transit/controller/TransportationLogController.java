@@ -1,5 +1,6 @@
 package com.planetwise.transit.controller;
 
+import com.planetwise.transit.dto.TransportDto;
 import com.planetwise.transit.dto.TrendsDto;
 import com.planetwise.transit.model.FuelType;
 import com.planetwise.transit.model.TransportationLog;
@@ -44,6 +45,11 @@ public class TransportationLogController {
     @GetMapping("/{username}/latest")
     public Double getCarbonEmissions(@PathVariable String username){
         return transportationLogService.getLatestCarbonEmissions(username);
+    }
+
+    @GetMapping("/{username}/getAll")
+    public List<TransportDto> getAll(@PathVariable String username){
+        return transportationLogService.getAll(username);
     }
 
 }

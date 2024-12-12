@@ -149,8 +149,10 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} 🪙</span>
-                  <button class="btn btn-primary btn-sm" (click)="addTaskToCurrent(goal.goalId)">I Pledge to
-                    this</button>
+                  <button class="btn btn-primary btn-sm custom-pledge-btn" (click)="addTaskToCurrent(goal.goalId)">
+                    I Pledge to this
+                  </button>
+
                 </div>
               </div>
             </div>
@@ -172,7 +174,7 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="badge bg-success">{{ goal.greenCoins }} 🪙</span>
-                  <button class="btn btn-primary btn-sm" (click)="completeGoal(goal.goalId)">
+                  <button class="btn btn-primary btn-sm custom-pledge-btn" (click)="completeGoal(goal.goalId)">
                     Complete the pledge
                   </button>
 

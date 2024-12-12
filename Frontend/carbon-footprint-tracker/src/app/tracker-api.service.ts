@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EnergyData } from './model/EnergyData';
@@ -36,11 +36,11 @@ export class TrackerApiService {
     return this.http.post(this.baseUrl+`/WasteProduction/${username}/addData`,wasteProdData);
   }
 
-  getGreenScores(greenScore:GreenScore){
-    let username = sessionStorage.getItem('username')
-    return this.http.post(this.baseUrl+`/greenScore/${username}/calculate`,greenScore);
+  getGreenScores(greenScores: GreenScore):Observable<number>{
+    const username = sessionStorage.getItem('username');
+    return this.http.post<number>(`${this.baseUrl}/greenScore/${username}/calculate`,greenScores);
   }
- 
+
   getAllGoals(): Observable<any[]> {
     console.log('ok');
     return this.http.get<any[]>(this.baseUrl+`/goals/allGoals`);
@@ -120,6 +120,21 @@ export class TrackerApiService {
     let username = sessionStorage.getItem('username');
 
     return this.http.get<number>(`${this.baseUrl}/energy/${username}/latest`);
+  }
+
+
+  getAllEnergyData():Observable<any>{
+    let username = sessionStorage.getItem('username');
+    return this.http.get(this.baseUrl+`/energy/${username}/getAll`);
+  }
+
+  getAllTransportationData():Observable<any>{
+    let username = sessionStorage.getItem('username');
+    return this.http.get(this.baseUrl+`/transportation/${username}/getAll`);
+  }
+  getAllWasteData():Observable<any>{
+    let username = sessionStorage.getItem('username');
+    return this.http.get(this.baseUrl+`/WasteProduction/${username}/getAll`);
   }
 
 }

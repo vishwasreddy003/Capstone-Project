@@ -85,7 +85,6 @@
 /* Recommendations Content */
 .recommendations-content {
   position: relative;
-  background: #fff;
 }
 
 
@@ -164,6 +163,18 @@
   margin-bottom: 0.25rem;
 }
 
+.custom-pledge-btn {
+  background-color: #ffffff; /* White background */
+  color: #059669; /* Text color */
+  border: 1px solid #059669; /* Optional: Add a border matching the text color */
+}
+
+.custom-pledge-btn:hover {
+  background-color: #059669; /* Background changes on hover */
+  color: #ffffff; /* Text changes to white on hover */
+}
+
+
 .score-value.green {
   color: #059669;
 }
@@ -224,7 +235,7 @@
 
 /* Task View Buttons */
 .btn-group {
-  background-color: #f1f5f9;
+  background-color: #e8ecf0;
   padding: 0.25rem;
   border-radius: 12px;
 }

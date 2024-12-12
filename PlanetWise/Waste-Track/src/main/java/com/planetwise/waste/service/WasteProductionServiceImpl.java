@@ -2,6 +2,7 @@ package com.planetwise.waste.service;
 
 import com.planetwise.waste.calculation.CarbonEmissionCalculation;
 import com.planetwise.waste.dto.TrendsDto;
+import com.planetwise.waste.dto.WasteDto;
 import com.planetwise.waste.exception.DataAlreadyExistsException;
 import com.planetwise.waste.exception.UsernameNotFoundException;
 import com.planetwise.waste.model.WasteProduction;
@@ -54,29 +55,24 @@ public class WasteProductionServiceImpl implements WasteProductionService {
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
 
-        List<WasteProduction> wasteProductions = Optional.ofNullable(
+        List<Object[]> rawResults = Optional.ofNullable(
                 wasteProductionRepo.findWasteProductionFromLastTenMonths(username, Year.of(startYear), startMonth)
         ).orElseThrow(() -> new UsernameNotFoundException("No data found for username: " + username));
 
+        return rawResults.stream()
+                .map(result -> {
+                    int year = (int) result[0];
+                    String monthString = (String) result[1];
+                    double carbonEmissions = ((Number) result[2]).doubleValue();
 
-        Map<String, Double> aggregatedData = wasteProductions.stream()
-                .collect(Collectors.groupingBy(
-                        wp -> wp.getYear() + "-" + wp.getMonth(),
-                        Collectors.summingDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
-                ));
+                    Year trendYear = Year.of(year);
+                    Month trendMonth = Month.valueOf(monthString.toUpperCase());
 
-
-        return aggregatedData.entrySet().stream()
-                .map(entry -> {
-                    String[] yearMonth = entry.getKey().split("-");
-                    Year year = Year.of(Integer.parseInt(yearMonth[0]));
-                    Month month = Month.valueOf(yearMonth[1].toUpperCase());
-                    double carbonEmissions = entry.getValue();
-
-                    return new TrendsDto(month, year, carbonEmissions);
+                    return new TrendsDto(trendMonth, trendYear, carbonEmissions);
                 })
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public Double getCarbonEmissions(String username, Year year, Month month) {
@@ -108,4 +104,29 @@ public class WasteProductionServiceImpl implements WasteProductionService {
                 .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
                 .sum();
     }
+
+    @Override
+    public List<WasteDto> getAll(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!wasteProductionRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+        List<WasteProduction> wasteProductions = wasteProductionRepo.getAllSorted(username);
+
+        return wasteProductions.stream()
+                .map(wasteProduction -> new WasteDto(
+                        wasteProduction.getMonth(),
+                        wasteProduction.getYear(),
+                        wasteProduction.getWaste_type(),
+                        wasteProduction.getQuantity_kgs(),
+                        wasteProduction.getCarbon_emissions()
+                ))
+                .toList();
+    }
+
+
+
 }

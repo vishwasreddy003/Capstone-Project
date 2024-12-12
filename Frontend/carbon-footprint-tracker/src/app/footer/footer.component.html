@@ -13,16 +13,19 @@
         <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
           <h5 class="text-uppercase"><i class="fas fa-link"></i> Quick Links</h5>
           <ul class="list-unstyled mb-0">
-            <li>
-              <a href="#" class="text-decoration-none" style="color: #E9EFEC;">Progress</a>
+            <li *ngIf="isLoggedIn">
+              <a href="/dashboard" class="text-decoration-none" style="color: #E9EFEC;">Dashboard</a>
             </li>
-            <li>
-              <a href="#" class=" text-decoration-none" style="color: #E9EFEC;">Community</a>
+            <li *ngIf="isLoggedIn">
+              <a href="/analytics" class=" text-decoration-none" style="color: #E9EFEC;">Analytics</a>
             </li>
-            <li>
+            <li *ngIf="isLoggedIn">
+              <a href="/store" class=" text-decoration-none" style="color: #E9EFEC;">Store</a>
+            </li>
+            <li *ngIf="!isLoggedIn">
               <a href="login" class="text-decoration-none" style="color: #E9EFEC;">Login</a>
             </li>
-            <li>
+            <li *ngIf="!isLoggedIn">
               <a href="signup" class="text-decoration-none" style="color: #E9EFEC;">Signup</a>
             </li>
           </ul>

@@ -1,5 +1,6 @@
 package com.planetwise.energywise.service;
 
+import com.planetwise.energywise.dto.EnergyDto;
 import com.planetwise.energywise.dto.TrendsDto;
 import com.planetwise.energywise.model.EnergyConsumption;
 
@@ -15,4 +16,6 @@ public interface EnergyConsumptionService {
     Double getCarbonEmissions(String username, Year year, Month month);
 
     Double getLatestCarbonEmissions(String username);
+
+    List<EnergyDto> getAll(String username);
 }

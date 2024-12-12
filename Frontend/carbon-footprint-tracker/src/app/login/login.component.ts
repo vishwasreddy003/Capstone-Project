@@ -72,14 +72,14 @@ export class LoginComponent implements OnInit {
   }
   
   handleError(errorMessage: string) {
-    this.errorHandler.setError(500, errorMessage);  // Set error details in the service
-    this.router.navigate(['/error']);  // Navigate to the error page
+    this.errorHandler.setError(500, errorMessage);  
+    this.router.navigate(['/error']);  
   }
 
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
-    }, 3000); // 3000 ms = 3 seconds
+      this.submissionStatus = null;  
+    }, 3000);
   }
 
   clearStatus(): void {

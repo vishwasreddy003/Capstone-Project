@@ -215,8 +215,8 @@ export class DashboardComponent implements OnInit {
           this.availableGoals = this.availableGoals.filter(
             (g) => g.goalId !== goalId
           );
-          this.selectedTaskView = 'curent';
         }
+        this.selectTaskView('current');
       },
       (error) => {
         this.submissionStatus = {
@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
               sessionStorage.setItem('greenCoins', updatedBalance.toString());
               // console.log(`Updated Green Coins: ${updatedBalance}`);
 
-              this.selectedTaskView = 'completed';
+              this.selectTaskView('completed');
   
               // Success alert
               this.submissionStatus = {
@@ -301,14 +301,14 @@ export class DashboardComponent implements OnInit {
     this.selectedCategory = category;
     this.generateRecommendations();
     if (category == 'overall') {
-      this.currentScore = Math.round(this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100);
+      this.currentScore = parseFloat((this.carbonData['overall'] / this.avgMonthlyData['overall'] * 100).toFixed(2));
     } else if (category == 'household') {
-      this.currentScore = Math.round(this.carbonData['household'] / this.avgMonthlyData['household'] * 100);
+      this.currentScore = parseFloat((this.carbonData['household'] / this.avgMonthlyData['household'] * 100).toFixed(2));
     } else if (category == 'transportation') {
-      this.currentScore = Math.round(this.carbonData['transportation'] / this.avgMonthlyData['transportation'] * 100);
+      this.currentScore = parseFloat((this.carbonData['transportation'] / this.avgMonthlyData['transportation'] * 100).toFixed(2));
     } else {
-      this.currentScore = Math.round(this.carbonData['waste'] / this.avgMonthlyData['waste'] * 100);
-    }
+      this.currentScore = parseFloat((this.carbonData['waste'] / this.avgMonthlyData['waste'] * 100).toFixed(2));
+    }    
   }
 
   loadEmissions(): void {
@@ -320,9 +320,9 @@ export class DashboardComponent implements OnInit {
       (results) => {
         console.log(results);
         // Update the carbon data
-        this.carbonData['waste'] = results.waste;
-        this.carbonData['transportation'] = results.transportation;
-        this.carbonData['household'] = results.household;
+        this.carbonData['waste'] = Math.round(results.waste);
+        this.carbonData['transportation'] = Math.round(results.transportation);
+        this.carbonData['household'] = Math.round(results.household);
 
         // Calculate the overall emissions
         this.carbonData['overall'] =

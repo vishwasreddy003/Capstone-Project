@@ -12,36 +12,30 @@ export class HomeComponent implements OnInit, OnDestroy {
   items = [
     {
       img: 'assets/Image2.jpg',
-      category: 'Understanding Carbon Footprint',
-      title: 'Know Your CO₂ Emissions',
-      description: 'Get started on understanding the impact of your daily activities on carbon emissions and how to reduce them...'
+      category: 'Understanding Your Carbon Footprint',
+      title: 'Discover Your CO₂ Impact',
+      description: 'Take the first step in understanding how your daily activities contribute to carbon emissions and explore actionable ways to minimize your footprint.',
     },
     {
       img: 'assets/IMG.jpg',
-      category: 'Save Natural resources',
-      title: 'Rainwater Harvesting',
-      description: 'Rainwater Harvesting and rainwater garden outline concept...',
+      category: 'Data Trends',
+      title: 'The Importance of Tracking Your Data',
+      description: 'Discover how keeping track of your data can help you analyze trends, identify patterns, and make informed decisions for a more sustainable and efficient lifestyle.',
     },
     {
       img: 'assets/Image.jpg',
-      category: 'Learning to live sustainable.',
-      title: 'A Lesson.',
-      description: 'separate, recycle and compost trash.',
+      category: 'Sustainable Living Practices',
+      title: 'Master the Art of Sustainability',
+      description: 'Discover practical ways to reduce waste by separating, recycling, and composting, making sustainability a part of your daily life.',
     },
-    // {
-    //   img: 'assets/img14.jpg',
-    //   category: 'cars',
-    //   title: 'Team',
-    //   description: 'Cars are more than transportation...',
-    // },
     {
       img: 'assets/Image4.jpg',
-      category: 'Get Exciting rewards',
-      title: 'Carbon Credits',
-      description: 'Complete Tasks...',
+      category: 'Earn Exciting Rewards',
+      title: 'Unlock Carbon Credits',
+      description: 'Engage in eco-friendly tasks and earn carbon credits that reward your efforts in creating a greener planet.',
     },
   ];
-
+  
   itemActive = 0;
   private interval: any;
 

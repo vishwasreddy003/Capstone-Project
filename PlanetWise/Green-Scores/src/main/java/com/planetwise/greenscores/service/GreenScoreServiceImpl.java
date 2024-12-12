@@ -3,6 +3,7 @@ package com.planetwise.greenscores.service;
 import com.planetwise.greenscores.calculation.Logic;
 import com.planetwise.greenscores.dto.DtoUtil;
 import com.planetwise.greenscores.dto.TrendsDto;
+import com.planetwise.greenscores.exception.DataNotFoundException;
 import com.planetwise.greenscores.feignClient.EnergyServiceClient;
 import com.planetwise.greenscores.feignClient.TransportServiceClient;
 import com.planetwise.greenscores.feignClient.WasteServiceClient;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GreenScoreServiceImpl implements GreenScoreService {
@@ -47,16 +49,30 @@ public class GreenScoreServiceImpl implements GreenScoreService {
     @Override
     public List<TrendsDto> getTrendsForGreenScores(String username) {
         LocalDate now = LocalDate.now();
-        LocalDate startDate = now.minusMonths(10);
-
+        LocalDate startDate = now.minusMonths(12);
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
 
+        List<Object[]> scoreLogs =
+                greenScoresRepo.findGreenScoresFromLastTenMonths(username, Year.of(startYear), startMonth);
 
-        return greenScoresRepo
-                .findGreenScoresFromLastTenMonths(username, Year.of(startYear), startMonth)
-                .stream().map(DtoUtil::convertToDto).toList();
+        if (scoreLogs.isEmpty()) {
+            throw new DataNotFoundException("No transportation data found for user: " + username);
+        }
+
+        return scoreLogs.stream()
+                .map(result -> {
+                    int year = (int) result[0];
+                    String monthString = (String) result[1];
+                    double carbonEmissions = ((Number) result[2]).doubleValue();
+
+                    Year trendYear = Year.of(year);
+                    Month trendMonth = Month.valueOf(monthString.toUpperCase());
+
+                    return new TrendsDto(trendMonth, trendYear, carbonEmissions);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -69,7 +85,7 @@ public class GreenScoreServiceImpl implements GreenScoreService {
         double e_emissions = energyServiceClient.getCarbonEmissions(authToken,username, yearStr, monthStr);
         double t_emissions = transportServiceClient.getCarbonEmissions(authToken,username,yearStr,monthStr);
         double w_emissions = wasteServiceClient.getCarbonEmissions(authToken,username,yearStr,monthStr);
-        double score = logic.calculate();
+        double score = logic.calculate(e_emissions,w_emissions,t_emissions);
         GreenScores newscore = new GreenScores();
         newscore.setUsername(username);
         newscore.setYear(yearStr);

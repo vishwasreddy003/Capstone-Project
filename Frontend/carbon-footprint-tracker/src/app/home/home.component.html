@@ -1,36 +1,12 @@
-<!-- <div class="slider">
-  <div class="list">
-    <div class="item" *ngFor="let item of items; let i = index" [class.active]="i === itemActive">
-      <div class="image-container">
-        <img [src]="item.img" alt="slider-img" />
-      </div>
+
+<div class="home-container">
+  <div *ngFor="let item of items; let i = index" class="row" [class.reverse]="i % 2 !== 0">
+    <div class="content-box">
       <div class="content">
         <p class="category">{{ item.category }}</p>
         <h2>{{ item.title }}</h2>
-        <p>{{ item.description }}</p>
+        <p class="description">{{ item.description }}</p>
       </div>
-    </div>
-  </div>
-
-  <div class="arrows">
-    <button id="prev" (click)="prevSlide()">&lt;</button>
-    <button id="next" (click)="nextSlide()">&gt;</button>
-  </div>
-
-  <div class="thumbnail">
-    <div class="slide" *ngFor="let item of items; let i = index" [class.active]="i === itemActive"
-      (click)="goToSlide(i)">
-      <img [src]="item.img" alt="thumbnail" />
-      <div class="content">{{ item.title }}</div>
-    </div>
-  </div>
-</div> -->
-<div class="home-container">
-  <div *ngFor="let item of items; let i = index" class="row" [class.reverse]="i % 2 !== 0">
-    <div class="content">
-      <p>{{ item.category }}</p>
-      <h2>{{ item.title }}</h2>
-      <p>{{ item.description }}</p>
     </div>
     <div class="image-container">
       <img [src]="item.img" alt="item-img" />

@@ -1,84 +1,65 @@
-/* General Body Styling */
-body {
-    background-color: #f8f9fa;  /* Light grey background for the whole page */
-    font-family: 'Arial', sans-serif; /* Simple and clean font */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensure that the body fills the entire viewport */
-  }
-  
-  /* Error Container Styling */
-  /* Error Container Styling */
+/* General Error Page Styles */
 .error-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 60px;  /* Increased padding for better spacing */
-    background-color: #ffffff; /* White background for the error box */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px;
-    max-width: 600px; /* Max width to avoid it stretching too far on wide screens */
-    margin: auto;
-    min-height: 400px; /* Set a minimum height to increase the overall height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f8d7da;
+  color: #721c24;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-  
-  /* Heading Style */
+.error-container h1 {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #d9534f;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error-container p {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  color: #843534;
+}
+
+.error-container a {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #d9534f;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-container a:hover {
+  background-color: #c9302c;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .error-container {
+    padding: 10px;
+  }
+
   .error-container h1 {
-    font-size: 36px;
-    color: #dc3545;  /* Red color for the error heading */
-    font-weight: bold;
-    margin-bottom: 20px;
+    font-size: 3rem;
   }
-  
-  /* Paragraph Styling */
+
   .error-container p {
-    font-size: 18px;
-    color: #333333; /* Dark gray text for the message */
-    margin-bottom: 15px;
+    font-size: 1.2rem;
   }
-  
-  /* Timestamp Styling */
-  .error-container p:last-child {
-    font-size: 14px;
-    color: #868e96; /* Lighter gray for the timestamp */
-    margin-bottom: 30px;
-  }
-  
-  /* Go Back Link Styling */
+
   .error-container a {
-    font-size: 16px;
-    color: #007bff; /* Blue color for the link */
-    text-decoration: none;
-    padding: 10px 20px;
-    background-color: #e2e6ea;  /* Light background */
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    padding: 8px 16px;
   }
-  
-  .error-container a:hover {
-    background-color: #cbd3d9;  /* Slightly darker when hovered */
-  }
-  
-  /* Footer Styling */
-  footer {
-    background-color: #343a40; /* Dark footer background */
-    color: #ffffff; /* White text in the footer */
-    text-align: center;
-    padding: 20px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  /* Footer Text */
-  footer p {
-    margin: 0;
-    font-size: 16px;
-  }
-  
+}

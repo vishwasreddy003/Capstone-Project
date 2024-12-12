@@ -1,6 +1,7 @@
 package com.planetwise.waste.controller;
 
 import com.planetwise.waste.dto.TrendsDto;
+import com.planetwise.waste.dto.WasteDto;
 import com.planetwise.waste.service.WasteProductionService;
 import com.planetwise.waste.model.WasteProduction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class WasteController {
     @GetMapping("/{username}/latest")
     public Double getCarbonEmissions(@PathVariable String username){
         return wasteProductionService.getLatestCarbonEmissions(username);
+    }
+
+    @GetMapping("/{username}/getAll")
+    public List<WasteDto> getAllWasteData(@PathVariable String username){
+        return wasteProductionService.getAll(username);
     }
 }

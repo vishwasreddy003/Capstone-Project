@@ -131,8 +131,8 @@ export class WasteProductionComponent implements OnInit {
   
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 3 seconds
-    }, 3000); // 3000 ms = 3 seconds
+      this.submissionStatus = null;  
+    }, 3000);
   }
   
   clearStatus(): void {

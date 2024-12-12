@@ -1,5 +1,6 @@
 package com.planetwise.transit.service;
 
+import com.planetwise.transit.dto.TransportDto;
 import com.planetwise.transit.dto.TrendsDto;
 import com.planetwise.transit.model.TransportationLog;
 
@@ -16,4 +17,6 @@ public interface TransportationLogService {
     Double getCarbonEmissions(String username, Year year, Month month);
 
     Double getLatestCarbonEmissions(String username);
+
+    List<TransportDto> getAll(String username);
 }

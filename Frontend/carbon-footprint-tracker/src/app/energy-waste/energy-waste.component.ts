@@ -44,11 +44,13 @@ export class EnergyWasteComponent implements OnInit {
         year: this.energyWasteForm.get('year')?.value,
         month: this.energyWasteForm.get('month')?.value
       };
+      console.log(greenScore);
+      
       this.trackerApiService.submitEnergyData(energyData).subscribe(
         response => {
           this.submissionStatus = {
             message: "Form submitted successfully",
-            type: "alert-success"  // This will apply the success alert styling
+            type: "alert-success"  
           };
           this.autoClearAlert();
           this.router.navigate(['/dashboard']);
@@ -59,7 +61,7 @@ export class EnergyWasteComponent implements OnInit {
             error => {
               this.submissionStatus = {
                 message: "Error submitting form",
-                type: "alert-error"  // This will apply the error alert styling
+                type: "alert-error"  
               };
               this.autoClearAlert();
               console.log("Error calculating green score", error);
@@ -69,7 +71,7 @@ export class EnergyWasteComponent implements OnInit {
         error => {
           this.submissionStatus = {
             message: "Error submitting form",
-            type: "alert-error"  // This will apply the error alert styling
+            type: "alert-error"  
           };
           this.autoClearAlert();
           console.log("Error submitting form", error);
@@ -79,8 +81,8 @@ export class EnergyWasteComponent implements OnInit {
   }
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
-    }, 3000); // 3000 ms = 3 seconds
+      this.submissionStatus = null;  
+    }, 3000);
   }
 
   clearStatus(): void {

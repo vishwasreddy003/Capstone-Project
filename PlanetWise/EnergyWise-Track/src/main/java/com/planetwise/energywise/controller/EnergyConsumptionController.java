@@ -1,5 +1,6 @@
 package com.planetwise.energywise.controller;
 
+import com.planetwise.energywise.dto.EnergyDto;
 import com.planetwise.energywise.dto.TrendsDto;
 import com.planetwise.energywise.model.EnergyConsumption;
 import com.planetwise.energywise.service.EnergyConsumptionService;
@@ -40,5 +41,10 @@ public class EnergyConsumptionController {
     @GetMapping("/{username}/latest")
     public Double getCarbonEmissions(@PathVariable String username){
         return energyService.getLatestCarbonEmissions(username);
+    }
+
+    @GetMapping("{username}/getAll")
+    public List<EnergyDto> getAll(@PathVariable String username){
+        return energyService.getAll(username);
     }
 }

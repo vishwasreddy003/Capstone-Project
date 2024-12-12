@@ -1,9 +1,10 @@
 package com.planetwise.energywise.service;
 
 import com.planetwise.energywise.calculation.CarbonEmissionCalculation;
-import com.planetwise.energywise.dto.DtoUtil;
+import com.planetwise.energywise.dto.EnergyDto;
 import com.planetwise.energywise.dto.TrendsDto;
 import com.planetwise.energywise.exception.DataAlreadyExistsException;
+import com.planetwise.energywise.exception.DataNotFoundException;
 import com.planetwise.energywise.exception.UsernameNotFoundException;
 import com.planetwise.energywise.model.EnergyConsumption;
 import com.planetwise.energywise.repository.EnergyConsumptionRepository;
@@ -47,12 +48,32 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
     public List<TrendsDto> getUserTrendsForEnergyConsumption(String username) {
 
         LocalDate now = LocalDate.now();
-        LocalDate startDate = now.minusMonths(10);
-
+        LocalDate startDate = now.minusMonths(12); // Adjust to last 10 months
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
-        return energyRepo.findEnergyConsumptionOfLast10Months(username, Year.of(startYear), startMonth).stream().map(DtoUtil::convertToDto)
+
+        // Fetch transportation logs for the last 10 months
+        List<Object[]> energyLogs =
+                energyRepo.findEnergyConsumptionOfLast10Months(username, Year.of(startYear), startMonth);
+
+        if (energyLogs.isEmpty()) {
+            throw new DataNotFoundException("No transportation data found for user: " + username);
+        }
+
+        // Map the query result to TrendsDto objects
+        return energyLogs.stream()
+                .map(result -> {
+                    int year = (int) result[0];
+                    String monthString = (String) result[1];
+                    double carbonEmissions = ((Number) result[2]).doubleValue();
+
+                    // Convert SQL result to TrendsDto
+                    Year trendYear = Year.of(year);
+                    Month trendMonth = Month.valueOf(monthString.toUpperCase());
+
+                    return new TrendsDto(trendMonth, trendYear, carbonEmissions);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -78,5 +99,26 @@ public class EnergyConsumptionServiceImpl implements EnergyConsumptionService {
         return energyRepo.getLatestData(username).stream()
                 .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
                 .sum();
+    }
+
+    @Override
+    public List<EnergyDto> getAll(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!energyRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+
+        List<EnergyConsumption> logs = energyRepo.getAllSorted(username);
+
+        return logs.stream().map(i -> new EnergyDto(
+                i.getMonth(),
+                i.getYear(),
+                i.getElectricity_units(),
+                i.getNo_of_gas_cylinders(),
+                i.getCarbon_emissions()
+        )).toList();
     }
 }

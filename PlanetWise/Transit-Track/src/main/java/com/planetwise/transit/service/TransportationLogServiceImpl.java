@@ -1,6 +1,7 @@
 package com.planetwise.transit.service;
 
 import com.planetwise.transit.Caluculation.CarbonEmissionCalculation;
+import com.planetwise.transit.dto.TransportDto;
 import com.planetwise.transit.dto.TrendsDto;
 import com.planetwise.transit.exception.DataNotFoundException;
 import com.planetwise.transit.exception.UsernameNotFoundException;
@@ -35,12 +36,11 @@ public class TransportationLogServiceImpl implements TransportationLogService {
     @Override
     public List<TrendsDto> getTrendsForTransportation(String username) {
         LocalDate now = LocalDate.now();
-        LocalDate startDate = now.minusMonths(10); // Adjust to last 10 months
+        LocalDate startDate = now.minusMonths(12); // Adjust to last 10 months
 
         Month startMonth = startDate.getMonth();
         int startYear = startDate.getYear();
 
-        // Fetch transportation logs for the last 10 months
         List<Object[]> transportationLogs =
                 transportRepo.findMonthlyCarbonEmissionsByUsernameAndDateRange(username, Year.of(startYear), startMonth);
 
@@ -48,14 +48,16 @@ public class TransportationLogServiceImpl implements TransportationLogService {
             throw new DataNotFoundException("No transportation data found for user: " + username);
         }
 
-        // Map the query result to TrendsDto objects
         return transportationLogs.stream()
-                .map(log -> {
-                    Year year = (Year) log[0];
-                    Month month = (Month) log[1];
-                    double carbonEmissions = (double) log[2];
+                .map(result -> {
+                    int year = (int) result[0];
+                    String monthString = (String) result[1];
+                    double carbonEmissions = ((Number) result[2]).doubleValue();
 
-                    return new TrendsDto(month, year, carbonEmissions);
+                    Year trendYear = Year.of(year);
+                    Month trendMonth = Month.valueOf(monthString.toUpperCase());
+
+                    return new TrendsDto(trendMonth, trendYear, carbonEmissions);
                 })
                 .collect(Collectors.toList());
     }
@@ -66,7 +68,7 @@ public class TransportationLogServiceImpl implements TransportationLogService {
         if (transportRepo.existsByUsername(username)) {
 
             return transportRepo
-                    .findByUsernameAndMonthAndYear(username, year.getValue(), month)
+                    .findByUsernameAndMonthAndYear(username, year, month)
                     .stream()
                     .mapToDouble(TransportationLog::getCarbon_emissions)
                     .sum();
@@ -89,4 +91,27 @@ public class TransportationLogServiceImpl implements TransportationLogService {
                 .mapToDouble(wp -> Optional.ofNullable(wp.getCarbon_emissions()).orElse(0.0))
                 .sum();
     }
+
+    @Override
+    public List<TransportDto> getAll(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+
+        if (!transportRepo.existsByUsername(username)) {
+            throw new UsernameNotFoundException("User with username " + username + " not found.");
+        }
+        List<TransportationLog> logs= transportRepo.getAllSorted(username);
+
+        return logs.stream().map(i -> new TransportDto(
+                i.getMonth(),
+                i.getYear(),
+                i.getTransportation_mode(),
+                i.getFuel_type(),
+                i.getDistance_km(),
+                i.getCarbon_emissions()
+                )).toList();
+    }
+
+
 }

@@ -1,0 +1,61 @@
+<div class="container py-5 bg-light rounded shadow-sm">
+    <!-- Buttons for Selecting Data Type -->
+    <div class="d-flex justify-content-center gap-3 mb-4">
+      <button
+        class="btn btn-success px-4 py-2 fw-bold shadow"
+        (click)="fetchData('energy')"
+      >
+        Energy
+      </button>
+      <button
+        class="btn btn-success px-4 py-2 fw-bold shadow"
+        (click)="fetchData('transportation')"
+      >
+        Transportation
+      </button>
+      <button
+        class="btn btn-success px-4 py-2 fw-bold shadow"
+        (click)="fetchData('waste')"
+      >
+        Waste
+      </button>
+    </div>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="alert alert-info text-center">
+      Loading...
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+  
+    <!-- Dynamic Data Table -->
+    <div *ngIf="data.length > 0" class="table-responsive bg-white rounded shadow-sm p-3">
+      <h5 class="text-center fw-bold mb-3 cstm">
+        {{ dataType | titlecase }} Data
+      </h5>
+      <table class="table table-bordered table-hover align-middle">
+        <thead [ngClass]="{
+          'table-primary': dataType === 'energy',
+          'table-success': dataType === 'transportation',
+          'table-danger': dataType === 'waste'
+        }">
+          <tr>
+            <!-- Table Headers -->
+            <th *ngFor="let header of getHeaders(dataType)">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data">
+            <!-- Table Data Rows -->
+            <td *ngFor="let field of getFields(dataType)">
+              {{ field === 'emissions' ? agg(item[field]) : item[field] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

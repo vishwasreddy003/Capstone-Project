@@ -175,6 +175,16 @@
           <div class="row">
             <div class="col-4 mb-3">
               <button
+                type="button"
+                class="btn btn-info"
+                [disabled]="transportForm.invalid"
+                (click)="onSubmit()"
+              >
+                Add New Form
+              </button>
+            </div>
+            <div class="col-4 mb-3">
+              <button
                 type="submit"
                 class="btn btn-info"
                 [disabled]="transportForm.invalid"
@@ -193,16 +203,7 @@
                 Next
               </button>
             </div>
-            <div class="col-4 mb-3">
-              <button
-                type="button"
-                class="btn btn-info"
-                [disabled]="transportForm.invalid"
-                (click)="onSubmit()"
-              >
-                Add New Form
-              </button>
-            </div>
+            
           </div>
         </form>
       </div>

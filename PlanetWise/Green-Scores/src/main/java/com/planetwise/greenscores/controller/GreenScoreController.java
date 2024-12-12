@@ -35,7 +35,6 @@ public class GreenScoreController {
 
     @PostMapping("/{username}/calculate")
     public ResponseEntity<Double> calculateGreenScore(@PathVariable String username, @RequestBody GreenScores greenScores, HttpServletRequest req){
-
         Double greenScore = greenScoreService.calculateGreenScore(req,username,greenScores.getYear(),greenScores.getMonth());
         return new ResponseEntity<>(greenScore,HttpStatus.OK);
     }

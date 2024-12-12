@@ -9,13 +9,13 @@ import { SignupService } from '../signup.service';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Add ReactiveFormsModule here
+  imports: [CommonModule, ReactiveFormsModule], 
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup = new FormGroup({});
-  frequencies: string[] = ['DAILY', 'WEEKLY', 'MONTHLY'];  // Array for reminder frequencies
+  frequencies: string[] = ['DAILY', 'WEEKLY', 'MONTHLY'];  
 
   constructor(
     private signupService: SignupService,
@@ -28,10 +28,10 @@ export class SignupComponent implements OnInit {
     
     this.signupForm = this.formBuilder.group({
       username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]], // added email validation
-      age: ['', [Validators.required, Validators.min(18)]],  // age validation
+      email: ['', [Validators.required, Validators.email]], 
+      age: ['', [Validators.required, Validators.min(18)]],  
       reminderFrequency: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]], // password validation
+      password: ['', [Validators.required, Validators.minLength(6)]], 
     });
   }
 
