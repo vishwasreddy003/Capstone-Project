@@ -11,9 +11,13 @@ export class SharedStateService {
   private usernameSubject = new BehaviorSubject<string>('');
   private greenCoinsSubject = new BehaviorSubject<number>(0);
 
+
+  
+
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.checkLoginStatus(); // Initialize login state
+    this.checkLoginStatus(); 
   }
+
 
   private checkLoginStatus(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -26,7 +30,7 @@ export class SharedStateService {
       this.usernameSubject.next(username || '');
       this.greenCoinsSubject.next(greenCoins ? +greenCoins : 0);
     } else {
-      this.isLoggedInSubject.next(false); // Default to logged out
+      this.isLoggedInSubject.next(false);
       this.usernameSubject.next('');
       this.greenCoinsSubject.next(0);
     }

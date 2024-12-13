@@ -27,14 +27,26 @@ export class EnergyWasteComponent implements OnInit {
   submissionStatus: { message: string, type: string } | null = null;
 
   ngOnInit(): void {
-    const currentYear = new Date().getFullYear();
-    this.yearsList = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
+    const currentYearString = sessionStorage.getItem('currentYear');
+    const currentMonthIdxString = sessionStorage.getItem('currentMonth');
+    const currentYear = currentYearString ? parseInt(currentYearString, 10) : new Date().getFullYear();
+    const currentMonthIdx = currentMonthIdxString ? parseInt(currentMonthIdxString, 10) : 0;
+    const currentMonth = this.months.at(currentMonthIdx);
+
+    this.yearsList = Array.from({ length: 9 }, (_, i) => currentYear - 8 + i);
     this.energyWasteForm = this.formBuiler.group({
       month: ['', Validators.required],
       year: ['', Validators.required],
       electricity_units: ['', [Validators.required, Validators.min(0)]],
       no_of_gas_cylinders: ['', [Validators.required, Validators.min(0)]]
     });
+
+    if (currentMonth && currentYear) {
+      this.energyWasteForm.patchValue({
+        month: currentMonth,
+        year: currentYear,
+      });
+    }
   }
 
   onSubmit() {

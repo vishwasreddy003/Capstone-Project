@@ -29,8 +29,13 @@ export class TransportationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private trackerApiService: TrackerApiService, private router: Router,private errorHandler :ErrorHandlerService) { }
 
   ngOnInit(): void {
-    const currentYear = new Date().getFullYear();
-    this.yearsList = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
+    const currentYearString = sessionStorage.getItem('currentYear');
+    const currentMonthIdxString = sessionStorage.getItem('currentMonth');
+    const currentYear = currentYearString ? parseInt(currentYearString, 10) : new Date().getFullYear();
+    const currentMonthIdx = currentMonthIdxString ? parseInt(currentMonthIdxString, 10) : 0;
+    const currentMonth = this.months.at(currentMonthIdx);
+
+    this.yearsList = Array.from({ length: 9 }, (_, i) => currentYear - 8 + i);
     this.transportForm = this.formBuilder.group({
       transportation_mode: ['', Validators.required],
       year: ['', Validators.required],
@@ -39,6 +44,13 @@ export class TransportationComponent implements OnInit {
       frequency: ['', Validators.required],
       month: ['', Validators.required]
     });
+
+    if (currentMonth && currentYear) {
+      this.transportForm.patchValue({
+        month: currentMonth,
+        year: currentYear,
+      });
+    }
   }
 
   onSubmit(): void {

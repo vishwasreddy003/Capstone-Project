@@ -30,18 +30,35 @@ export class WasteProductionComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private trackerApiService: TrackerApiService,
     private router: Router,
-    private sharedStateService: SharedStateService,private errorHandler:ErrorHandlerService) { }
+    private sharedStateService: SharedStateService, private errorHandler: ErrorHandlerService) { }
 
-  ngOnInit(): void {
-    const currentYear = new Date().getFullYear();
-    this.yearsList = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
-    this.wasteProdForm = this.formBuilder.group({
-      month: ['', Validators.required],
-      year: ['', Validators.required],
-      waste_type: ['', Validators.required],
-      quantity_kgs: ['', Validators.required]
-    });
-  }
+    ngOnInit(): void {
+      const currentYearString = sessionStorage.getItem('currentYear');
+      const currentMonthIdxString = sessionStorage.getItem('currentMonth');
+      const currentYear = currentYearString ? parseInt(currentYearString, 10) : new Date().getFullYear();
+      const currentMonthIdx = currentMonthIdxString ? parseInt(currentMonthIdxString, 10) : 0;
+
+    
+
+      this.yearsList = Array.from({ length: 9 }, (_, i) => currentYear - 8 + i);
+    
+      
+      const currentMonth = this.months.at(currentMonthIdx);
+
+      this.wasteProdForm = this.formBuilder.group({
+        month: ['', Validators.required],
+        year: ['', Validators.required],
+        waste_type: ['', Validators.required],
+        quantity_kgs: ['', Validators.required],
+      });
+
+      if (currentMonth && currentYear) {
+        this.wasteProdForm.patchValue({
+          month: currentMonth,
+          year: currentYear,
+        });
+      }
+    }
 
   onSubmit() {
     if (this.wasteProdForm.valid) {
@@ -81,7 +98,7 @@ export class WasteProductionComponent implements OnInit {
     this.wasteProdForm.reset();
   }
 
-  submitData():void{
+  submitData(): void {
     if (this.wasteProdForm.valid) {
       const wasteProdData = this.wasteProdForm.value;
       this.trackerApiService.submitWasteProdData(wasteProdData).subscribe(
@@ -95,9 +112,9 @@ export class WasteProductionComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         },
         (error) => {
-          this.submissionStatus={
+          this.submissionStatus = {
             message: 'Error submitting Form',
-            type:'alert-error'
+            type: 'alert-error'
           };
           this.autoClearAlert();
         }
@@ -119,36 +136,24 @@ export class WasteProductionComponent implements OnInit {
           this.router.navigate(['/transport']);
         },
         (error) => {
-          this.submissionStatus={
+          this.submissionStatus = {
             message: 'Error submitting Form',
-            type:'alert-error'
+            type: 'alert-error'
           };
           this.autoClearAlert();
         }
       );
     }
   }
-  
+
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  
+      this.submissionStatus = null;
     }, 3000);
   }
-  
+
   clearStatus(): void {
     this.submissionStatus = null;
   }
-  
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

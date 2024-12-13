@@ -15,10 +15,15 @@ export class GetStartedComponent {
 
   }
 
-  addCurrentMonthData(){
+  addCurrentMonthData() {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+  
+    sessionStorage.setItem('currentMonth', currentMonth.toString());
+    sessionStorage.setItem('currentYear', currentYear.toString());
+  
     this.router.navigate(['/waste']);
   }
-
-  
 
 }
