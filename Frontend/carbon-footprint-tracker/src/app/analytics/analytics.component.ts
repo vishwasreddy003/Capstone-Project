@@ -16,6 +16,7 @@ export class AnalyticsComponent implements AfterViewInit {
   private chart: any;
   public showDropdown: boolean = false; 
   private selectedChartType: string = 'household'; 
+  public submissionStatus: { type: string; message: string } | null = null;
 
   private chartData: any = {
     household: [],
@@ -35,7 +36,7 @@ export class AnalyticsComponent implements AfterViewInit {
   loadChartData(type: string): void {
     this.trackerApiService.getTrendsData(type).subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
     
         const months = data.map((d) => d.month.substring(0, 3).toUpperCase());
         const emissions = data.map((d) => d.emissions);
@@ -44,12 +45,25 @@ export class AnalyticsComponent implements AfterViewInit {
         this.months = months;
     
         this.initializeChart(type);
+        this.submissionStatus = {
+          type: 'alert-success',
+          message: `${type.charAt(0).toUpperCase() + type.slice(1)} data loaded successfully.`,
+        };
+        setTimeout(() => this.clearStatus(), 1000); 
       },
       (error) => {
-        console.error('Error fetching trends data:', error);
+        this.submissionStatus = {
+          type: 'alert-error',
+          message: `Failed to load ${type} data: ${error.message}`,
+        };
+        setTimeout(() => this.clearStatus(), 1000);
       }
     );
     
+  }
+
+  clearStatus(): void {
+    this.submissionStatus = null;
   }
 
   updateChart(type: string): void {

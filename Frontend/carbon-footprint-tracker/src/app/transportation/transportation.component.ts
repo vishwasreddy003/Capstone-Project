@@ -11,17 +11,19 @@ import { TrackerApiService } from '../tracker-api.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './transportation.component.html',
-  styleUrl: './transportation.component.css'
+  styleUrls: ['./transportation.component.css']
 })
 export class TransportationComponent implements OnInit {
 
   transportationModes: string[] = ['BIKE', 'CAR', 'BUS', 'TRAIN', 'FLIGHT', 'AUTO'];
   fuelTypes: string[] = ['DIESEL', 'EV', 'PETROL', 'JET_FUEL'];
-  frequencies: string[] = ['DAILY', 'WEEKLY', 'MONTHLY'];  // Frequency as an array
+  frequencies: string[] = ['DAILY', 'WEEKLY', 'MONTHLY'];  
+  
   months: string[] = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
     'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
   yearsList: number[] = [];
   submissionStatus: { message: string, type: string } | null = null;
+  currentMonth:string = "Unknown";
 
 
   transportForm: FormGroup = new FormGroup({})
@@ -31,11 +33,22 @@ export class TransportationComponent implements OnInit {
   ngOnInit(): void {
     const currentYearString = sessionStorage.getItem('currentYear');
     const currentMonthIdxString = sessionStorage.getItem('currentMonth');
-    const currentYear = currentYearString ? parseInt(currentYearString, 10) : new Date().getFullYear();
-    const currentMonthIdx = currentMonthIdxString ? parseInt(currentMonthIdxString, 10) : 0;
-    const currentMonth = this.months.at(currentMonthIdx);
-
+  
+    const currentYear = currentYearString && !isNaN(+currentYearString)
+      ? parseInt(currentYearString, 10)
+      : new Date().getFullYear();
+  
+    const currentMonthIdx = currentMonthIdxString && !isNaN(+currentMonthIdxString)
+      ? parseInt(currentMonthIdxString, 10)
+      : new Date().getMonth();
+  
+    this.currentMonth = this.months?.at(currentMonthIdx) || 'Unknown';
+  
+    console.log('Current Month:', this.currentMonth);
+    console.log('Current Year:', currentYear);
+  
     this.yearsList = Array.from({ length: 9 }, (_, i) => currentYear - 8 + i);
+  
     this.transportForm = this.formBuilder.group({
       transportation_mode: ['', Validators.required],
       year: ['', Validators.required],
@@ -44,14 +57,19 @@ export class TransportationComponent implements OnInit {
       frequency: ['', Validators.required],
       month: ['', Validators.required]
     });
-
-    if (currentMonth && currentYear) {
-      this.transportForm.patchValue({
-        month: currentMonth,
-        year: currentYear,
-      });
-    }
+  
+    
+      if (this.months.includes(this.currentMonth)) {
+        this.transportForm.patchValue({
+          month: this.currentMonth,
+          year: currentYear,
+        });
+      }
+  
+    console.log('Patched Form Values:', this.transportForm.value);
   }
+  
+  
 
   onSubmit(): void {
     if (this.transportForm.valid) {
@@ -63,7 +81,7 @@ export class TransportationComponent implements OnInit {
             type: "alert-success"
           };
           this.autoClearAlert();
-          this.resetForm(); // Reset the form after successful submission
+          this.resetForm(); 
         },
         (error) => {
           this.submissionStatus = {
@@ -130,8 +148,8 @@ export class TransportationComponent implements OnInit {
 
   private autoClearAlert(): void {
     setTimeout(() => {
-      this.submissionStatus = null;  // Clear the alert after 2-3 seconds
-    }, 3000); // 3000 ms = 3 seconds
+      this.submissionStatus = null;  
+    }, 3000);
   }
 
   clearStatus(): void {

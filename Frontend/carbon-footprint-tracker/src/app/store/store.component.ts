@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../../environment.development';
 import { items, rewards } from '../model/rewards';
 
 @Component({

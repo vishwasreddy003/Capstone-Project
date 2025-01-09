@@ -4,62 +4,16 @@
       <div class="card p-4 shadow-sm">
         <h2 class="text-center">Transportation Data Form</h2>
 
-        <div class="row g-3 align-items-end">
-          <div class="col-md-6 mb-3">
-            <label for="month" class="form-label">Month</label>
-            <select
-              class="form-select"
-              id="month"
-              formControlName="month"
-              [class.is-invalid]="
-                transportForm.get('month')?.touched &&
-                transportForm.get('month')?.invalid
-              "
-              [class.is-valid]="
-                transportForm.get('month')?.touched &&
-                transportForm.get('month')?.valid
-              "
-            >
-              <option value="" disabled>Select a Month</option>
-              <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-            </select>
-          </div>
+        
 
-          <div class="col-md-6 mb-3">
-            <label for="year" class="form-label">Year</label>
-            <select
-              class="form-select"
-              id="year"
-              formControlName="year"
-              [class.is-invalid]="
-                transportForm.get('year')?.touched &&
-                transportForm.get('year')?.invalid
-              "
-              [class.is-valid]="
-                transportForm.get('year')?.touched &&
-                transportForm.get('year')?.valid
-              "
-            >
-              <option value="" disabled>Select Year</option>
-              <option *ngFor="let year of yearsList" [value]="year">
-                {{ year }}
-              </option>
-            </select>
-          </div>
-        </div>
+
 
         <!-- Success/Error Alerts -->
         <div *ngIf="submissionStatus" class="alert-container">
           <div class="alert" [ngClass]="submissionStatus.type" role="alert">
             <div class="alert-icon">
-              <i
-                *ngIf="submissionStatus.type === 'alert-success'"
-                class="fas fa-check-circle"
-              ></i>
-              <i
-                *ngIf="submissionStatus.type === 'alert-error'"
-                class="fas fa-exclamation-circle"
-              ></i>
+              <i *ngIf="submissionStatus.type === 'alert-success'" class="fas fa-check-circle"></i>
+              <i *ngIf="submissionStatus.type === 'alert-error'" class="fas fa-exclamation-circle"></i>
             </div>
             <div class="alert-content">
               {{ submissionStatus.message }}
@@ -72,24 +26,39 @@
 
         <!-- Form Starts Here -->
         <form [formGroup]="transportForm" (ngSubmit)="onSubmit()">
+
+          <div class="row g-3 align-items-end">
+            <div class="col-md-6 mb-3">
+              <label for="month" class="form-label">Month</label>
+              <select class="form-select" id="month" formControlName="month">
+                <option *ngIf="currentMonth === 'Unknown'" [value]="null" disabled>Select a Month</option>
+  
+                <option *ngIf="currentMonth !== 'Unknown'" [value]="currentMonth" selected>
+                  {{ currentMonth }}
+                </option>
+                <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+  
+            <div class="col-md-6 mb-3">
+              <label for="year" class="form-label">Year</label>
+              <select class="form-select" id="year" formControlName="year">
+                <option [value]="null" disabled>Select Year</option>
+                <option *ngFor="let year of yearsList" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+          </div>
+          
           <div class="mb-3">
-            <label for="transportation_mode" class="form-label"
-              >Transportation Mode</label
-            >
-            <select
-              class="form-select"
-              id="transportation_mode"
-              formControlName="transportation_mode"
-              required
+            <label for="transportation_mode" class="form-label">Transportation Mode</label>
+            <select class="form-select" id="transportation_mode" formControlName="transportation_mode" required
               [class.is-invalid]="
                 transportForm.get('transportation_mode')?.touched &&
                 transportForm.get('transportation_mode')?.invalid
-              "
-              [class.is-valid]="
+              " [class.is-valid]="
                 transportForm.get('transportation_mode')?.touched &&
                 transportForm.get('transportation_mode')?.valid
-              "
-            >
+              ">
               <option value="" disabled>Select Transportation Mode</option>
               <option *ngFor="let mode of transportationModes" [value]="mode">
                 {{ mode }}
@@ -100,20 +69,13 @@
           <!-- Fuel Type Input -->
           <div class="mb-3">
             <label for="fuel_type" class="form-label">Fuel Type</label>
-            <select
-              class="form-select"
-              id="fuel_type"
-              formControlName="fuel_type"
-              required
-              [class.is-invalid]="
+            <select class="form-select" id="fuel_type" formControlName="fuel_type" required [class.is-invalid]="
                 transportForm.get('fuel_type')?.touched &&
                 transportForm.get('fuel_type')?.invalid
-              "
-              [class.is-valid]="
+              " [class.is-valid]="
                 transportForm.get('fuel_type')?.touched &&
                 transportForm.get('fuel_type')?.valid
-              "
-            >
+              ">
               <option value="" disabled>Select Fuel Type</option>
               <option *ngFor="let fuel of fuelTypes" [value]="fuel">
                 {{ fuel }}
@@ -125,43 +87,26 @@
           <div class="row g-3 align-items-end">
             <div class="col-md-6 mb-3">
               <label for="distance_km" class="form-label">Distance (km)</label>
-              <input
-                type="number"
-                class="form-control"
-                id="distance_km"
-                formControlName="distance_km"
-                required
-                placeholder="Enter distance in kilometers"
-                step="0.1"
-                min="0"
-                [class.is-invalid]="
+              <input type="number" class="form-control" id="distance_km" formControlName="distance_km" required
+                placeholder="Enter distance in kilometers" step="0.1" min="0" [class.is-invalid]="
                   transportForm.get('distance_km')?.touched &&
                   transportForm.get('distance_km')?.invalid
-                "
-                [class.is-valid]="
+                " [class.is-valid]="
                   transportForm.get('distance_km')?.touched &&
                   transportForm.get('distance_km')?.valid
-                "
-              />
+                " />
             </div>
 
             <!-- Frequency Input -->
             <div class="col-md-6 mb-3">
               <label for="frequency" class="form-label">Frequency</label>
-              <select
-                class="form-select"
-                id="frequency"
-                formControlName="frequency"
-                required
-                [class.is-invalid]="
+              <select class="form-select" id="frequency" formControlName="frequency" required [class.is-invalid]="
                   transportForm.get('frequency')?.touched &&
                   transportForm.get('frequency')?.invalid
-                "
-                [class.is-valid]="
+                " [class.is-valid]="
                   transportForm.get('frequency')?.touched &&
                   transportForm.get('frequency')?.valid
-                "
-              >
+                ">
                 <option value="" disabled>Select Frequency</option>
                 <option *ngFor="let freq of frequencies" [value]="freq">
                   {{ freq }}
@@ -171,41 +116,26 @@
           </div>
 
           <!-- Month and Year Input -->
-          
+
 
           <!-- Submit Button -->
           <div class="row">
             <div class="col-4 mb-3">
-              <button
-                type="button"
-                class="btn btn-info"
-                [disabled]="transportForm.invalid"
-                (click)="onSubmit()"
-              >
+              <button type="button" class="btn btn-info" [disabled]="transportForm.invalid" (click)="onSubmit()">
                 Add New Form
               </button>
             </div>
             <div class="col-4 mb-3">
-              <button
-                type="submit"
-                class="btn btn-info"
-                [disabled]="transportForm.invalid"
-                (click)="submitData()"
-              >
+              <button type="submit" class="btn btn-info" [disabled]="transportForm.invalid" (click)="submitData()">
                 Submit
               </button>
             </div>
             <div class="col-4 mb-3">
-              <button
-                type="button"
-                class="btn btn-info"
-                [disabled]="transportForm.invalid"
-                (click)="goToEnergyPage()"
-              >
+              <button type="button" class="btn btn-info" [disabled]="transportForm.invalid" (click)="goToEnergyPage()">
                 Next
               </button>
             </div>
-            
+
           </div>
         </form>
       </div>

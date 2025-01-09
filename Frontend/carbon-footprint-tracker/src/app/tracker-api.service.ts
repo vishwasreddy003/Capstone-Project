@@ -42,7 +42,7 @@ export class TrackerApiService {
   }
 
   getAllGoals(): Observable<any[]> {
-    console.log('ok');
+    // console.log('ok');
     return this.http.get<any[]>(this.baseUrl+`/goals/allGoals`);
   }
 
@@ -82,13 +82,13 @@ export class TrackerApiService {
 
   getUserGoalIds(): Observable<string[]> {
     let username = sessionStorage.getItem('username');  
-    console.log(username);
+    // console.log(username);
     return this.http.get<string[]>(`${this.baseUrl}/user/getGoals/${username}`);
   }
 
   getUserCheckedGoals():Observable<string[]> {
     let username = sessionStorage.getItem('username');  
-    console.log(username);
+    // console.log(username);
     return this.http.get<string[]>(`${this.baseUrl}/user/getCheckedGoals/${username}`);
   }
 

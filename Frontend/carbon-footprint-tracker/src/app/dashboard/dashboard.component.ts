@@ -5,7 +5,7 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from '@google/generative-ai';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../../environment.development';
 import { Task } from '../model/task';
 import { TrackerApiService } from '../tracker-api.service';
 import { forkJoin, map, switchMap } from 'rxjs';
@@ -318,7 +318,7 @@ export class DashboardComponent implements OnInit {
       household: this.trackerApiService.getLatestHouseholdEmission(),
     }).subscribe(
       (results) => {
-        console.log(results);
+        // console.log(results);
         // Update the carbon data
         this.carbonData['waste'] = Math.round(results.waste);
         this.carbonData['transportation'] = Math.round(results.transportation);

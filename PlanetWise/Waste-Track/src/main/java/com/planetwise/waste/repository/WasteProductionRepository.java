@@ -15,9 +15,9 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
 
   @Query(value = """
            SELECT t.year, t.month, SUM(t.carbon_emissions) AS total_emissions
-              FROM transportation_log t
-              WHERE t.username = 'pillu07'\s
-              AND (t.year > 2023 OR (t.year = 2023 AND t.month >= 'DECEMBER'))
+              FROM waste_production t
+              WHERE t.username = :username\s
+              AND (t.year > :startYear OR (t.year = :startYear AND t.month >= CAST(:startMonth AS TEXT)))
               GROUP BY t.year, t.month\s
               ORDER BY t.year,\s
               CASE\s
@@ -33,7 +33,7 @@ public interface WasteProductionRepository extends JpaRepository<WasteProduction
                 WHEN t.month = 'OCTOBER' THEN 10
                 WHEN t.month = 'NOVEMBER' THEN 11
                 WHEN t.month = 'DECEMBER' THEN 12
-              END; 
+              END;
           """,nativeQuery = true
   )
   List<Object[]> findWasteProductionFromLastTenMonths(String username, Year startYear, Month startMonth);
